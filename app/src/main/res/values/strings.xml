@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">OMDB</string>
+
+    <string name="go_button">Go</string>
+    <string name="search_text_view">Search</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="progress_bar_message">Downloading Titles...</string>
+
+
+
+    <string name="omdb_entry_point" translatable="false">http://www.omdbapi.com/?</string>
+    <string name="omdb_search_key" translatable="false">s</string>
+    <string name="omdb_page_key" translatable="false">page</string>
+    <string name="omdb_data_type_key" translatable="false">r</string>
+    <string name="omdb_data_type_value" translatable="false">json</string>
+
+    <string name="omdb_res_main_obj" translatable="false">Search</string>
+    <string name="omdb_res_title_field" translatable="false">Title</string>
+    <string name="omdb_res_response_field" translatable="false">Response</string>
+    <string name="omdb_res_total_results_field" translatable="false">totalResults</string>
+
+
+
+
+
+</resources>
