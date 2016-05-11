@@ -2,6 +2,7 @@ package com.example.jbt.omdb;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -114,8 +115,6 @@ public class MainActivity extends AppCompatActivity {
 
     public class OmdbSearchAsyncTask extends AsyncTask<String, Integer, ArrayList<Movie>>
     {
-
-
         private boolean cancelRequested = false;
         private int totalResults;
 
@@ -147,16 +146,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected ArrayList<Movie> doInBackground(String... params) {
 
-            String searchValue = params[0];
-
-            // example: http://www.omdbapi.com/?s=sunday&r=json&page=1
-            // --------------------------------------------------------------------
-            final String scheme = getResources().getString(R.string.scheme);
-            final String authority = getResources().getString(R.string.authority);
-            final String searchKey = getResources().getString(R.string.omdb_search_key);
-            final String dataTypeKey = getResources().getString(R.string.omdb_data_type_key);
-            final String dataTypeValue = getResources().getString(R.string.omdb_data_type_value);
-            final String pageKey = getResources().getString(R.string.omdb_page_key);
+            String searchPhrase = params[0];
 
             totalResults = 0;
             ArrayList<Movie> all = new ArrayList<>();
@@ -164,16 +154,10 @@ public class MainActivity extends AppCompatActivity {
 
             try {
 
-                for(int i=1; page != null && !cancelRequested ; i++) {
+                for(int pageNum=1; page != null && !cancelRequested ; pageNum++) {
 
-                    Uri.Builder builder = new Uri.Builder();
-                    builder.scheme(scheme)
-                            .authority(authority)
-                            .appendQueryParameter(searchKey, searchValue)
-                            .appendQueryParameter(dataTypeKey, dataTypeValue)
-                            .appendQueryParameter(pageKey, ""+i);
-
-                    URL url = new URL(builder.build().toString());
+                    String urlString = Utility.getSearchPhraseUrlString(MainActivity.this, searchPhrase, pageNum);
+                    URL url = new URL(urlString);
                     page = GetNextPageFromOMDB(url);
 
                     if (page != null) {
@@ -211,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 final String MAIN_OBJECT_NAME = getResources().getString(R.string.omdb_res_main_obj);
-                final String FIELD_NAME = getResources().getString(R.string.omdb_res_title_field);
+                final String TITLE_NAME = getResources().getString(R.string.omdb_res_title_field);
                 final String RESPONSE_NAME = getResources().getString(R.string.omdb_res_response_field);
                 final String TOTAL_RESULTS_NAME = getResources().getString(R.string.omdb_res_total_results_field);
 
@@ -228,8 +212,8 @@ public class MainActivity extends AppCompatActivity {
                 {
                     JSONObject user = array.getJSONObject(i);
 
-                    if (user.has(FIELD_NAME))
-                        list.add( new Movie(user.getString(FIELD_NAME)));
+                    if (user.has(TITLE_NAME))
+                        list.add( new Movie(user.getString(TITLE_NAME)));
                 }
 
             } catch (Exception e) {
@@ -259,28 +243,11 @@ public class MainActivity extends AppCompatActivity {
 
             HttpURLConnection con = null;
 
-            String searchTitleValue = params[0];
-
-            // example: http://www.omdbapi.com/?t=Matrix&y=&plot=full&r=json
-            // --------------------------------------------------------------------
-            final String scheme = getResources().getString(R.string.scheme);
-            final String authority = getResources().getString(R.string.authority);
-            final String searcTitleKey = getResources().getString(R.string.omdb_search_title_key);
-            final String plotKey = getResources().getString(R.string.omdb_plot_key);
-            final String plotValue = getResources().getString(R.string.omdb_plot_value);
-            final String dataTypeKey = getResources().getString(R.string.omdb_data_type_key);
-            final String dataTypeValue = getResources().getString(R.string.omdb_data_type_value);
-
-            Uri.Builder builder = new Uri.Builder();
-            builder.scheme(scheme)
-                    .authority(authority)
-                    .appendQueryParameter(searcTitleKey, searchTitleValue)
-                    .appendQueryParameter(plotKey, plotValue)
-                    .appendQueryParameter(dataTypeKey, dataTypeValue);
-
             try {
 
-                URL url = new URL(builder.build().toString());
+                String searchTitle = params[0];
+                String urlString = Utility.getDetailsUrlString(MainActivity.this, searchTitle);
+                URL url = new URL(urlString);
 
                 con = (HttpURLConnection)url.openConnection();
 
