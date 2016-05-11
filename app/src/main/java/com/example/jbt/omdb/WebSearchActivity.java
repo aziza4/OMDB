@@ -3,6 +3,7 @@ package com.example.jbt.omdb;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 
 public class WebSearchActivity extends AppCompatActivity {
 
+    public static final String INTENT_MOVIE_KEY = "movie";
     private static final int PROGRESS_BAR_TYPE = 0;
 
     private ArrayAdapter<Movie> adapter;
@@ -211,6 +213,10 @@ public class WebSearchActivity extends AppCompatActivity {
 
             String msg = String.format(" Title=%s\n Plot=%s\n Poster=%s\n IMDBID=%s",
                     movie.getSubject(), movie.getBody().substring(0,10), movie.getUrl().substring(0,10), movie.getImdbId());
+
+            Intent intent = new Intent(WebSearchActivity.this, EditActivity.class);
+            intent.putExtra(WebSearchActivity.INTENT_MOVIE_KEY, movie);
+            startActivity(intent);
 
             Toast.makeText(WebSearchActivity.this, msg, Toast.LENGTH_SHORT).show();
         }
