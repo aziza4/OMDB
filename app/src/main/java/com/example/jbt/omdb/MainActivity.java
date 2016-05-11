@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String LOG_CAT = "OMDB:";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -37,7 +37,7 @@ public class NetworkHelper {
 
         } catch (IOException e) {
 
-            Log.e(WebSearchActivity.LOG_CAT, e.getMessage());
+            Log.e(MainActivity.LOG_CAT, e.getMessage());
 
         } finally {
 

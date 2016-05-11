@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 public class WebSearchActivity extends AppCompatActivity {
 
-    public static final String LOG_CAT = "OMDB:";
     private static final int PROGRESS_BAR_TYPE = 0;
 
     private ArrayAdapter<Movie> adapter;
@@ -111,24 +110,6 @@ public class WebSearchActivity extends AppCompatActivity {
         private boolean cancelRequested = false;
         private int totalResults;
 
-
-        private URL GetSearchURL(String searchPhrase, int pageNum)
-        {
-            URL url = null;
-
-            try {
-                OmdbHelper omdbHelper = new OmdbHelper(WebSearchActivity.this);
-                String urlString = omdbHelper.getSearchPhraseUrlString(searchPhrase, pageNum);
-                url =  new URL(urlString);
-
-            } catch (MalformedURLException e) {
-
-                Log.e(LOG_CAT, e.getMessage());
-            }
-
-            return url;
-        }
-
         private ArrayList<Movie> GetNextPageFromOMDB(URL url)
         {
             NetworkHelper networkHelper = new NetworkHelper(url);
@@ -176,6 +157,7 @@ public class WebSearchActivity extends AppCompatActivity {
         protected ArrayList<Movie> doInBackground(String... params) {
 
             String searchPhrase = params[0];
+            OmdbHelper omdbHelper = new OmdbHelper(WebSearchActivity.this);
 
             totalResults = 0;
             ArrayList<Movie> all = new ArrayList<>();
@@ -183,7 +165,7 @@ public class WebSearchActivity extends AppCompatActivity {
 
             for(int pageNum=1; page != null && !cancelRequested ; pageNum++) {
 
-                URL url = GetSearchURL(searchPhrase, pageNum);
+                URL url = omdbHelper.GetSearchURL(searchPhrase, pageNum);
                 page = GetNextPageFromOMDB(url);
 
                 if (page != null) {
@@ -203,38 +185,20 @@ public class WebSearchActivity extends AppCompatActivity {
 
     public class OmdbDetaildAsyncTask extends AsyncTask<String, Void, Movie> {
 
-        private URL GetDetailsURL(String title)
-        {
-            URL url = null;
-
-            try {
-                OmdbHelper omdbHelper = new OmdbHelper(WebSearchActivity.this);
-                String urlString = omdbHelper.getDetailsUrlString(title);
-                url = new URL(urlString);
-
-            } catch (MalformedURLException e) {
-
-                Log.e(LOG_CAT, e.getMessage());
-            }
-
-            return url;
-        }
-
         @Override
         protected Movie doInBackground(String... params) {
 
             Movie movie = null;
+            OmdbHelper omdbHelper = new OmdbHelper(WebSearchActivity.this);
 
             String movieTitle = params[0];
-            URL url = GetDetailsURL(movieTitle);
+            URL url = omdbHelper.GetDetailsURL(movieTitle);
 
             NetworkHelper networkHelper = new NetworkHelper(url);
             String jsonString = networkHelper.GetJsonString();
 
-            if (jsonString != null ) {
-                OmdbHelper omdbHelper = new OmdbHelper(WebSearchActivity.this);
+            if (jsonString != null )
                 movie = omdbHelper.GetMovieDetails(jsonString);
-            }
 
             return movie;
         }

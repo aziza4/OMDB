@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -77,7 +79,7 @@ public class OmdbHelper {
              totalResult = searchObj.getInt(TOTAL_RESULTS_NAME);
 
         } catch (JSONException e) {
-            Log.e(WebSearchActivity.LOG_CAT, e.getMessage());
+            Log.e(MainActivity.LOG_CAT, e.getMessage());
         }
 
         return totalResult;
@@ -108,7 +110,7 @@ public class OmdbHelper {
             }
 
         } catch (JSONException e) {
-            Log.e(WebSearchActivity.LOG_CAT, e.getMessage());
+            Log.e(MainActivity.LOG_CAT, e.getMessage());
         }
 
         return list;
@@ -134,9 +136,43 @@ public class OmdbHelper {
             movie = new Movie(subject, body, posterUrl, imdbid);
 
         } catch (JSONException e) {
-            Log.e(WebSearchActivity.LOG_CAT, e.getMessage());
+            Log.e(MainActivity.LOG_CAT, e.getMessage());
         }
 
         return movie;
+    }
+
+
+    public URL GetSearchURL(String searchPhrase, int pageNum)
+    {
+        URL url = null;
+
+        try {
+            String urlString = getSearchPhraseUrlString(searchPhrase, pageNum);
+            url =  new URL(urlString);
+
+        } catch (MalformedURLException e) {
+
+            Log.e(MainActivity.LOG_CAT, e.getMessage());
+        }
+
+        return url;
+    }
+
+
+    public URL GetDetailsURL(String title)
+    {
+        URL url = null;
+
+        try {
+            String urlString = getDetailsUrlString(title);
+            url = new URL(urlString);
+
+        } catch (MalformedURLException e) {
+
+            Log.e(MainActivity.LOG_CAT, e.getMessage());
+        }
+
+        return url;
     }
 }
