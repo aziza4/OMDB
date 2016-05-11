@@ -3,6 +3,7 @@ package com.example.jbt.omdb;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,7 +28,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayAdapter<String> adapter;
+    final String LOG_CAT = "OMDB:";
+
+    private ArrayAdapter<Movie> adapter;
     private OmdbSearchAsyncTask omdbSearchAsyncTask;
 
     private EditText searchET;
@@ -53,26 +56,13 @@ public class MainActivity extends AppCompatActivity {
         goBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String searchValue = searchET.getText().toString();
 
-                if (searchValue.isEmpty())
-                    return;
-
-                // example: http://www.omdbapi.com/?s=sunday&r=json&page=1
-                // --------------------------------------------------------------------
-                final String entryPoint = getResources().getString(R.string.omdb_entry_point);
-                final String searchKey = getResources().getString(R.string.omdb_search_key);
-                final String dataTypeKey = getResources().getString(R.string.omdb_data_type_key);
-                final String dataTypeValue = getResources().getString(R.string.omdb_data_type_value);
-                final String pageKey = getResources().getString(R.string.omdb_page_key);
-                final String urlString =
-                        entryPoint +
-                        searchKey + "=" + searchValue + "&" +
-                        dataTypeKey + "=" + dataTypeValue + "&" +
-                        pageKey + "=";
-
-                omdbSearchAsyncTask = new OmdbSearchAsyncTask();
-                omdbSearchAsyncTask.execute(urlString);
+                if (!searchValue.isEmpty()) {
+                    omdbSearchAsyncTask = new OmdbSearchAsyncTask();
+                    omdbSearchAsyncTask.execute(searchValue);
+                }
         }
         });
 
@@ -86,7 +76,11 @@ public class MainActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, adapter.getItem(position), Toast.LENGTH_SHORT).show();
+
+                String searchTitle = adapter.getItem(position).toString();
+
+                if (!searchTitle.isEmpty())
+                    new OmdbDetaildAsyncTask().execute(searchTitle);
             }
         });
 
@@ -118,9 +112,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class OmdbSearchAsyncTask extends AsyncTask<String, Integer, ArrayList<String>>
+    public class OmdbSearchAsyncTask extends AsyncTask<String, Integer, ArrayList<Movie>>
     {
-        final String LOG_CAT = "OMDB:";
+
 
         private boolean cancelRequested = false;
         private int totalResults;
@@ -132,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<String> list) {
+        protected void onPostExecute(ArrayList<Movie> list) {
 
             dismissDialog(progress_bar_type);
             searchET.setText("");
@@ -151,19 +145,35 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected ArrayList<String> doInBackground(String... params) {
+        protected ArrayList<Movie> doInBackground(String... params) {
+
+            String searchValue = params[0];
+
+            // example: http://www.omdbapi.com/?s=sunday&r=json&page=1
+            // --------------------------------------------------------------------
+            final String scheme = getResources().getString(R.string.scheme);
+            final String authority = getResources().getString(R.string.authority);
+            final String searchKey = getResources().getString(R.string.omdb_search_key);
+            final String dataTypeKey = getResources().getString(R.string.omdb_data_type_key);
+            final String dataTypeValue = getResources().getString(R.string.omdb_data_type_value);
+            final String pageKey = getResources().getString(R.string.omdb_page_key);
 
             totalResults = 0;
-            ArrayList<String> all = new ArrayList<>();
-            ArrayList<String> page = new ArrayList<>(); // start with non-null value
+            ArrayList<Movie> all = new ArrayList<>();
+            ArrayList<Movie> page = new ArrayList<>(); // start with non-null value
 
             try {
 
-                String baseURL = params[0];
-
                 for(int i=1; page != null && !cancelRequested ; i++) {
 
-                    URL url = new URL(baseURL + i);
+                    Uri.Builder builder = new Uri.Builder();
+                    builder.scheme(scheme)
+                            .authority(authority)
+                            .appendQueryParameter(searchKey, searchValue)
+                            .appendQueryParameter(dataTypeKey, dataTypeValue)
+                            .appendQueryParameter(pageKey, ""+i);
+
+                    URL url = new URL(builder.build().toString());
                     page = GetNextPageFromOMDB(url);
 
                     if (page != null) {
@@ -179,9 +189,9 @@ public class MainActivity extends AppCompatActivity {
             return all;
         }
 
-        private ArrayList<String> GetNextPageFromOMDB(URL url)
+        private ArrayList<Movie> GetNextPageFromOMDB(URL url)
         {
-            ArrayList<String> list = new ArrayList<>();
+            ArrayList<Movie> list = new ArrayList<>();
             HttpURLConnection con = null;
 
             try {
@@ -219,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject user = array.getJSONObject(i);
 
                     if (user.has(FIELD_NAME))
-                        list.add(user.getString(FIELD_NAME));
+                        list.add( new Movie(user.getString(FIELD_NAME)));
                 }
 
             } catch (Exception e) {
@@ -239,5 +249,92 @@ public class MainActivity extends AppCompatActivity {
         public void setCancelRequested(boolean cancelRequested) {
             this.cancelRequested = cancelRequested;
         }
+    }
+
+
+    public class OmdbDetaildAsyncTask extends AsyncTask<String, Void, Movie> {
+
+        @Override
+        protected Movie doInBackground(String... params) {
+
+            HttpURLConnection con = null;
+
+            String searchTitleValue = params[0];
+
+            // example: http://www.omdbapi.com/?t=Matrix&y=&plot=full&r=json
+            // --------------------------------------------------------------------
+            final String scheme = getResources().getString(R.string.scheme);
+            final String authority = getResources().getString(R.string.authority);
+            final String searcTitleKey = getResources().getString(R.string.omdb_search_title_key);
+            final String plotKey = getResources().getString(R.string.omdb_plot_key);
+            final String plotValue = getResources().getString(R.string.omdb_plot_value);
+            final String dataTypeKey = getResources().getString(R.string.omdb_data_type_key);
+            final String dataTypeValue = getResources().getString(R.string.omdb_data_type_value);
+
+            Uri.Builder builder = new Uri.Builder();
+            builder.scheme(scheme)
+                    .authority(authority)
+                    .appendQueryParameter(searcTitleKey, searchTitleValue)
+                    .appendQueryParameter(plotKey, plotValue)
+                    .appendQueryParameter(dataTypeKey, dataTypeValue);
+
+            try {
+
+                URL url = new URL(builder.build().toString());
+
+                con = (HttpURLConnection)url.openConnection();
+
+                int resCode = con.getResponseCode();
+
+                if (resCode != HttpURLConnection.HTTP_OK)
+                    return null;
+
+                BufferedReader r = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+                String result = "", line;
+                while((line = r.readLine()) != null) {
+                    result += line;
+                }
+
+                final String TITLE_NAME = getResources().getString(R.string.omdb_res_title_field);
+                final String PLOT_NAME = getResources().getString(R.string.omdb_res_plot_field);
+                final String POSTER_NAME = getResources().getString(R.string.omdb_res_poster_field);
+                final String IMDBID_NAME = getResources().getString(R.string.omdb_res_imdbid_field);
+
+                JSONObject searchObj = new JSONObject(result);
+
+                String subject = searchObj.has(TITLE_NAME) ? searchObj.getString(TITLE_NAME) : "";
+                String body = searchObj.has(PLOT_NAME) ? searchObj.getString(PLOT_NAME) : "";
+                String posterUrl = searchObj.has(POSTER_NAME) ? searchObj.getString(POSTER_NAME) : "";
+                String imdbid = searchObj.has(IMDBID_NAME) ? searchObj.getString(IMDBID_NAME) : "";
+
+
+                return new Movie(subject, body, posterUrl, imdbid);
+
+            } catch (Exception e) {
+
+                Log.e(LOG_CAT, e.getMessage());
+
+            } finally {
+
+                if (con != null)
+                    con.disconnect();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Movie movie) {
+
+            if (movie == null)
+                return;
+
+            String msg = String.format(" Title=%s\n Plot=%s\n Poster=%s\n IMDBID=%s",
+                    movie.getSubject(), movie.getBody().substring(0,10), movie.getUrl().substring(0,10), movie.getImdbId());
+
+            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

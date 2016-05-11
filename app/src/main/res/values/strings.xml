@@ -6,18 +6,23 @@
     <string name="cancel_button">Cancel</string>
     <string name="progress_bar_message">Downloading Titles...</string>
 
-
-
-    <string name="omdb_entry_point" translatable="false">http://www.omdbapi.com/?</string>
+    <string name="scheme" translatable="false">http</string>
+    <string name="authority" translatable="false">www.omdbapi.com</string>
     <string name="omdb_search_key" translatable="false">s</string>
     <string name="omdb_page_key" translatable="false">page</string>
     <string name="omdb_data_type_key" translatable="false">r</string>
     <string name="omdb_data_type_value" translatable="false">json</string>
+    <string name="omdb_search_title_key" translatable="false">t</string>
+    <string name="omdb_plot_key" translatable="false">plot</string>
+    <string name="omdb_plot_value" translatable="false">full</string>
 
     <string name="omdb_res_main_obj" translatable="false">Search</string>
     <string name="omdb_res_title_field" translatable="false">Title</string>
     <string name="omdb_res_response_field" translatable="false">Response</string>
     <string name="omdb_res_total_results_field" translatable="false">totalResults</string>
+    <string name="omdb_res_plot_field" translatable="false">Plot</string>
+    <string name="omdb_res_poster_field" translatable="false">Poster</string>
+    <string name="omdb_res_imdbid_field" translatable="false">imdbID</string>
 
 
 
