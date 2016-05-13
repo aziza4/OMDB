@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/deleteAllMenuItem"
+        android:title="@string/menu_item_delete_all"
+        android:icon="@android:drawable/ic_menu_delete"/>
+
+    <item android:id="@+id/exitMenuItem"
+        android:title="@string/menu_item_exit" />
+</menu>

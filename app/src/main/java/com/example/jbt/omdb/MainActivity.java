@@ -1,17 +1,21 @@
 package com.example.jbt.omdb;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -75,6 +79,55 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.deleteAllMenuItem:
+
+                new AlertDialog.Builder(this)
+                        .setTitle(getResources().getString(R.string.delete_all_title))
+                        .setMessage(getResources().getString(R.string.delete_all_message))
+                        .setIcon(android.R.drawable.ic_delete)
+                        .setPositiveButton(getResources().getString(R.string.delete_all_delete_button),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        if ( mDbHelper.deleteAllMovies() )
+                                        {
+                                            String allMoviesDeletedMsg = getResources().getString(R.string.all_movie_deleted_msg);
+                                            Toast.makeText(MainActivity.this, allMoviesDeletedMsg, Toast.LENGTH_SHORT).show();
+                                            RefreshMainList();
+                                        }
+                                        dialog.dismiss();
+                                    }
+                                })
+                        .setNegativeButton(getResources().getString(R.string.delete_all_Cancel_button),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                        .create()
+                        .show();
+                return true;
+
+            case R.id.exitMenuItem:
+                finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -99,8 +152,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.deleteMenuItem:
-                mDbHelper.deleteMovie(movie.getId());
-                RefreshMainList();
+                if ( mDbHelper.deleteMovie(movie.getId())) {
+                    String movieDeletedMsg = getResources().getString(R.string.movie_deleted_msg);
+                    Toast.makeText(MainActivity.this, movieDeletedMsg, Toast.LENGTH_SHORT).show();
+                    RefreshMainList();
+                }
+
                 return true;
 
             default:

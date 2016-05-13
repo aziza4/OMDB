@@ -56,8 +56,10 @@ public class EditActivity extends AppCompatActivity {
                 Movie movie = new Movie(_id, subject, body, url, imdbid);
                 MoviesDBHelper dbHelper = new MoviesDBHelper(EditActivity.this);
 
-                if ( dbHelper.updateOrInsertMoview(movie) )
-                    Toast.makeText(EditActivity.this, "movie saved", Toast.LENGTH_SHORT).show();
+                if ( dbHelper.updateOrInsertMoview(movie) ) {
+                    String movieSavedMsg = getResources().getString(R.string.movie_saved_msg);
+                    Toast.makeText(EditActivity.this, movieSavedMsg, Toast.LENGTH_SHORT).show();
+                }
 
                 finish();
             }

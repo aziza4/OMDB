@@ -13,7 +13,18 @@
     <string name="ok_button">OK</string>
 
     <string name="menu_item_edit">Edit</string>
-    <string name="menu_item_delete">delete</string>
+    <string name="menu_item_delete">Delete</string>
+    <string name="menu_item_delete_all">Delete All</string>
+    <string name="menu_item_exit">Exit</string>
+
+    <string name="delete_all_title">Delete All Movies</string>
+    <string name="delete_all_message">Are you sure?</string>
+    <string name="delete_all_delete_button">Delete</string>
+    <string name="delete_all_Cancel_button">Cancel</string>
+
+    <string name="movie_saved_msg">Movie Saved</string>
+    <string name="movie_deleted_msg">Movie Deleted</string>
+    <string name="all_movie_deleted_msg">All Movies Deleted</string>
 
     <string name="scheme" translatable="false">http</string>
     <string name="authority" translatable="false">www.omdbapi.com</string>

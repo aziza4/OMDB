@@ -165,11 +165,22 @@ public class MoviesDBHelper extends SQLiteOpenHelper {
         return res > 0;
     }
 
-    public void deleteMovie(long id) {
+    public boolean deleteMovie(long id) {
 
         SQLiteDatabase db = getWritableDatabase();
-        db.delete(DETAILS_TABLE_NAME, DETAILS_COL_ID + " =" +  id , null);
+        long res = db.delete(DETAILS_TABLE_NAME, DETAILS_COL_ID + " =" +  id , null);
         db.close();
+
+        return res > 0;
+    }
+
+    public boolean deleteAllMovies() {
+
+        SQLiteDatabase db = getWritableDatabase();
+        long res = db.delete(DETAILS_TABLE_NAME, null , null);
+        db.close();
+
+        return res > 0;
     }
 
     public Movie GetMovie(long id) {
