@@ -12,6 +12,9 @@
     <string name="show_button">Show</string>
     <string name="ok_button">OK</string>
 
+    <string name="menu_item_edit">Edit</string>
+    <string name="menu_item_delete">delete</string>
+
     <string name="scheme" translatable="false">http</string>
     <string name="authority" translatable="false">www.omdbapi.com</string>
     <string name="omdb_search_key" translatable="false">s</string>

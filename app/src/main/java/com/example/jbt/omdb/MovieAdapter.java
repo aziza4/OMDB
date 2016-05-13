@@ -40,13 +40,11 @@ public class MovieAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor c) {
 
-        String subject = c.getString( c.getColumnIndex(MoviesDBHelper.DETAILS_COL_SUBJECT) );
-        String body = c.getString( c.getColumnIndex(MoviesDBHelper.DETAILS_COL_BODY) );
-
+        Movie movie = Utility.getMovieFromCursor(c);
         ViewHolder viewHolder = (ViewHolder) view.getTag();
         viewHolder.posterIV.setImageResource(android.R.drawable.ic_menu_report_image);
-        viewHolder.subjectTV.setText(subject);
-        viewHolder.bodyTV.setText(body);
+        viewHolder.subjectTV.setText(movie.getSubject());
+        viewHolder.bodyTV.setText(movie.getBody());
 
     }
 }
