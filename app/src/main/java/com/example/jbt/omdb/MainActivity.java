@@ -29,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        MoviesDBHelper dbHelper = new MoviesDBHelper(this);
+        dbHelper.deleteAllSearchResult();
+
         Button gotoBtn = (Button)findViewById(R.id.gotoButton);
 
         if (gotoBtn == null)

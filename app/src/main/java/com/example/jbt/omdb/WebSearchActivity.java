@@ -3,6 +3,8 @@ package com.example.jbt.omdb;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -73,7 +76,22 @@ public class WebSearchActivity extends AppCompatActivity {
                     new OmdbDetaildAsyncTask().execute(searchTitle);
             }
         });
+    }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        MoviesDBHelper dbHelper = new MoviesDBHelper(this);
+        ArrayList<Movie> list = dbHelper.getAllSearchResults();
+        RefreshSearchList(list);
+    }
+
+    private void RefreshSearchList(ArrayList<Movie> list)
+    {
+        mAdapter.clear();
+        mAdapter.addAll(list);
     }
 
 
@@ -81,6 +99,23 @@ public class WebSearchActivity extends AppCompatActivity {
     {
         private boolean mCancelRequested = false;
         private int mTotalResults;
+
+        private void RestricDeviceOrientation()
+        {
+            int current_orientation = getResources().getConfiguration().orientation;
+
+            int newFixedOrientation =
+                    current_orientation == Configuration.ORIENTATION_LANDSCAPE ?
+                    ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE :
+                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+
+            setRequestedOrientation(newFixedOrientation);
+        }
+
+        private void ReleaseDeviceOrientationRestriction() {
+
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        }
 
         private ArrayList<Movie> GetNextPageFromOMDB(URL url)
         {
@@ -101,6 +136,11 @@ public class WebSearchActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+
+            MoviesDBHelper dbHelper = new MoviesDBHelper(WebSearchActivity.this);
+            dbHelper.deleteAllSearchResult();
+
+            RestricDeviceOrientation();
 
             String msg =  getResources().getString(R.string.progress_bar_message);
             String enoughString = getResources().getString(R.string.enough_button);
@@ -124,14 +164,15 @@ public class WebSearchActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ArrayList<Movie> list) {
 
-            mProgDialog.dismiss();
+            if( list != null ) {
+                MoviesDBHelper dbHelper = new MoviesDBHelper(WebSearchActivity.this);
+                dbHelper.bulkInsertSearchResults(list.toArray(new Movie[0]));
+                RefreshSearchList(list);
+            }
+
+            ReleaseDeviceOrientationRestriction();
             mSearchET.setText("");
-
-            if(list == null)
-                return;
-
-            mAdapter.clear();
-            mAdapter.addAll(list);
+            mProgDialog.dismiss();
         }
 
         @Override

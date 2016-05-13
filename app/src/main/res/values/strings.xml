@@ -4,7 +4,7 @@
     <string name="go_button">Go</string>
     <string name="search_text_view">Search</string>
     <string name="cancel_button">Cancel</string>
-    <string name="enough_button">Enough for me...</string>
+    <string name="enough_button">Enough results...</string>
     <string name="progress_bar_message">Downloading Titles...</string>
 
     <string name="scheme" translatable="false">http</string>
