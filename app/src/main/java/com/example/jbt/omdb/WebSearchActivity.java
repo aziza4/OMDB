@@ -100,23 +100,6 @@ public class WebSearchActivity extends AppCompatActivity {
         private boolean mCancelRequested = false;
         private int mTotalResults;
 
-        private void RestricDeviceOrientation()
-        {
-            int current_orientation = getResources().getConfiguration().orientation;
-
-            int newFixedOrientation =
-                    current_orientation == Configuration.ORIENTATION_LANDSCAPE ?
-                    ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE :
-                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-
-            setRequestedOrientation(newFixedOrientation);
-        }
-
-        private void ReleaseDeviceOrientationRestriction() {
-
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-        }
-
         private ArrayList<Movie> GetNextPageFromOMDB(URL url)
         {
             NetworkHelper networkHelper = new NetworkHelper(url);
@@ -140,7 +123,7 @@ public class WebSearchActivity extends AppCompatActivity {
             MoviesDBHelper dbHelper = new MoviesDBHelper(WebSearchActivity.this);
             dbHelper.deleteAllSearchResult();
 
-            RestricDeviceOrientation();
+            Utility.RestricDeviceOrientation(WebSearchActivity.this);
 
             String msg =  getResources().getString(R.string.progress_bar_message);
             String enoughString = getResources().getString(R.string.enough_button);
@@ -170,7 +153,7 @@ public class WebSearchActivity extends AppCompatActivity {
                 RefreshSearchList(list);
             }
 
-            ReleaseDeviceOrientationRestriction();
+            Utility.ReleaseDeviceOrientationRestriction(WebSearchActivity.this);
             mSearchET.setText("");
             mProgDialog.dismiss();
         }
