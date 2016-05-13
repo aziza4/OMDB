@@ -65,7 +65,8 @@
             android:layout_marginLeft="@dimen/elements_horizontal_margin"
             android:layout_marginStart="@dimen/elements_horizontal_margin"
             android:text="@string/cancel_button"
-            android:id="@+id/cancelButton"/>
+            android:id="@+id/cancelButton"
+            style="?android:attr/buttonBarButtonStyle"/>
 
     </LinearLayout>
 

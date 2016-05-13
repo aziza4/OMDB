@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="@dimen/activity_vertical_margin"
-    android:orientation="vertical">
-
+    tools:context="com.example.jbt.omdb.EditActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:orientation="horizontal"
-        android:layout_weight="0.5">
+        android:id="@+id/subjectLinearLayout">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Subject:"
+            android:text="@string/subject_text_view"
             android:id="@+id/subjectTextView" />
 
         <EditText
@@ -23,42 +26,40 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:id="@+id/subjectEditText"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:inputType="text"/>
 
     </LinearLayout>
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="0.5">
+        android:text="@string/body_text_view"
+        android:id="@+id/bodyTextView"
+        android:layout_below="@id/subjectLinearLayout"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Body:"
-            android:id="@+id/bodyTextView"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="top|left"
-            android:scrollbars="vertical"
-            android:maxLines="7"
-            android:id="@+id/bodyEditText"/>
-
-    </LinearLayout>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:inputType="text|textMultiLine"
+        android:scrollbars="vertical"
+        android:minLines="7"
+        android:maxLines="7"
+        android:id="@+id/bodyEditText"
+        android:layout_below="@id/bodyTextView" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_weight="0.5">
+        android:id="@+id/urlLinearLayout"
+        android:layout_below="@id/bodyEditText">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="URL:"
+            android:text="@string/url_text_view"
             android:id="@+id/urlTextView" />
 
         <EditText
@@ -72,7 +73,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Show"
+            android:text="@string/show_button"
             android:id="@+id/showButton" />
 
     </LinearLayout>
@@ -82,35 +83,32 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_weight="6">
+        android:id="@+id/confirmationLinearLayout"
+        android:layout_alignParentBottom="true">
 
-        <ImageView
+        <Button
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
-            android:id="@+id/posterImageView" />
+            android:layout_height="wrap_content"
+            android:text="@string/ok_button"
+            android:id="@+id/okButton"
+            style="?android:attr/buttonBarButtonStyle"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel_button"
+            android:id="@+id/cancelButton"
+            style="?android:attr/buttonBarButtonStyle"/>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_weight="0.5">
+        android:background="@color/colorPrimary"
+        android:id="@+id/posterImageView"
+        android:layout_below="@id/urlLinearLayout"
+        android:layout_above="@id/confirmationLinearLayout"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="OK"
-            android:id="@+id/okButton" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cancel"
-            android:id="@+id/cancelButton" />
-
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>
