@@ -5,18 +5,21 @@ import java.io.Serializable;
 
 public class Movie implements Serializable {
 
-    private int mId;
+    private final static int NOT_IN_DB = -1;
+
+    private long mId;
     private String mSubject;
     private String mBody;
     private String mUrl;
     private String mImdbId;
 
-    public Movie(int _id, String subject, String body, String url, String imdbId) {
+    public Movie(long _id, String subject, String body, String url, String imdbId) {
         this(subject, body, url, imdbId);
         mId = _id;
     }
 
     public Movie(String subject, String body, String url, String imdbId) {
+        mId = NOT_IN_DB;
         mSubject = subject;
         mBody = body;
         mUrl = url;
@@ -24,10 +27,10 @@ public class Movie implements Serializable {
     }
 
     public Movie(String subject) {
-        mSubject = subject;
+        this(subject, "", "", "");
     }
 
-    public int getId() {
+    public long getId() {
         return mId;
     }
 

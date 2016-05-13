@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/activity_vertical_margin"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:id="@+id/movieImageView"
+        android:width="0dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:src="@android:drawable/ic_menu_report_image" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:id="@+id/middleLinearLayout"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Large Text"
+            android:id="@+id/subjectTextView"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="7dp"
+            android:paddingRight="7dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:gravity="top"
+            android:scrollbars="vertical"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textSize="10sp"
+            android:text="Small Text"
+            android:id="@+id/bodyTextView"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

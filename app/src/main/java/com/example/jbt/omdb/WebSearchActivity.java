@@ -3,8 +3,6 @@ package com.example.jbt.omdb;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -43,7 +40,7 @@ public class WebSearchActivity extends AppCompatActivity {
         if(mSearchET == null || list == null || goBtn == null || cancelBtn == null)
             return;
 
-        mAdapter = new ArrayAdapter<>(this, R.layout.movies_list_item);
+        mAdapter = new ArrayAdapter<>(this, R.layout.search_list_item);
         list.setAdapter(mAdapter);
 
         goBtn.setOnClickListener(new View.OnClickListener() {
