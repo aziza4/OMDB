@@ -10,20 +10,14 @@ import android.widget.TextView;
 
 public class EditActivity extends AppCompatActivity {
 
-    private EditText subjectET;
-    private EditText bodyET;
-    private EditText urlET;
-    private TextView imdbIdTV;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-        subjectET = ((EditText)findViewById(R.id.subjectEditText));
-        bodyET = ((EditText)findViewById(R.id.bodyEditText));
-        urlET = ((EditText)findViewById(R.id.urlEditText));
-        imdbIdTV = ((TextView)findViewById(R.id.ImdbIdTextView));
+        EditText subjectET = ((EditText) findViewById(R.id.subjectEditText));
+        EditText bodyET = ((EditText) findViewById(R.id.bodyEditText));
+        EditText urlET = ((EditText) findViewById(R.id.urlEditText));
 
         Intent intent = getIntent();
         Movie movie = (Movie)intent.getSerializableExtra(WebSearchActivity.INTENT_MOVIE_KEY);
@@ -31,7 +25,6 @@ public class EditActivity extends AppCompatActivity {
         subjectET.setText(movie.getSubject());
         bodyET.setText(movie.getBody());
         urlET.setText(movie.getUrl());
-        imdbIdTV.setText(movie.getImdbId());
 
         findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,10 +9,10 @@ import java.net.URL;
 
 public class NetworkHelper {
 
-    private URL url;
+    private URL mUrl;
 
     public NetworkHelper(URL url) {
-        this.url = url;
+        this.mUrl = url;
     }
 
     public String GetJsonString()
@@ -22,7 +22,7 @@ public class NetworkHelper {
 
         try {
 
-            con = (HttpURLConnection)url.openConnection();
+            con = (HttpURLConnection) mUrl.openConnection();
 
             int resCode = con.getResponseCode();
 

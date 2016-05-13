@@ -4,6 +4,7 @@
     <string name="go_button">Go</string>
     <string name="search_text_view">Search</string>
     <string name="cancel_button">Cancel</string>
+    <string name="enough_button">Enough for me...</string>
     <string name="progress_bar_message">Downloading Titles...</string>
 
     <string name="scheme" translatable="false">http</string>
@@ -23,6 +24,7 @@
     <string name="omdb_res_plot_field" translatable="false">Plot</string>
     <string name="omdb_res_poster_field" translatable="false">Poster</string>
     <string name="omdb_res_imdbid_field" translatable="false">imdbID</string>
+    <string name="omdb_res_na_value" translatable="false">N/A</string>
 
 
 </resources>

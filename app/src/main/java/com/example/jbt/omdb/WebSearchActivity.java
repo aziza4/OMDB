@@ -1,35 +1,30 @@
 package com.example.jbt.omdb;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
 public class WebSearchActivity extends AppCompatActivity {
 
     public static final String INTENT_MOVIE_KEY = "movie";
-    private static final int PROGRESS_BAR_TYPE = 0;
 
-    private ArrayAdapter<Movie> adapter;
-    private OmdbSearchAsyncTask omdbSearchAsyncTask;
+    private ArrayAdapter<Movie> mAdapter;
+    private OmdbSearchAsyncTask mOmdbSearchAsyncTask;
 
-    private EditText searchET;
-    private ProgressDialog pDialog;
+    private EditText mSearchET;
+    private ProgressDialog mProgDialog;
 
 
     @Override
@@ -37,26 +32,26 @@ public class WebSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_search);
 
-        searchET = (EditText)findViewById(R.id.searchEditText);
+        mSearchET = (EditText)findViewById(R.id.searchEditText);
         Button goBtn = (Button) findViewById(R.id.goButton);
         Button cancelBtn = (Button) findViewById(R.id.cancelButton);
         ListView list = (ListView)findViewById(R.id.moviesListView);
 
-        if(searchET == null || list == null || goBtn == null || cancelBtn == null)
+        if(mSearchET == null || list == null || goBtn == null || cancelBtn == null)
             return;
 
-        adapter = new ArrayAdapter<>(this, R.layout.movies_list_item);
-        list.setAdapter(adapter);
+        mAdapter = new ArrayAdapter<>(this, R.layout.movies_list_item);
+        list.setAdapter(mAdapter);
 
         goBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String searchValue = searchET.getText().toString();
+                String searchValue = mSearchET.getText().toString();
 
                 if (!searchValue.isEmpty()) {
-                    omdbSearchAsyncTask = new OmdbSearchAsyncTask();
-                    omdbSearchAsyncTask.execute(searchValue);
+                    mOmdbSearchAsyncTask = new OmdbSearchAsyncTask();
+                    mOmdbSearchAsyncTask.execute(searchValue);
                 }
             }
         });
@@ -72,7 +67,7 @@ public class WebSearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                String searchTitle = adapter.getItem(position).toString();
+                String searchTitle = mAdapter.getItem(position).toString();
 
                 if (!searchTitle.isEmpty())
                     new OmdbDetaildAsyncTask().execute(searchTitle);
@@ -81,36 +76,11 @@ public class WebSearchActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-            case PROGRESS_BAR_TYPE:
-                String msg =  getResources().getString(R.string.progress_bar_message);
-                String cancel = getResources().getString(R.string.cancel_button);
-                pDialog = new ProgressDialog(this);
-                pDialog.setMessage(msg);
-                pDialog.setIndeterminate(false);
-                pDialog.setMax(100);
-                pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                pDialog.setCancelable(true);
-                pDialog.setButton(DialogInterface.BUTTON_NEGATIVE, cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        omdbSearchAsyncTask.setCancelRequested(true);
-                        dialog.dismiss();
-                    }
-                });
-                pDialog.show();
-                return pDialog;
-            default:
-                return null;
-        }
-    }
 
     public class OmdbSearchAsyncTask extends AsyncTask<String, Integer, ArrayList<Movie>>
     {
-        private boolean cancelRequested = false;
-        private int totalResults;
+        private boolean mCancelRequested = false;
+        private int mTotalResults;
 
         private ArrayList<Movie> GetNextPageFromOMDB(URL url)
         {
@@ -123,36 +93,51 @@ public class WebSearchActivity extends AppCompatActivity {
             OmdbHelper omdbHelper = new OmdbHelper(WebSearchActivity.this);
             int totalRes = omdbHelper.GetTotalResult(jsonString);
 
-            if (totalResults == 0 && totalRes> 0 )
-                totalResults = totalRes;
+            if (mTotalResults == 0 && totalRes> 0 )
+                mTotalResults = totalRes;
 
-            return omdbHelper.GetMoviesTitleOnly(jsonString);
+            return omdbHelper.GetMoviesTitlesOnly(jsonString);
         }
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
-            showDialog(PROGRESS_BAR_TYPE);
+
+            String msg =  getResources().getString(R.string.progress_bar_message);
+            String enoughString = getResources().getString(R.string.enough_button);
+            mProgDialog = new ProgressDialog(WebSearchActivity.this);
+            mProgDialog.setMessage(msg);
+            mProgDialog.setIndeterminate(false);
+            mProgDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgDialog.setCancelable(false);
+
+            mProgDialog.setButton(DialogInterface.BUTTON_NEGATIVE, enoughString, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mOmdbSearchAsyncTask.setCancelRequested(true);
+                    dialog.dismiss();
+                }
+            });
+
+            mProgDialog.show();
         }
 
         @Override
         protected void onPostExecute(ArrayList<Movie> list) {
 
-            dismissDialog(PROGRESS_BAR_TYPE);
-            searchET.setText("");
+            mProgDialog.dismiss();
+            mSearchET.setText("");
 
             if(list == null)
                 return;
 
-            adapter.clear();
-            adapter.addAll(list);
-
+            mAdapter.clear();
+            mAdapter.addAll(list);
         }
 
         @Override
         protected void onProgressUpdate(Integer... progress) {
-            pDialog.setMax(progress[1]);
-            pDialog.setProgress(progress[0]);
+            mProgDialog.setMax(progress[0]);
+            mProgDialog.setProgress(progress[1]);
         }
 
         @Override
@@ -161,26 +146,26 @@ public class WebSearchActivity extends AppCompatActivity {
             String searchPhrase = params[0];
             OmdbHelper omdbHelper = new OmdbHelper(WebSearchActivity.this);
 
-            totalResults = 0;
+            mTotalResults = 0;
             ArrayList<Movie> all = new ArrayList<>();
             ArrayList<Movie> page = new ArrayList<>();
 
-            for(int pageNum=1; page != null && !cancelRequested ; pageNum++) {
+            for(int pageNum = 1; page != null && !mCancelRequested; pageNum++) {
 
                 URL url = omdbHelper.GetSearchURL(searchPhrase, pageNum);
                 page = GetNextPageFromOMDB(url);
 
                 if (page != null) {
                     all.addAll(page);
-                    publishProgress(all.size(), totalResults);
+                    publishProgress(mTotalResults, all.size());
                 }
             }
 
             return all;
         }
 
-        public void setCancelRequested(boolean cancelRequested) {
-            this.cancelRequested = cancelRequested;
+        public void setCancelRequested(boolean CancelRequested) {
+            mCancelRequested = CancelRequested;
         }
     }
 
@@ -211,14 +196,9 @@ public class WebSearchActivity extends AppCompatActivity {
             if (movie == null)
                 return;
 
-            String msg = String.format(" Title=%s\n Plot=%s\n Poster=%s\n IMDBID=%s",
-                    movie.getSubject(), movie.getBody().substring(0,10), movie.getUrl().substring(0,10), movie.getImdbId());
-
             Intent intent = new Intent(WebSearchActivity.this, EditActivity.class);
             intent.putExtra(WebSearchActivity.INTENT_MOVIE_KEY, movie);
             startActivity(intent);
-
-            Toast.makeText(WebSearchActivity.this, msg, Toast.LENGTH_SHORT).show();
         }
     }
 }

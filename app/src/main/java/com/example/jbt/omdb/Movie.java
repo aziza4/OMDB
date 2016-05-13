@@ -4,50 +4,51 @@ import java.io.Serializable;
 
 
 public class Movie implements Serializable {
-    private int _id;
-    private String subject;
-    private String body;
-    private String url;
-    private String imdbId;
+
+    private int mId;
+    private String mSubject;
+    private String mBody;
+    private String mUrl;
+    private String mImdbId;
 
     public Movie(int _id, String subject, String body, String url, String imdbId) {
         this(subject, body, url, imdbId);
-        this._id = _id;
+        mId = _id;
     }
 
     public Movie(String subject, String body, String url, String imdbId) {
-        this.subject = subject;
-        this.body = body;
-        this.url = url;
-        this.imdbId = imdbId;
+        mSubject = subject;
+        mBody = body;
+        mUrl = url;
+        mImdbId = imdbId;
     }
 
     public Movie(String subject) {
-        this.subject = subject;
+        mSubject = subject;
     }
 
-    public int get_id() {
-        return _id;
+    public int getId() {
+        return mId;
     }
 
     public String getSubject() {
-        return subject;
+        return mSubject;
     }
 
     public String getBody() {
-        return body;
+        return mBody;
     }
 
     public String getUrl() {
-        return url;
+        return mUrl;
     }
 
     public String getImdbId() {
-        return imdbId;
+        return mImdbId;
     }
 
     @Override
     public String toString() {
-        return subject;
+        return mSubject;
     }
 }

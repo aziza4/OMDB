@@ -1,13 +1,12 @@
 package com.example.jbt.omdb;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -15,55 +14,79 @@ import java.util.ArrayList;
 
 public class OmdbHelper {
 
-    private final Context context;
+    private final String mScheme;
+    private final String mAuthority;
+    private final String mSearchKey;
+    private final String mDataTypeKey;
+    private final String mDataTypeValue;
+    private final String mPageKey;
+    private final String mSearcTitleKey;
+    private final String mPlotKey;
+    private final String mPlotValue;
+    private final String mTotalResult;
+    private final String mMainObjName;
+    private final String mTitleName;
+    private final String mResponseName;
+    private final String mPlotName;
+    private final String mPosterName;
+    private final String mImdbName;
+    private final String mNAvalue;
 
 
     public OmdbHelper(Context context) {
-        this.context = context;
+
+        Resources resources = context.getResources();
+
+        mScheme = resources.getString(R.string.scheme);
+        mAuthority = resources.getString(R.string.authority);
+        mSearchKey = resources.getString(R.string.omdb_search_key);
+        mDataTypeKey = resources.getString(R.string.omdb_data_type_key);
+        mDataTypeValue = resources.getString(R.string.omdb_data_type_value);
+        mPageKey = resources.getString(R.string.omdb_page_key);
+        mSearcTitleKey = resources.getString(R.string.omdb_search_title_key);
+        mPlotKey = resources.getString(R.string.omdb_plot_key);
+        mPlotValue = resources.getString(R.string.omdb_plot_value);
+        mTotalResult = resources.getString(R.string.omdb_res_total_results_field);
+
+        mMainObjName = resources.getString(R.string.omdb_res_main_obj);
+        mTitleName = resources.getString(R.string.omdb_res_title_field);
+        mResponseName = resources.getString(R.string.omdb_res_response_field);
+        mPlotName = resources.getString(R.string.omdb_res_plot_field);
+        mPosterName = resources.getString(R.string.omdb_res_poster_field);
+        mImdbName = resources.getString(R.string.omdb_res_imdbid_field);
+        mNAvalue = resources.getString(R.string.omdb_res_na_value);
     }
+
 
     public String getSearchPhraseUrlString(String searchValue, int pageValue)
     {
         // example: http://www.omdbapi.com/?s=sunday&r=json&page=1
         // --------------------------------------------------------------------
-        final String scheme = context.getResources().getString(R.string.scheme);
-        final String authority = context.getResources().getString(R.string.authority);
-        final String searchKey = context.getResources().getString(R.string.omdb_search_key);
-        final String dataTypeKey = context.getResources().getString(R.string.omdb_data_type_key);
-        final String dataTypeValue = context.getResources().getString(R.string.omdb_data_type_value);
-        final String pageKey = context.getResources().getString(R.string.omdb_page_key);
-
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme(scheme)
-                .authority(authority)
-                .appendQueryParameter(searchKey, searchValue)
-                .appendQueryParameter(dataTypeKey, dataTypeValue)
-                .appendQueryParameter(pageKey, "" + pageValue);
+        builder.scheme(mScheme)
+                .authority(mAuthority)
+                .appendQueryParameter(mSearchKey, searchValue)
+                .appendQueryParameter(mDataTypeKey, mDataTypeValue)
+                .appendQueryParameter(mPageKey, "" + pageValue);
 
         return builder.build().toString();
     }
+
 
     public String getDetailsUrlString(String searchTitleValue) {
 
         // example: http://www.omdbapi.com/?t=Matrix&y=&plot=full&r=json
         // --------------------------------------------------------------------
-        final String scheme = context.getResources().getString(R.string.scheme);
-        final String authority = context.getResources().getString(R.string.authority);
-        final String searcTitleKey = context.getResources().getString(R.string.omdb_search_title_key);
-        final String plotKey = context.getResources().getString(R.string.omdb_plot_key);
-        final String plotValue = context.getResources().getString(R.string.omdb_plot_value);
-        final String dataTypeKey = context.getResources().getString(R.string.omdb_data_type_key);
-        final String dataTypeValue = context.getResources().getString(R.string.omdb_data_type_value);
-
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme(scheme)
-                .authority(authority)
-                .appendQueryParameter(searcTitleKey, searchTitleValue)
-                .appendQueryParameter(plotKey, plotValue)
-                .appendQueryParameter(dataTypeKey, dataTypeValue);
+        builder.scheme(mScheme)
+                .authority(mAuthority)
+                .appendQueryParameter(mSearcTitleKey, searchTitleValue)
+                .appendQueryParameter(mPlotKey, mPlotValue)
+                .appendQueryParameter(mDataTypeKey, mDataTypeValue);
 
         return builder.build().toString();
     }
+
 
     public int GetTotalResult(String jsonString) {
 
@@ -71,12 +94,10 @@ public class OmdbHelper {
 
         try {
 
-            final String TOTAL_RESULTS_NAME = context.getResources().getString(R.string.omdb_res_total_results_field);
-
             JSONObject searchObj = new JSONObject(jsonString);
 
-            if ( searchObj.has(TOTAL_RESULTS_NAME))
-             totalResult = searchObj.getInt(TOTAL_RESULTS_NAME);
+            if ( searchObj.has(mTotalResult))
+                totalResult = searchObj.getInt(mTotalResult);
 
         } catch (JSONException e) {
             Log.e(MainActivity.LOG_CAT, e.getMessage());
@@ -85,28 +106,27 @@ public class OmdbHelper {
         return totalResult;
     }
 
-    public ArrayList<Movie> GetMoviesTitleOnly(String jsonString)
+
+    public ArrayList<Movie> GetMoviesTitlesOnly(String jsonString)
     {
         ArrayList<Movie> list = new ArrayList<>();
 
         try {
 
-            final String MAIN_OBJECT_NAME = context.getResources().getString(R.string.omdb_res_main_obj);
-            final String TITLE_NAME = context.getResources().getString(R.string.omdb_res_title_field);
-            final String RESPONSE_NAME = context.getResources().getString(R.string.omdb_res_response_field);
-
             JSONObject searchObj = new JSONObject(jsonString);
 
-            if (searchObj.has(RESPONSE_NAME) && !searchObj.getBoolean(RESPONSE_NAME))
+            if (searchObj.has(mResponseName) && !searchObj.getBoolean(mResponseName))
                 return null;
 
-            JSONArray array = searchObj.getJSONArray(MAIN_OBJECT_NAME);
+            JSONArray array = searchObj.getJSONArray(mMainObjName);
             for (int i=0; i< array.length(); i++)
             {
                 JSONObject user = array.getJSONObject(i);
 
-                if (user.has(TITLE_NAME))
-                    list.add( new Movie(user.getString(TITLE_NAME)));
+                String subject = getJsonFieldValue(user, mTitleName);
+
+                if (subject != null && !subject.isEmpty())
+                    list.add( new Movie(subject));
             }
 
         } catch (JSONException e) {
@@ -121,17 +141,13 @@ public class OmdbHelper {
         Movie movie = null;
 
         try {
-            final String TITLE_NAME = context.getResources().getString(R.string.omdb_res_title_field);
-            final String PLOT_NAME = context.getResources().getString(R.string.omdb_res_plot_field);
-            final String POSTER_NAME = context.getResources().getString(R.string.omdb_res_poster_field);
-            final String IMDBID_NAME = context.getResources().getString(R.string.omdb_res_imdbid_field);
 
             JSONObject searchObj = new JSONObject(jsonString);
 
-            String subject = searchObj.has(TITLE_NAME) ? searchObj.getString(TITLE_NAME) : "";
-            String body = searchObj.has(PLOT_NAME) ? searchObj.getString(PLOT_NAME) : "";
-            String posterUrl = searchObj.has(POSTER_NAME) ? searchObj.getString(POSTER_NAME) : "";
-            String imdbid = searchObj.has(IMDBID_NAME) ? searchObj.getString(IMDBID_NAME) : "";
+            String subject = getJsonFieldValue(searchObj, mTitleName);
+            String body = getJsonFieldValue(searchObj, mPlotName);
+            String posterUrl = getJsonFieldValue(searchObj, mPosterName);
+            String imdbid = getJsonFieldValue(searchObj, mImdbName);
 
             movie = new Movie(subject, body, posterUrl, imdbid);
 
@@ -143,13 +159,30 @@ public class OmdbHelper {
     }
 
 
+    private String getJsonFieldValue(JSONObject jsonObj, String fieldName)
+    {
+        String res = "";
+
+        try {
+
+            if (jsonObj.has(fieldName))
+                res = jsonObj.getString(fieldName).trim();
+
+        } catch (JSONException e) {
+            Log.e(MainActivity.LOG_CAT, e.getMessage());
+        }
+
+        return res.equals(mNAvalue) ? "" : res;
+    }
+
+
     public URL GetSearchURL(String searchPhrase, int pageNum)
     {
         URL url = null;
 
         try {
-            String urlString = getSearchPhraseUrlString(searchPhrase, pageNum);
-            url =  new URL(urlString);
+
+            url =  new URL(getSearchPhraseUrlString(searchPhrase, pageNum));
 
         } catch (MalformedURLException e) {
 
@@ -165,8 +198,8 @@ public class OmdbHelper {
         URL url = null;
 
         try {
-            String urlString = getDetailsUrlString(title);
-            url = new URL(urlString);
+
+            url = new URL(getDetailsUrlString(title));
 
         } catch (MalformedURLException e) {
 
