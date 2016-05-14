@@ -92,7 +92,7 @@ public class WebSearchActivity extends AppCompatActivity {
     }
 
 
-    public class OmdbSearchAsyncTask extends AsyncTask<String, Integer, ArrayList<Movie>>
+    private class OmdbSearchAsyncTask extends AsyncTask<String, Integer, ArrayList<Movie>>
     {
         private boolean mCancelRequested = false;
         private int mTotalResults;
@@ -191,7 +191,7 @@ public class WebSearchActivity extends AppCompatActivity {
     }
 
 
-    public class OmdbDetaildAsyncTask extends AsyncTask<String, Void, Movie> {
+    private class OmdbDetaildAsyncTask extends AsyncTask<String, Void, Movie> {
 
         @Override
         protected Movie doInBackground(String... params) {

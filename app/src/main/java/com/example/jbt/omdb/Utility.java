@@ -7,6 +7,13 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Patterns;
+
+import java.io.ByteArrayOutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 public class Utility {
@@ -35,7 +42,35 @@ public class Utility {
         String body = c.getString( c.getColumnIndex(MoviesDBHelper.DETAILS_COL_BODY) );
         String url = c.getString( c.getColumnIndex(MoviesDBHelper.DETAILS_COL_URL) );
         String imdbid = c.getString( c.getColumnIndex(MoviesDBHelper.DETAILS_COL_IMDBID) );
+        Bitmap image = Utility.convertByteArrayToBitmap(
+                c.getBlob( c.getColumnIndex(MoviesDBHelper.DETAILS_COL_IMAGE)));
 
-        return new Movie(_id, subject, body, url, imdbid);
+        return new Movie(_id, subject, body, url, imdbid, image);
+    }
+
+    public static boolean isValidUrl(String urlString)
+    {
+        return Patterns.WEB_URL.matcher(urlString).matches();
+    }
+
+    public static byte[] convertBitmapToByteArray(Bitmap bitmap)
+    {
+        if (bitmap == null)
+            return null;
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] arr = stream.toByteArray();
+        long size = arr.length;
+        return arr;
+    }
+
+    public static Bitmap convertByteArrayToBitmap(byte[] byteArray)
+    {
+        if (byteArray == null)
+            return null;
+
+        Bitmap bitmap =  BitmapFactory.decodeByteArray(byteArray , 0, byteArray.length);
+        return bitmap;
     }
 }

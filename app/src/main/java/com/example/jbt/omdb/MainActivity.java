@@ -3,7 +3,11 @@ package com.example.jbt.omdb;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
+import android.os.Parcelable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,6 +38,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addMovieFab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
+
 
         mWebBtn = (Button)findViewById(R.id.gotoWebButton);
         mManBtn = (Button)findViewById(R.id.gotoManualButton);
@@ -91,31 +105,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.deleteAllMenuItem:
-
-                new AlertDialog.Builder(this)
-                        .setTitle(getResources().getString(R.string.delete_all_title))
-                        .setMessage(getResources().getString(R.string.delete_all_message))
-                        .setIcon(android.R.drawable.ic_delete)
-                        .setPositiveButton(getResources().getString(R.string.delete_all_delete_button),
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        if ( mDbHelper.deleteAllMovies() )
-                                        {
-                                            String allMoviesDeletedMsg = getResources().getString(R.string.all_movie_deleted_msg);
-                                            Toast.makeText(MainActivity.this, allMoviesDeletedMsg, Toast.LENGTH_SHORT).show();
-                                            RefreshMainList();
-                                        }
-                                        dialog.dismiss();
-                                    }
-                                })
-                        .setNegativeButton(getResources().getString(R.string.delete_all_Cancel_button),
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                })
-                        .create()
-                        .show();
+                ShowDeleteConfirmationDialog();
                 return true;
 
             case R.id.exitMenuItem:
@@ -172,12 +162,51 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void luanchEditActivity(Movie movie)
+    private void ShowDeleteConfirmationDialog() {
+
+        final Resources r = getResources();
+        final String deleteTitle = r.getString(R.string.delete_all_title);
+        final String deleteMsg = r.getString(R.string.delete_all_message);
+        final String deleteButton = r.getString(R.string.delete_all_delete_button);
+        final String cancelButton = r.getString(R.string.delete_all_Cancel_button);
+        final String deleteAllConfMsg = r.getString(R.string.all_movie_deleted_msg);
+
+        new AlertDialog.Builder(this)
+                .setTitle(deleteTitle)
+                .setMessage(deleteMsg)
+                .setIcon(android.R.drawable.ic_delete)
+
+                .setPositiveButton(deleteButton,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                if ( mDbHelper.deleteAllMovies() )
+                                {
+                                    Toast.makeText(MainActivity.this, deleteAllConfMsg, Toast.LENGTH_SHORT).show();
+                                    RefreshMainList();
+                                }
+                                dialog.dismiss();
+                            }
+                        })
+
+                .setNegativeButton(cancelButton,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+
+                .create()
+                .show();
+    }
+
+
+    private void luanchEditActivity(Movie movie)
     {
         Intent intent = new Intent(MainActivity.this, EditActivity.class);
         intent.putExtra(WebSearchActivity.INTENT_MOVIE_KEY, movie);
         startActivity(intent);
     }
+
 
     private void RefreshMainList() {
         mAdapter.changeCursor(mDbHelper.GetDetailsMovieCursor());

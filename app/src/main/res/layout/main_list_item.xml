@@ -2,16 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/activity_vertical_margin"
-    android:orientation="horizontal">
+    android:paddingBottom="@dimen/elements_vertical_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
 
     <ImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:id="@+id/movieImageView"
         android:width="0dp"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="3dp"
         android:src="@android:drawable/ic_menu_report_image" />
 
     <LinearLayout
@@ -33,8 +33,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="7dp"
-            android:paddingRight="7dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:gravity="top"
             android:scrollbars="vertical"

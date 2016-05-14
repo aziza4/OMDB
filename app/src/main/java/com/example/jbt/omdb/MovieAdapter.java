@@ -2,6 +2,8 @@ package com.example.jbt.omdb;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,9 +44,10 @@ public class MovieAdapter extends CursorAdapter {
 
         Movie movie = Utility.getMovieFromCursor(c);
         ViewHolder viewHolder = (ViewHolder) view.getTag();
-        viewHolder.posterIV.setImageResource(android.R.drawable.ic_menu_report_image);
+        Bitmap imageNA = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_na);
+        Bitmap image = movie.getImage() != null ? movie.getImage() : imageNA;
+        viewHolder.posterIV.setImageBitmap(image);
         viewHolder.subjectTV.setText(movie.getSubject());
         viewHolder.bodyTV.setText(movie.getBody());
-
     }
 }

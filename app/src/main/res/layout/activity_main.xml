@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.example.jbt.omdb.MainActivity">
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/main_list_view_padding">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +39,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/mainListView"
-        android:layout_below="@+id/LaunchLinearLayout"/>
+        android:layout_below="@id/LaunchLinearLayout"/>
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/addMovieFab"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:src="@android:drawable/ic_dialog_email"-->
+        <!--android:layout_margin="@dimen/fab_margin"-->
+        <!--android:layout_gravity="bottom|end" />-->
 
 </RelativeLayout>
 
+</android.support.design.widget.CoordinatorLayout>

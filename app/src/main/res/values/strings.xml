@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OMDB</string>
+    <string name="app_name">My Movies</string>
 
     <string name="go_button">Go</string>
     <string name="search_text_view">Search</string>
@@ -21,10 +21,10 @@
     <string name="delete_all_message">Are you sure?</string>
     <string name="delete_all_delete_button">Delete</string>
     <string name="delete_all_Cancel_button">Cancel</string>
-
     <string name="movie_saved_msg">Movie Saved</string>
     <string name="movie_deleted_msg">Movie Deleted</string>
     <string name="all_movie_deleted_msg">All Movies Deleted</string>
+    <string name="subject_must_not_be_empty">Subject cannot be empty</string>
 
     <string name="scheme" translatable="false">http</string>
     <string name="authority" translatable="false">www.omdbapi.com</string>

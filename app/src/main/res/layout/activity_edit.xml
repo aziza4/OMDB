@@ -25,7 +25,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/subjectEditText"
             android:singleLine="true"
-            android:inputType="text"/>
+            android:inputType="text"
+            android:textSize="@dimen/abc_text_size_menu_material"
+            android:textIsSelectable="false" />
 
     </LinearLayout>
 
@@ -45,7 +47,8 @@
         android:minLines="7"
         android:maxLines="7"
         android:id="@+id/bodyEditText"
-        android:layout_below="@id/bodyTextView" />
+        android:layout_below="@id/bodyTextView"
+        android:textSize="@dimen/design_tab_text_size_2line" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -66,13 +69,15 @@
             android:layout_height="wrap_content"
             android:inputType="textUri"
             android:id="@+id/urlEditText"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textSize="@dimen/design_tab_text_size_2line"
+            android:textIsSelectable="true" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/show_button"
-            android:id="@+id/showButton" />
+            android:id="@+id/urlShowButton" />
 
     </LinearLayout>
 
@@ -103,10 +108,24 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
         android:id="@+id/posterImageView"
         android:layout_below="@id/urlLinearLayout"
-        android:layout_above="@id/confirmationLinearLayout"/>
+        android:layout_above="@id/confirmationLinearLayout"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="@dimen/elements_vertical_margin"
+        android:paddingBottom="@dimen/elements_vertical_margin"
+        android:scaleType="centerCrop"
+        android:cropToPadding="false" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/downloadProgressBar"
+        style="@android:style/Widget.ProgressBar.Small"
+        android:layout_alignTop="@+id/posterImageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:indeterminate="true" />
 
 
 </RelativeLayout>

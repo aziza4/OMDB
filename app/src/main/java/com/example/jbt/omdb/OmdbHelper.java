@@ -149,7 +149,7 @@ public class OmdbHelper {
             String posterUrl = getJsonFieldValue(searchObj, mPosterName);
             String imdbid = getJsonFieldValue(searchObj, mImdbName);
 
-            movie = new Movie(subject, body, posterUrl, imdbid);
+            movie = new Movie(subject, body, posterUrl, imdbid, null);
 
         } catch (JSONException e) {
             Log.e(MainActivity.LOG_CAT, e.getMessage());
