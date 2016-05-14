@@ -55,7 +55,7 @@ public class EditActivity extends AppCompatActivity {
         if ( mMovie.isSavedInDB()) {
             // The following 2 lines are bypass to android BUG (cannot parcel bitmap...)
             MoviesDBHelper dbHelper = new MoviesDBHelper(EditActivity.this);
-            mMovie.setImage(dbHelper.GetMovie(mMovie.getId()).getImage());
+            mPosterImageView.setImageBitmap(dbHelper.GetMovie(mMovie.getId()).getImage());
         }
 
         mShowBtn.setEnabled(Utility.isValidUrl(mUrlET.getText().toString()));

@@ -1,13 +1,9 @@
 package com.example.jbt.omdb;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.os.Parcelable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,8 +16,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 final String title = getResources().getString(R.string.add_dialog_title);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
                 builder.setTitle(title);
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
@@ -74,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-                AlertDialog alert = builder.create();
-                alert.show();
+
+                builder.create().show();
             }
         });
 
