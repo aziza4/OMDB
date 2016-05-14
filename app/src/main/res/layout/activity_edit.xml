@@ -26,7 +26,7 @@
             android:id="@+id/subjectEditText"
             android:singleLine="true"
             android:inputType="text"
-            android:textSize="@dimen/abc_text_size_menu_material"
+            android:textSize="@dimen/large_text"
             android:textIsSelectable="false" />
 
     </LinearLayout>
@@ -44,11 +44,11 @@
         android:gravity="top"
         android:inputType="text|textMultiLine"
         android:scrollbars="vertical"
-        android:minLines="7"
-        android:maxLines="7"
+        android:minLines="5"
+        android:maxLines="5"
         android:id="@+id/bodyEditText"
         android:layout_below="@id/bodyTextView"
-        android:textSize="@dimen/design_tab_text_size_2line" />
+        android:textSize="@dimen/small_text" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -67,15 +67,19 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:inputType="textUri"
             android:id="@+id/urlEditText"
-            android:singleLine="true"
-            android:textSize="@dimen/design_tab_text_size_2line"
+            android:gravity="top"
+            android:inputType="textUri|textMultiLine"
+            android:scrollbars="vertical"
+            android:minLines="4"
+            android:maxLines="4"
+            android:textSize="@dimen/small_text"
             android:textIsSelectable="true" />
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:text="@string/show_button"
             android:id="@+id/urlShowButton" />
 

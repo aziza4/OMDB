@@ -105,7 +105,7 @@ public class MoviesDBHelper extends SQLiteOpenHelper {
         ArrayList<Movie> movies = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
 
-        String sqlQuery = "SELECT * FROM " + SEARCH_TABLE_NAME;
+        String sqlQuery = "SELECT * FROM " + SEARCH_TABLE_NAME + ";";
 
         Cursor c = db.rawQuery(sqlQuery, null);
         while(c.moveToNext())
@@ -122,7 +122,7 @@ public class MoviesDBHelper extends SQLiteOpenHelper {
     public Cursor GetDetailsMovieCursor()
     {
         SQLiteDatabase db = getReadableDatabase();
-        String sqlQuery = "SELECT * FROM " + DETAILS_TABLE_NAME;
+        String sqlQuery = "SELECT * FROM " + DETAILS_TABLE_NAME + " ORDER BY " + DETAILS_COL_SUBJECT + ";";
         return db.rawQuery(sqlQuery, null);
     }
 
@@ -213,7 +213,7 @@ public class MoviesDBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getReadableDatabase();
 
-        String sqlQuery = "SELECT * FROM " + DETAILS_TABLE_NAME;
+        String sqlQuery = "SELECT * FROM " + DETAILS_TABLE_NAME + ";";
         Cursor c = db.rawQuery(sqlQuery, null);
 
         while(c.moveToNext()) {
