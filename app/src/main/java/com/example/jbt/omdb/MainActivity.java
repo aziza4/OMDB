@@ -28,8 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private MovieAdapter mAdapter;
     private MoviesDBHelper mDbHelper;
 
-    private Button mWebBtn;
-    private Button mManBtn;
+    private Button mAddBtn;
     private ListView mListView;
 
     public static final String LOG_CAT = "OMDB:";
@@ -39,18 +38,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addMovieFab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
-
-        mWebBtn = (Button)findViewById(R.id.gotoWebButton);
-        mManBtn = (Button)findViewById(R.id.gotoManualButton);
+        mAddBtn = (Button)findViewById(R.id.addButton);
         mListView = (ListView)findViewById(R.id.mainListView);
 
         mDbHelper = new MoviesDBHelper(this);
@@ -59,21 +47,35 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new MovieAdapter(this, mDbHelper.GetDetailsMovieCursor(), 0);
         mListView.setAdapter(mAdapter);
 
-        mWebBtn.setOnClickListener(new View.OnClickListener() {
+        mAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, WebSearchActivity.class);
-                startActivity(intent);
-            }
-        });
 
-        mManBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Movie movie = new Movie("");
-                Intent intent = new Intent(MainActivity.this, EditActivity.class);
-                intent.putExtra(WebSearchActivity.INTENT_MOVIE_KEY, movie);
-                startActivity(intent);
+                final String[] items = getResources().getStringArray(R.array.add_menu_items);
+                final String title = getResources().getString(R.string.add_dialog_title);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(title);
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+
+                        if (item == 0 )
+                        {
+                            Intent intent = new Intent(MainActivity.this, WebSearchActivity.class);
+                            startActivity(intent);
+                            return;
+
+                        } else {
+
+                            Movie movie = new Movie("");
+                            Intent intent = new Intent(MainActivity.this, EditActivity.class);
+                            intent.putExtra(WebSearchActivity.INTENT_MOVIE_KEY, movie);
+                            startActivity(intent);
+                        }
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
 

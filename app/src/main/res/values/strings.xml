@@ -11,11 +11,14 @@
     <string name="url_text_view">URL:</string>
     <string name="show_button">Show</string>
     <string name="ok_button">OK</string>
+    <string name="add_button">+</string>
 
     <string name="menu_item_edit">Edit</string>
     <string name="menu_item_delete">Delete</string>
     <string name="menu_item_delete_all">Delete All</string>
     <string name="menu_item_exit">Exit</string>
+    <string name="menu_item_web">Web</string>
+    <string name="menu_item_manual">Manual</string>
 
     <string name="delete_all_title">Delete All Movies</string>
     <string name="delete_all_message">Are you sure?</string>
@@ -25,6 +28,14 @@
     <string name="movie_deleted_msg">Movie Deleted</string>
     <string name="all_movie_deleted_msg">All Movies Deleted</string>
     <string name="subject_must_not_be_empty">Subject cannot be empty</string>
+    <string name="add_dialog_web_item">Web</string>
+    <string name="add_dialog_manual_item">Manual</string>
+    <string name="add_dialog_title">Add New Item</string>
+
+
+
+
+     <!--+++++++++++++  Non-Translatable Strings ++++++++++++++++-->
 
     <string name="scheme" translatable="false">http</string>
     <string name="authority" translatable="false">www.omdbapi.com</string>
