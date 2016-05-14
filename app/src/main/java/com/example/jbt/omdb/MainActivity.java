@@ -7,11 +7,14 @@ import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -86,7 +89,75 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /*
         registerForContextMenu(mListView);
+        */
+
+
+        mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        mListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.main_context_menu, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+
+                SparseBooleanArray checked = mListView.getCheckedItemPositions();
+
+                if (!checked.valueAt(0))
+                    return false;
+
+                int position = checked.keyAt(0);
+
+                Cursor c = mAdapter.getCursor();
+
+                if (c == null)
+                    return false;
+
+                c.moveToPosition(position);
+
+                Movie movie = Utility.getMovieFromCursor(c);
+
+                switch (item.getItemId())
+                {
+                    case R.id.editMenuItem:
+                        luanchEditActivity(movie);
+                        mode.finish();
+                        return true;
+
+                    case R.id.deleteMenuItem:
+                        if ( mDbHelper.deleteMovie(movie.getId())) {
+                            String movieDeletedMsg = getResources().getString(R.string.movie_deleted_msg);
+                            Toast.makeText(MainActivity.this, movieDeletedMsg, Toast.LENGTH_SHORT).show();
+                            RefreshMainList();
+                            mode.finish();
+                        }
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+
+            }
+        });
     }
 
     @Override
@@ -114,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
@@ -128,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
         int position = ((AdapterView.AdapterContextMenuInfo)item.getMenuInfo()).position;
         Cursor c = mAdapter.getCursor();
         if (c == null) return false;
-
         c.moveToPosition(position);
         Movie movie = Utility.getMovieFromCursor(c);
 
@@ -151,6 +222,7 @@ public class MainActivity extends AppCompatActivity {
                 return super.onContextItemSelected(item);
         }
     }
+    */
 
     @Override
     protected void onResume() {
