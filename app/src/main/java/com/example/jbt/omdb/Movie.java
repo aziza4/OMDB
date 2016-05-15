@@ -81,8 +81,6 @@ public class Movie implements Parcelable {
         return mImage;
     }
 
-    public void setImage(Bitmap image) { mImage = image; }
-
     public boolean isSavedInDB() { return mId != NOT_IN_DB; }
 
     @Override

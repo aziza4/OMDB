@@ -57,13 +57,12 @@ public class MainActivity extends AppCompatActivity {
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
 
-                        if (item == 0 )
+                        if (item == 0 ) // web
                         {
                             Intent intent = new Intent(MainActivity.this, WebSearchActivity.class);
                             startActivity(intent);
-                            return;
 
-                        } else {
+                        } else { // manual
 
                             Movie movie = new Movie("");
                             Intent intent = new Intent(MainActivity.this, EditActivity.class);
@@ -89,16 +88,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        registerForContextMenu(mListView);
-        */
-
 
         mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         mListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-
             }
 
             @Override
@@ -185,44 +180,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_context_menu, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-
-        int position = ((AdapterView.AdapterContextMenuInfo)item.getMenuInfo()).position;
-        Cursor c = mAdapter.getCursor();
-        if (c == null) return false;
-        c.moveToPosition(position);
-        Movie movie = Utility.getMovieFromCursor(c);
-
-        switch (item.getItemId())
-        {
-            case R.id.editMenuItem:
-                luanchEditActivity(movie);
-                return true;
-
-            case R.id.deleteMenuItem:
-                if ( mDbHelper.deleteMovie(movie.getId())) {
-                    String movieDeletedMsg = getResources().getString(R.string.movie_deleted_msg);
-                    Toast.makeText(MainActivity.this, movieDeletedMsg, Toast.LENGTH_SHORT).show();
-                    RefreshMainList();
-                }
-
-                return true;
-
-            default:
-                return super.onContextItemSelected(item);
-        }
-    }
-    */
 
     @Override
     protected void onResume() {
