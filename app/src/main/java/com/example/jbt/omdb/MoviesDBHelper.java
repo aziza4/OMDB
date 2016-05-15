@@ -186,25 +186,4 @@ public class MoviesDBHelper extends SQLiteOpenHelper {
 
         return rowsDeleted > 0;
     }
-
-    public Movie GetMovie(long id) {
-
-        SQLiteDatabase db = getReadableDatabase();
-
-        String sqlQuery = "SELECT * FROM " + DETAILS_TABLE_NAME + " WHERE " + DETAILS_COL_ID + "=" + id;
-        Cursor c = db.rawQuery(sqlQuery, null);
-
-        c.moveToNext();
-
-        long _id = c.getInt(c.getColumnIndex(DETAILS_COL_ID));
-        String subject = c.getString( c.getColumnIndex(DETAILS_COL_SUBJECT) );
-        String body = c.getString( c.getColumnIndex(DETAILS_COL_BODY) );
-        String url = c.getString( c.getColumnIndex(DETAILS_COL_URL) );
-        String imdbid = c.getString( c.getColumnIndex(DETAILS_COL_IMDBID) );
-        byte[] imageBytes = c.getBlob( c.getColumnIndex(DETAILS_COL_IMAGE));
-
-        c.close();
-        db.close();
-        return new Movie(_id, subject, body, url, imdbid, imageBytes);
-    }
 }
