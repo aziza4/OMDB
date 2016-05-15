@@ -146,7 +146,7 @@ public class WebSearchActivity extends AppCompatActivity {
 
             if( list != null ) {
                 MoviesDBHelper dbHelper = new MoviesDBHelper(WebSearchActivity.this);
-                dbHelper.bulkInsertSearchResults(list.toArray(new Movie[0]));
+                dbHelper.bulkInsertSearchResults(list.toArray(new Movie[list.size()]));
                 RefreshSearchList(list);
             }
 

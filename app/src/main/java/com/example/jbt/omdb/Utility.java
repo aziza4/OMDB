@@ -2,8 +2,6 @@ package com.example.jbt.omdb;
 
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -12,8 +10,6 @@ import android.graphics.BitmapFactory;
 import android.util.Patterns;
 
 import java.io.ByteArrayOutputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 
 public class Utility {
@@ -68,7 +64,6 @@ public class Utility {
         if (byteArray == null)
             return null;
 
-        Bitmap bitmap =  BitmapFactory.decodeByteArray(byteArray , 0, byteArray.length);
-        return bitmap;
+        return BitmapFactory.decodeByteArray(byteArray , 0, byteArray.length);
     }
 }

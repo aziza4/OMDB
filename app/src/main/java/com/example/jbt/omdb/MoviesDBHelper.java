@@ -111,6 +111,7 @@ public class MoviesDBHelper extends SQLiteOpenHelper {
         while(c.moveToNext())
             movies.add(new Movie(c.getString(c.getColumnIndex(SEARCH_COL_SUBJECT))));
 
+        c.close();
         db.close();
         return movies;
     }
@@ -203,10 +204,12 @@ public class MoviesDBHelper extends SQLiteOpenHelper {
         String imdbid = c.getString( c.getColumnIndex(DETAILS_COL_IMDBID) );
         Bitmap image = Utility.convertByteArrayToBitmap(c.getBlob( c.getColumnIndex(DETAILS_COL_IMAGE)));
 
+        c.close();
         db.close();
         return new Movie(_id, subject, body, url, imdbid, image);
     }
 
+    /*
     public ArrayList<Movie> GetAllMovies(long id) {
 
         ArrayList<Movie> movies = new ArrayList<>();
@@ -231,4 +234,5 @@ public class MoviesDBHelper extends SQLiteOpenHelper {
         db.close();
         return movies;
     }
+    */
 }

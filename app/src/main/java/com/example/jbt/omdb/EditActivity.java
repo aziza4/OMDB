@@ -2,7 +2,6 @@ package com.example.jbt.omdb;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
