@@ -92,6 +92,7 @@ public class WebSearchActivity extends AppCompatActivity {
         RefreshSearchList(list);
     }
 
+
     private void RefreshSearchList(ArrayList<Movie> list)
     {
         mAdapter.clear();
@@ -159,7 +160,6 @@ public class WebSearchActivity extends AppCompatActivity {
 
             Utility.ReleaseDeviceOrientationRestriction(WebSearchActivity.this);
             mSearchSV.setQuery("",false);
-//            mSearchET.setText("");
             mProgDialog.dismiss();
         }
 
