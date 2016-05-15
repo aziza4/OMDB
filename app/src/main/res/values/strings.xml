@@ -12,6 +12,7 @@
     <string name="show_button">Show</string>
     <string name="ok_button">OK</string>
     <string name="add_button">+</string>
+    <string name="search_view_hint">Search for a movie title…</string>
 
     <string name="menu_item_edit">Edit</string>
     <string name="menu_item_delete">Delete</string>

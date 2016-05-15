@@ -10,8 +10,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class WebSearchActivity extends AppCompatActivity {
     private ArrayAdapter<Movie> mAdapter;
     private OmdbSearchAsyncTask mOmdbSearchAsyncTask;
 
-    private EditText mSearchET;
+    private SearchView mSearchSV;
     private ProgressDialog mProgDialog;
 
 
@@ -32,27 +32,34 @@ public class WebSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_search);
 
-        mSearchET = (EditText)findViewById(R.id.searchEditText);
-        Button goBtn = (Button) findViewById(R.id.goButton);
+        mSearchSV = (SearchView) findViewById(R.id.searchSearchView);
+
         Button cancelBtn = (Button) findViewById(R.id.cancelButton);
         ListView list = (ListView)findViewById(R.id.moviesListView);
 
-        if(mSearchET == null || list == null || goBtn == null || cancelBtn == null)
+
+        if(list == null || cancelBtn == null)
             return;
 
         mAdapter = new ArrayAdapter<>(this, R.layout.search_list_item);
         list.setAdapter(mAdapter);
 
-        goBtn.setOnClickListener(new View.OnClickListener() {
+        mSearchSV.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
             @Override
-            public void onClick(View v) {
+            public boolean onQueryTextSubmit(String query) {
 
-                String searchValue = mSearchET.getText().toString();
+                if (query.isEmpty())
+                    return false;
 
-                if (!searchValue.isEmpty()) {
-                    mOmdbSearchAsyncTask = new OmdbSearchAsyncTask();
-                    mOmdbSearchAsyncTask.execute(searchValue);
-                }
+                mOmdbSearchAsyncTask = new OmdbSearchAsyncTask();
+                mOmdbSearchAsyncTask.execute(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
             }
         });
 
@@ -151,7 +158,8 @@ public class WebSearchActivity extends AppCompatActivity {
             }
 
             Utility.ReleaseDeviceOrientationRestriction(WebSearchActivity.this);
-            mSearchET.setText("");
+            mSearchSV.setQuery("",false);
+//            mSearchET.setText("");
             mProgDialog.dismiss();
         }
 
