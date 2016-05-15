@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 
@@ -144,7 +143,7 @@ public class MoviesDBHelper extends SQLiteOpenHelper {
         values.put(DETAILS_COL_BODY, movie.getBody());
         values.put(DETAILS_COL_URL, movie.getUrl());
         values.put(DETAILS_COL_IMDBID, movie.getImdbId());
-        values.put(DETAILS_COL_IMAGE, Utility.convertBitmapToByteArray(movie.getImage()));
+        values.put(DETAILS_COL_IMAGE, movie.getImageByteArray());
 
         long rowId = db.insert(DETAILS_TABLE_NAME, null, values);
         db.close();
@@ -162,7 +161,7 @@ public class MoviesDBHelper extends SQLiteOpenHelper {
         values.put(DETAILS_COL_BODY, movie.getBody());
         values.put(DETAILS_COL_URL, movie.getUrl());
         values.put(DETAILS_COL_IMDBID, movie.getImdbId());
-        values.put(DETAILS_COL_IMAGE, Utility.convertBitmapToByteArray(movie.getImage()));
+        values.put(DETAILS_COL_IMAGE, movie.getImageByteArray());
 
         long rowsAffected = db.update(DETAILS_TABLE_NAME, values, DETAILS_COL_ID + "=" + movie.getId(), null);
         db.close();
@@ -202,37 +201,10 @@ public class MoviesDBHelper extends SQLiteOpenHelper {
         String body = c.getString( c.getColumnIndex(DETAILS_COL_BODY) );
         String url = c.getString( c.getColumnIndex(DETAILS_COL_URL) );
         String imdbid = c.getString( c.getColumnIndex(DETAILS_COL_IMDBID) );
-        Bitmap image = Utility.convertByteArrayToBitmap(c.getBlob( c.getColumnIndex(DETAILS_COL_IMAGE)));
+        byte[] imageBytes = c.getBlob( c.getColumnIndex(DETAILS_COL_IMAGE));
 
         c.close();
         db.close();
-        return new Movie(_id, subject, body, url, imdbid, image);
+        return new Movie(_id, subject, body, url, imdbid, imageBytes);
     }
-
-    /*
-    public ArrayList<Movie> GetAllMovies(long id) {
-
-        ArrayList<Movie> movies = new ArrayList<>();
-
-        SQLiteDatabase db = getReadableDatabase();
-
-        String sqlQuery = "SELECT * FROM " + DETAILS_TABLE_NAME + ";";
-        Cursor c = db.rawQuery(sqlQuery, null);
-
-        while(c.moveToNext()) {
-
-            long _id = c.getInt(c.getColumnIndex(DETAILS_COL_ID));
-            String subject = c.getString( c.getColumnIndex(DETAILS_COL_SUBJECT) );
-            String body = c.getString( c.getColumnIndex(DETAILS_COL_BODY) );
-            String url = c.getString( c.getColumnIndex(DETAILS_COL_URL) );
-            String imdbid = c.getString( c.getColumnIndex(DETAILS_COL_IMDBID) );
-            Bitmap image = Utility.convertByteArrayToBitmap(c.getBlob( c.getColumnIndex(DETAILS_COL_IMAGE)));
-
-            movies.add(new Movie(_id,subject, body, url, imdbid, image));
-        }
-
-        db.close();
-        return movies;
-    }
-    */
 }

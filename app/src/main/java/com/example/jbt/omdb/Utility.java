@@ -38,10 +38,9 @@ public class Utility {
         String body = c.getString( c.getColumnIndex(MoviesDBHelper.DETAILS_COL_BODY) );
         String url = c.getString( c.getColumnIndex(MoviesDBHelper.DETAILS_COL_URL) );
         String imdbid = c.getString( c.getColumnIndex(MoviesDBHelper.DETAILS_COL_IMDBID) );
-        Bitmap image = Utility.convertByteArrayToBitmap(
-                c.getBlob( c.getColumnIndex(MoviesDBHelper.DETAILS_COL_IMAGE)));
+        byte[] imageBytes = c.getBlob( c.getColumnIndex(MoviesDBHelper.DETAILS_COL_IMAGE));
 
-        return new Movie(_id, subject, body, url, imdbid, image);
+        return new Movie(_id, subject, body, url, imdbid, imageBytes);
     }
 
     public static boolean isValidUrl(String urlString)

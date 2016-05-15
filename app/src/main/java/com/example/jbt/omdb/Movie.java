@@ -14,8 +14,17 @@ public class Movie implements Parcelable {
     private String mBody;
     private String mUrl;
     private String mImdbId;
-    private Bitmap mImage;
+    private byte[] mImageBytes;
 
+    public byte[] getImageByteArray() {
+        return mImageBytes;
+    }
+
+    public Movie(long _id, String subject, String body, String url, String imdbId, byte[] imageBytes) {
+        this(subject, body, url, imdbId, null);
+        mId = _id;
+        mImageBytes = imageBytes;
+    }
 
     public Movie(long _id, String subject, String body, String url, String imdbId, Bitmap image) {
         this(subject, body, url, imdbId, image);
@@ -28,7 +37,7 @@ public class Movie implements Parcelable {
         mBody = body;
         mUrl = url;
         mImdbId = imdbId;
-        mImage = image;
+        mImageBytes = Utility.convertBitmapToByteArray(image);
     }
 
     public Movie(String subject) {
@@ -42,7 +51,9 @@ public class Movie implements Parcelable {
         mBody = in.readString();
         mUrl = in.readString();
         mImdbId = in.readString();
-        mImage = in.readParcelable(Bitmap.class.getClassLoader());
+
+        mImageBytes = new byte[in.readInt()];
+        in.readByteArray(mImageBytes);
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -78,10 +89,11 @@ public class Movie implements Parcelable {
     }
 
     public Bitmap getImage() {
-        return mImage;
-    }
 
-    public boolean isSavedInDB() { return mId != NOT_IN_DB; }
+        return mImageBytes == null ?
+                null :
+                Utility.convertByteArrayToBitmap(mImageBytes);
+    }
 
     @Override
     public String toString() {
@@ -100,6 +112,10 @@ public class Movie implements Parcelable {
         dest.writeString(mBody);
         dest.writeString(mUrl);
         dest.writeString(mImdbId);
-//        dest.writeParcelable(mImage, flags);
+
+        if ( mImageBytes != null) {
+            dest.writeInt(mImageBytes.length);
+            dest.writeByteArray(mImageBytes);
+        }
     }
 }

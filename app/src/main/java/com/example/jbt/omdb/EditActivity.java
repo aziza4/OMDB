@@ -50,12 +50,10 @@ public class EditActivity extends AppCompatActivity {
         mBodyET.setText(mMovie.getBody());
         mUrlET.setText(mMovie.getUrl());
         mProgBar.setVisibility(View.INVISIBLE);
+        Bitmap image = mMovie.getImage();
 
-        if ( mMovie.isSavedInDB() && mMovie.getImage() != null) {
-            // The following 2 lines are bypass to android BUG (cannot parcel bitmap...)
-            MoviesDBHelper dbHelper = new MoviesDBHelper(EditActivity.this);
-            mPosterImageView.setImageBitmap(dbHelper.GetMovie(mMovie.getId()).getImage());
-        }
+        if (image != null)
+            mPosterImageView.setImageBitmap(image);
 
         mShowBtn.setEnabled(Utility.isValidUrl(mUrlET.getText().toString()));
 
