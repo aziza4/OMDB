@@ -18,7 +18,7 @@ import java.net.URL;
 
 public class Utility {
 
-    public static void RestricDeviceOrientation(Activity activity)
+    public static void RestrictDeviceOrientation(Activity activity)
     {
         int current_orientation = activity.getResources().getConfiguration().orientation;
 
@@ -60,9 +60,7 @@ public class Utility {
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] arr = stream.toByteArray();
-        long size = arr.length;
-        return arr;
+        return stream.toByteArray();
     }
 
     public static Bitmap convertByteArrayToBitmap(byte[] byteArray)

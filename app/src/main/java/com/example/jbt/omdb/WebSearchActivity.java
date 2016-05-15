@@ -120,7 +120,7 @@ public class WebSearchActivity extends AppCompatActivity {
             MoviesDBHelper dbHelper = new MoviesDBHelper(WebSearchActivity.this);
             dbHelper.deleteAllSearchResult();
 
-            Utility.RestricDeviceOrientation(WebSearchActivity.this);
+            Utility.RestrictDeviceOrientation(WebSearchActivity.this);
 
             String msg =  getResources().getString(R.string.progress_bar_message);
             String enoughString = getResources().getString(R.string.enough_button);

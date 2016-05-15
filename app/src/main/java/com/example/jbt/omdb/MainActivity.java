@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -83,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 Cursor c = (Cursor) parent.getItemAtPosition(position);
                 if (c != null) {
                     Movie movie = Utility.getMovieFromCursor(c);
-                    luanchEditActivity(movie);
+                    launchEditActivity(movie);
                 }
             }
         });
@@ -130,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId())
                 {
                     case R.id.editMenuItem:
-                        luanchEditActivity(movie);
+                        launchEditActivity(movie);
                         mode.finish();
                         return true;
 
@@ -226,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void luanchEditActivity(Movie movie)
+    private void launchEditActivity(Movie movie)
     {
         Intent intent = new Intent(MainActivity.this, EditActivity.class);
         intent.putExtra(WebSearchActivity.INTENT_MOVIE_KEY, movie);
