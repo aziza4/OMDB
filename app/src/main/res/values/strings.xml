@@ -5,7 +5,7 @@
     <string name="search_text_view">Search</string>
     <string name="cancel_button">Cancel</string>
     <string name="enough_button">Show results now</string>
-    <string name="progress_bar_message">Downloading Titles...</string>
+    <string name="progress_bar_message">Downloading Titles…</string>
     <string name="subject_text_view">Subject:</string>
     <string name="body_text_view">Body:</string>
     <string name="url_text_view">URL:</string>
@@ -17,8 +17,6 @@
     <string name="menu_item_delete">Delete</string>
     <string name="menu_item_delete_all">Delete All</string>
     <string name="menu_item_exit">Exit</string>
-    <string name="menu_item_web">Web</string>
-    <string name="menu_item_manual">Manual</string>
 
     <string name="delete_all_title">Delete All Movies</string>
     <string name="delete_all_message">Are you sure?</string>
@@ -31,6 +29,8 @@
     <string name="add_dialog_web_item">Web</string>
     <string name="add_dialog_manual_item">Manual</string>
     <string name="add_dialog_title">Add New Item</string>
+
+    <string name="content_desc_poster">Movie Poster</string>
 
 
 

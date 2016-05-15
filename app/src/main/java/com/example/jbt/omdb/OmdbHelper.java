@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-public class OmdbHelper {
+class OmdbHelper {
 
     private final String mScheme;
     private final String mAuthority;
@@ -20,7 +20,7 @@ public class OmdbHelper {
     private final String mDataTypeKey;
     private final String mDataTypeValue;
     private final String mPageKey;
-    private final String mSearcTitleKey;
+    private final String mSearchTitleKey;
     private final String mPlotKey;
     private final String mPlotValue;
     private final String mTotalResult;
@@ -43,7 +43,7 @@ public class OmdbHelper {
         mDataTypeKey = resources.getString(R.string.omdb_data_type_key);
         mDataTypeValue = resources.getString(R.string.omdb_data_type_value);
         mPageKey = resources.getString(R.string.omdb_page_key);
-        mSearcTitleKey = resources.getString(R.string.omdb_search_title_key);
+        mSearchTitleKey = resources.getString(R.string.omdb_search_title_key);
         mPlotKey = resources.getString(R.string.omdb_plot_key);
         mPlotValue = resources.getString(R.string.omdb_plot_value);
         mTotalResult = resources.getString(R.string.omdb_res_total_results_field);
@@ -58,7 +58,7 @@ public class OmdbHelper {
     }
 
 
-    public String getSearchPhraseUrlString(String searchValue, int pageValue)
+    private String getSearchPhraseUrlString(String searchValue, int pageValue)
     {
         // example: http://www.omdbapi.com/?s=sunday&r=json&page=1
         // --------------------------------------------------------------------
@@ -73,14 +73,14 @@ public class OmdbHelper {
     }
 
 
-    public String getDetailsUrlString(String searchTitleValue) {
+    private String getDetailsUrlString(String searchTitleValue) {
 
         // example: http://www.omdbapi.com/?t=Matrix&y=&plot=full&r=json
         // --------------------------------------------------------------------
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(mScheme)
                 .authority(mAuthority)
-                .appendQueryParameter(mSearcTitleKey, searchTitleValue)
+                .appendQueryParameter(mSearchTitleKey, searchTitleValue)
                 .appendQueryParameter(mPlotKey, mPlotValue)
                 .appendQueryParameter(mDataTypeKey, mDataTypeValue);
 

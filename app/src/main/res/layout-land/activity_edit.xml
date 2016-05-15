@@ -108,15 +108,15 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/ok_button"
-                android:id="@+id/okButton"
+                android:text="@string/cancel_button"
+                android:id="@+id/cancelButton"
                 style="?android:attr/buttonBarButtonStyle"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/cancel_button"
-                android:id="@+id/cancelButton"
+                android:text="@string/ok_button"
+                android:id="@+id/okButton"
                 style="?android:attr/buttonBarButtonStyle"/>
 
         </LinearLayout>
@@ -134,6 +134,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/posterImageView"
+            android:contentDescription="@string/content_desc_poster"
             android:paddingTop="@dimen/elements_vertical_margin"
             android:paddingBottom="@dimen/elements_vertical_margin"
             android:scaleType="centerCrop"

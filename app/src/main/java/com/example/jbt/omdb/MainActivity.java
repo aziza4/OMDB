@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private MovieAdapter mAdapter;
     private MoviesDBHelper mDbHelper;
 
-    private Button mAddBtn;
     private ListView mListView;
 
     public static final String LOG_CAT = "OMDB:";
@@ -34,46 +33,47 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAddBtn = (Button)findViewById(R.id.addButton);
+        Button addBtn = (Button) findViewById(R.id.addButton);
         mListView = (ListView)findViewById(R.id.mainListView);
 
         mDbHelper = new MoviesDBHelper(this);
         mDbHelper.deleteAllSearchResult();
 
-        mAdapter = new MovieAdapter(this, mDbHelper.GetDetailsMovieCursor(), 0);
+        mAdapter = new MovieAdapter(this, mDbHelper.GetDetailsMovieCursor());
         mListView.setAdapter(mAdapter);
 
-        mAddBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (addBtn != null)
+            addBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                final String[] items = getResources().getStringArray(R.array.add_menu_items);
-                final String title = getResources().getString(R.string.add_dialog_title);
+                    final String[] items = getResources().getStringArray(R.array.add_menu_items);
+                    final String title = getResources().getString(R.string.add_dialog_title);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-                builder.setTitle(title);
-                builder.setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
+                    builder.setTitle(title);
+                    builder.setItems(items, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int item) {
 
-                        if (item == 0 ) // web
-                        {
-                            Intent intent = new Intent(MainActivity.this, WebSearchActivity.class);
-                            startActivity(intent);
+                            if (item == 0 ) // web
+                            {
+                                Intent intent = new Intent(MainActivity.this, WebSearchActivity.class);
+                                startActivity(intent);
 
-                        } else { // manual
+                            } else { // manual
 
-                            Movie movie = new Movie("");
-                            Intent intent = new Intent(MainActivity.this, EditActivity.class);
-                            intent.putExtra(WebSearchActivity.INTENT_MOVIE_KEY, movie);
-                            startActivity(intent);
+                                Movie movie = new Movie("");
+                                Intent intent = new Intent(MainActivity.this, EditActivity.class);
+                                intent.putExtra(WebSearchActivity.INTENT_MOVIE_KEY, movie);
+                                startActivity(intent);
+                            }
                         }
-                    }
-                });
+                    });
 
-                builder.create().show();
-            }
-        });
+                    builder.create().show();
+                }
+            });
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

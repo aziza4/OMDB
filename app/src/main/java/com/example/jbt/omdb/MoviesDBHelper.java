@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 
 
-public class MoviesDBHelper extends SQLiteOpenHelper {
+class MoviesDBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "movies.db";
     private static final int DATABASE_VERSION = 1;
@@ -126,7 +126,7 @@ public class MoviesDBHelper extends SQLiteOpenHelper {
         return db.rawQuery(sqlQuery, null);
     }
 
-    public boolean updateOrInsertMoview(Movie movie)
+    public boolean updateOrInsertMovie(Movie movie)
     {
         if (movie.getId() > 0 )
             return updateMovie(movie);
@@ -134,7 +134,7 @@ public class MoviesDBHelper extends SQLiteOpenHelper {
         return insertMovie(movie);
     }
 
-    public boolean insertMovie(Movie movie) {
+    private boolean insertMovie(Movie movie) {
 
         SQLiteDatabase db = getWritableDatabase();
 
@@ -152,7 +152,7 @@ public class MoviesDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean updateMovie(Movie movie) {
+    private boolean updateMovie(Movie movie) {
 
         SQLiteDatabase db = getWritableDatabase();
 

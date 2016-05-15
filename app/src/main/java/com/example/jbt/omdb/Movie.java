@@ -10,10 +10,10 @@ public class Movie implements Parcelable {
     private final static long NOT_IN_DB = -1;
 
     private long mId;
-    private String mSubject;
-    private String mBody;
-    private String mUrl;
-    private String mImdbId;
+    private final String mSubject;
+    private final String mBody;
+    private final String mUrl;
+    private final String mImdbId;
     private byte[] mImageBytes;
 
     public byte[] getImageByteArray() {
@@ -44,7 +44,7 @@ public class Movie implements Parcelable {
         this(subject, "", "", "", null);
     }
 
-    protected Movie(Parcel in) {
+    private Movie(Parcel in) {
 
         mId = in.readLong();
         mSubject = in.readString();

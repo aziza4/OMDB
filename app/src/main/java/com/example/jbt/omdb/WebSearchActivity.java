@@ -70,7 +70,7 @@ public class WebSearchActivity extends AppCompatActivity {
                 String searchTitle = mAdapter.getItem(position).toString();
 
                 if (!searchTitle.isEmpty())
-                    new OmdbDetaildAsyncTask().execute(searchTitle);
+                    new OmdbDetailedAsyncTask().execute(searchTitle);
             }
         });
     }
@@ -133,7 +133,7 @@ public class WebSearchActivity extends AppCompatActivity {
             mProgDialog.setButton(DialogInterface.BUTTON_NEGATIVE, enoughString, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    mOmdbSearchAsyncTask.setCancelRequested(true);
+                    mOmdbSearchAsyncTask.setCancelRequested();
                     dialog.dismiss();
                 }
             });
@@ -185,13 +185,13 @@ public class WebSearchActivity extends AppCompatActivity {
             return all;
         }
 
-        public void setCancelRequested(boolean CancelRequested) {
-            mCancelRequested = CancelRequested;
+        public void setCancelRequested() {
+            mCancelRequested = true;
         }
     }
 
 
-    private class OmdbDetaildAsyncTask extends AsyncTask<String, Void, Movie> {
+    private class OmdbDetailedAsyncTask extends AsyncTask<String, Void, Movie> {
 
         @Override
         protected Movie doInBackground(String... params) {

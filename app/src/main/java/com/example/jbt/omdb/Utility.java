@@ -12,7 +12,7 @@ import android.util.Patterns;
 import java.io.ByteArrayOutputStream;
 
 
-public class Utility {
+class Utility {
 
     public static void RestrictDeviceOrientation(Activity activity)
     {

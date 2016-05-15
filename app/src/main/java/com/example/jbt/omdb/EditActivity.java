@@ -21,8 +21,6 @@ public class EditActivity extends AppCompatActivity {
     private EditText mBodyET;
     private EditText mUrlET;
     private Button mShowBtn;
-    private Button mOkBtn;
-    private Button mCancelBtn;
     private ImageView mPosterImageView;
     private ProgressBar mProgBar;
 
@@ -38,10 +36,10 @@ public class EditActivity extends AppCompatActivity {
         mBodyET = ((EditText) findViewById(R.id.bodyEditText));
         mUrlET = ((EditText) findViewById(R.id.urlEditText));
         mShowBtn = (Button) findViewById(R.id.urlShowButton);
-        mOkBtn = (Button) findViewById(R.id.okButton);
-        mCancelBtn = (Button) findViewById(R.id.cancelButton);
         mPosterImageView = (ImageView) findViewById(R.id.posterImageView);
         mProgBar = (ProgressBar) findViewById(R.id.downloadProgressBar);
+        Button okBtn = (Button) findViewById(R.id.okButton);
+        Button cancelBtn = (Button) findViewById(R.id.cancelButton);
 
         Intent intent = getIntent();
         mMovie = intent.getParcelableExtra(WebSearchActivity.INTENT_MOVIE_KEY);
@@ -67,43 +65,45 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        mCancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        mOkBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                long _id = mMovie.getId();
-                String subject = mSubjectET.getText().toString();
-                String body = mBodyET.getText().toString();
-                String url = mUrlET.getText().toString();
-                String imdbid = mMovie.getImdbId();
-
-                BitmapDrawable bitmapDrawable = (BitmapDrawable)mPosterImageView.getDrawable();
-                Bitmap image = bitmapDrawable == null ? null : bitmapDrawable.getBitmap();
-
-                if (subject.isEmpty()) {
-                    String emptyMsg = getResources().getString(R.string.subject_must_not_be_empty);
-                    Toast.makeText(EditActivity.this, emptyMsg, Toast.LENGTH_SHORT).show();
-                    return;
+        if (cancelBtn != null)
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
                 }
+            });
 
-                Movie movie = new Movie(_id, subject, body, url, imdbid, image);
-                MoviesDBHelper dbHelper = new MoviesDBHelper(EditActivity.this);
+        if (okBtn != null)
+            okBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                if ( dbHelper.updateOrInsertMoview(movie) ) {
-                    String movieSavedMsg = getResources().getString(R.string.movie_saved_msg);
-                    Toast.makeText(EditActivity.this, movieSavedMsg, Toast.LENGTH_SHORT).show();
+                    long _id = mMovie.getId();
+                    String subject = mSubjectET.getText().toString();
+                    String body = mBodyET.getText().toString();
+                    String url = mUrlET.getText().toString();
+                    String imdbid = mMovie.getImdbId();
+
+                    BitmapDrawable bitmapDrawable = (BitmapDrawable)mPosterImageView.getDrawable();
+                    Bitmap image = bitmapDrawable == null ? null : bitmapDrawable.getBitmap();
+
+                    if (subject.isEmpty()) {
+                        String emptyMsg = getResources().getString(R.string.subject_must_not_be_empty);
+                        Toast.makeText(EditActivity.this, emptyMsg, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    Movie movie = new Movie(_id, subject, body, url, imdbid, image);
+                    MoviesDBHelper dbHelper = new MoviesDBHelper(EditActivity.this);
+
+                    if ( dbHelper.updateOrInsertMovie(movie) ) {
+                        String movieSavedMsg = getResources().getString(R.string.movie_saved_msg);
+                        Toast.makeText(EditActivity.this, movieSavedMsg, Toast.LENGTH_SHORT).show();
+                    }
+
+                    finish();
                 }
-
-                finish();
-            }
-        });
+            });
 
         mShowBtn.setOnClickListener(new View.OnClickListener() {
 

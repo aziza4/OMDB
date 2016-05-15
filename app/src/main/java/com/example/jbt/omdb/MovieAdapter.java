@@ -12,10 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-public class MovieAdapter extends CursorAdapter {
+class MovieAdapter extends CursorAdapter {
 
-    public MovieAdapter(Context context, Cursor c, int flags) {
-        super(context, c, flags);
+    public MovieAdapter(Context context, Cursor c) {
+        super(context, c, 0);
     }
 
     public static class ViewHolder {
