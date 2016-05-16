@@ -6,6 +6,13 @@
     android:padding="@dimen/activity_vertical_margin"
     tools:context="com.example.jbt.omdb.EditActivity">
 
+
+    <TextView android:id="@+id/invisibleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:visibility="invisible"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,7 +51,6 @@
         android:gravity="top"
         android:inputType="text|textMultiLine"
         android:scrollbars="vertical"
-        android:minLines="5"
         android:maxLines="5"
         android:id="@+id/bodyEditText"
         android:layout_below="@id/bodyTextView"
@@ -71,7 +77,6 @@
             android:gravity="top"
             android:inputType="textUri|textMultiLine"
             android:scrollbars="vertical"
-            android:minLines="4"
             android:maxLines="4"
             android:textSize="@dimen/small_text"
             android:textIsSelectable="true" />
@@ -80,8 +85,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:text="@string/show_button"
-            android:id="@+id/urlShowButton" />
+            android:text="@string/show_capture_button_show"
+            android:id="@+id/urlShowCaptureButton" />
 
     </LinearLayout>
 
@@ -118,8 +123,9 @@
         android:layout_above="@id/confirmationLinearLayout"
         android:layout_centerHorizontal="true"
         android:paddingBottom="@dimen/elements_vertical_margin"
-        android:scaleType="fitCenter"
-        android:cropToPadding="false" />
+        android:scaleType="centerInside"
+        android:cropToPadding="false"
+        android:paddingTop="@dimen/elements_vertical_margin" />
 
     <ProgressBar
         android:layout_width="wrap_content"

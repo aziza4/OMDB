@@ -37,7 +37,7 @@ class OmdbHelper {
 
         Resources resources = context.getResources();
 
-        mScheme = resources.getString(R.string.scheme);
+        mScheme = resources.getString(R.string.http_scheme);
         mAuthority = resources.getString(R.string.authority);
         mSearchKey = resources.getString(R.string.omdb_search_key);
         mDataTypeKey = resources.getString(R.string.omdb_data_type_key);
@@ -100,7 +100,7 @@ class OmdbHelper {
                 totalResult = searchObj.getInt(mTotalResult);
 
         } catch (JSONException e) {
-            Log.e(MainActivity.LOG_CAT, e.getMessage());
+            Log.e(MainActivity.LOG_CAT, "" + e.getMessage());
         }
 
         return totalResult;
@@ -130,7 +130,7 @@ class OmdbHelper {
             }
 
         } catch (JSONException e) {
-            Log.e(MainActivity.LOG_CAT, e.getMessage());
+            Log.e(MainActivity.LOG_CAT, "" + e.getMessage());
         }
 
         return list;
@@ -152,7 +152,7 @@ class OmdbHelper {
             movie = new Movie(subject, body, posterUrl, imdbid, null);
 
         } catch (JSONException e) {
-            Log.e(MainActivity.LOG_CAT, e.getMessage());
+            Log.e(MainActivity.LOG_CAT, "" + e.getMessage());
         }
 
         return movie;
@@ -169,7 +169,7 @@ class OmdbHelper {
                 res = jsonObj.getString(fieldName).trim();
 
         } catch (JSONException e) {
-            Log.e(MainActivity.LOG_CAT, e.getMessage());
+            Log.e(MainActivity.LOG_CAT, "" + e.getMessage());
         }
 
         return res.equals(mNAvalue) ? "" : res;
@@ -186,7 +186,7 @@ class OmdbHelper {
 
         } catch (MalformedURLException e) {
 
-            Log.e(MainActivity.LOG_CAT, e.getMessage());
+            Log.e(MainActivity.LOG_CAT, "" + e.getMessage());
         }
 
         return url;
@@ -203,7 +203,7 @@ class OmdbHelper {
 
         } catch (MalformedURLException e) {
 
-            Log.e(MainActivity.LOG_CAT, e.getMessage());
+            Log.e(MainActivity.LOG_CAT, "" + e.getMessage());
         }
 
         return url;

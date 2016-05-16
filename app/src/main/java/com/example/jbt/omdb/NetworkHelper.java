@@ -28,7 +28,7 @@ class NetworkHelper {
 
         } catch (MalformedURLException e) {
 
-            Log.e(MainActivity.LOG_CAT, e.getMessage());
+            Log.e(MainActivity.LOG_CAT, "" + e.getMessage());
         }
     }
 
@@ -54,7 +54,7 @@ class NetworkHelper {
 
         } catch (IOException e) {
 
-            Log.e(MainActivity.LOG_CAT, e.getMessage());
+            Log.e(MainActivity.LOG_CAT, "" + e.getMessage());
 
         } finally {
 
@@ -68,7 +68,7 @@ class NetworkHelper {
 
     public Bitmap GetImage()
     {
-        InputStream stream = null;
+        InputStream stream;
 
         try {
 
@@ -77,8 +77,10 @@ class NetworkHelper {
             if (stream == null)
                 return null;
 
-        } catch (IOException e) {
-            Log.e(MainActivity.LOG_CAT, e.getMessage());
+        } catch (Exception e) {
+
+            Log.e(MainActivity.LOG_CAT, "" + e.getMessage());
+            return null;
         }
 
         return BitmapFactory.decodeStream(stream);

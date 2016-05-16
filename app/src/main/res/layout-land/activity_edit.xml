@@ -15,6 +15,12 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin">
 
+        <TextView android:id="@+id/invisibleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:visibility="invisible"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,6 +46,7 @@
                     android:inputType="text"
                     android:textSize="@dimen/large_text"
                     android:textIsSelectable="false" />
+
             </LinearLayout>
 
             <TextView
@@ -54,7 +61,6 @@
                 android:gravity="top"
                 android:inputType="text|textMultiLine"
                 android:scrollbars="vertical"
-                android:minLines="5"
                 android:maxLines="5"
                 android:id="@+id/bodyEditText"
                 android:textSize="@dimen/small_text" />
@@ -79,8 +85,7 @@
                     android:gravity="top"
                     android:inputType="textUri|textMultiLine"
                     android:scrollbars="vertical"
-                    android:minLines="3"
-                    android:maxLines="3"
+                    android:maxLines="4"
                     android:textSize="@dimen/small_text"
                     android:textIsSelectable="true" />
 
@@ -88,8 +93,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/show_button"
-                    android:id="@+id/urlShowButton" />
+                    android:text="@string/show_capture_button_show"
+                    android:id="@+id/urlShowCaptureButton" />
 
             </LinearLayout>
 

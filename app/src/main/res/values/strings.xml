@@ -1,18 +1,18 @@
 <resources>
     <string name="app_name">My Movies</string>
 
-    <string name="go_button">Go</string>
-    <string name="search_text_view">Search</string>
     <string name="cancel_button">Cancel</string>
     <string name="enough_button">Show results now</string>
     <string name="progress_bar_message">Downloading Titles…</string>
     <string name="subject_text_view">Subject:</string>
     <string name="body_text_view">Body:</string>
     <string name="url_text_view">URL:</string>
-    <string name="show_button">Show</string>
+    <string name="show_capture_button_show">Show</string>
+    <string name="show_capture_button_capture">Capture</string>
     <string name="ok_button">OK</string>
     <string name="add_button">+</string>
     <string name="search_view_hint">Search for a movie title…</string>
+    <string name="show_error_msg">Poster not found</string>
 
     <string name="menu_item_edit">Edit</string>
     <string name="menu_item_delete">Delete</string>
@@ -38,7 +38,9 @@
 
      <!--+++++++++++++  Non-Translatable Strings ++++++++++++++++-->
 
-    <string name="scheme" translatable="false">http</string>
+    <string name="file_scheme" translatable="false">file</string>
+    <string name="http_scheme" translatable="false">http</string>
+    <string name="filename_timestap_format" translatable="false">yyyyMMdd_HHmmss</string>
     <string name="authority" translatable="false">www.omdbapi.com</string>
     <string name="omdb_search_key" translatable="false">s</string>
     <string name="omdb_page_key" translatable="false">page</string>

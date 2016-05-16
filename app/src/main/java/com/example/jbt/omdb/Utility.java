@@ -8,8 +8,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Patterns;
-
 import java.io.ByteArrayOutputStream;
+
 
 
 class Utility {
@@ -43,10 +43,6 @@ class Utility {
         return new Movie(_id, subject, body, url, imdbid, imageBytes);
     }
 
-    public static boolean isValidUrl(String urlString)
-    {
-        return Patterns.WEB_URL.matcher(urlString).matches();
-    }
 
     public static byte[] convertBitmapToByteArray(Bitmap bitmap)
     {
@@ -65,4 +61,5 @@ class Utility {
 
         return BitmapFactory.decodeByteArray(byteArray , 0, byteArray.length);
     }
+
 }
