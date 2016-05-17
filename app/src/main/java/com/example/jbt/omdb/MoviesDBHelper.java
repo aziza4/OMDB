@@ -24,6 +24,7 @@ class MoviesDBHelper extends SQLiteOpenHelper {
     public static final String DETAILS_COL_BODY = "body";
     public static final String DETAILS_COL_URL = "url";
     public static final String DETAILS_COL_IMDBID = "imdbid";
+    public static final String DETAILS_COL_RATING = "rating";
     public static final String DETAILS_COL_IMAGE = "image";
 
 
@@ -43,9 +44,10 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
         String createDetailsTable = String.format(
                 "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, " +
-                "%s TEXT, %s TEXT, %s TEXT, %s BLOB);",
+                "%s TEXT, %s TEXT, %s TEXT, %s REAL, %s BLOB);",
                 DETAILS_TABLE_NAME, DETAILS_COL_ID, DETAILS_COL_SUBJECT,
-                DETAILS_COL_BODY, DETAILS_COL_URL, DETAILS_COL_IMDBID, DETAILS_COL_IMAGE);
+                DETAILS_COL_BODY, DETAILS_COL_URL, DETAILS_COL_IMDBID,
+                DETAILS_COL_RATING, DETAILS_COL_IMAGE);
 
         db.execSQL(createDetailsTable);
     }
@@ -143,6 +145,7 @@ class MoviesDBHelper extends SQLiteOpenHelper {
         values.put(DETAILS_COL_BODY, movie.getBody());
         values.put(DETAILS_COL_URL, movie.getUrl());
         values.put(DETAILS_COL_IMDBID, movie.getImdbId());
+        values.put(DETAILS_COL_RATING, movie.getRating());
         values.put(DETAILS_COL_IMAGE, movie.getImageByteArray());
 
         long rowId = db.insert(DETAILS_TABLE_NAME, null, values);
@@ -161,6 +164,7 @@ class MoviesDBHelper extends SQLiteOpenHelper {
         values.put(DETAILS_COL_BODY, movie.getBody());
         values.put(DETAILS_COL_URL, movie.getUrl());
         values.put(DETAILS_COL_IMDBID, movie.getImdbId());
+        values.put(DETAILS_COL_RATING, movie.getRating());
         values.put(DETAILS_COL_IMAGE, movie.getImageByteArray());
 
         long rowsAffected = db.update(DETAILS_TABLE_NAME, values, DETAILS_COL_ID + "=" + movie.getId(), null);

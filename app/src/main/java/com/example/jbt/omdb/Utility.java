@@ -39,9 +39,10 @@ class Utility {
         String body = c.getString( c.getColumnIndex(MoviesDBHelper.DETAILS_COL_BODY) );
         String url = c.getString( c.getColumnIndex(MoviesDBHelper.DETAILS_COL_URL) );
         String imdbid = c.getString( c.getColumnIndex(MoviesDBHelper.DETAILS_COL_IMDBID) );
+        float rating = c.getFloat( c.getColumnIndex(MoviesDBHelper.DETAILS_COL_RATING) );
         byte[] imageBytes = c.getBlob( c.getColumnIndex(MoviesDBHelper.DETAILS_COL_IMAGE));
 
-        return new Movie(_id, subject, body, url, imdbid, imageBytes);
+        return new Movie(_id, subject, body, url, imdbid, rating, imageBytes);
     }
 
 

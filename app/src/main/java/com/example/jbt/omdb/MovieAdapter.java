@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 
@@ -22,12 +23,14 @@ class MovieAdapter extends CursorAdapter {
         public final ImageView posterIV;
         public final TextView subjectTV;
         public final TextView bodyTV;
+        public final RatingBar ratingRatingBar;
 
 
         public ViewHolder(View view) {
             posterIV = (ImageView) view.findViewById(R.id.movieImageView);
             subjectTV = (TextView)view.findViewById(R.id.subjectTextView);
             bodyTV = (TextView)view.findViewById(R.id.bodyTextView);
+            ratingRatingBar = (RatingBar) view.findViewById(R.id.restRatingBar);
         }
     }
     @Override
@@ -46,8 +49,10 @@ class MovieAdapter extends CursorAdapter {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
         Bitmap imageNA = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_na);
         Bitmap image = movie.getImage() != null ? movie.getImage() : imageNA;
+
         viewHolder.posterIV.setImageBitmap(image);
         viewHolder.subjectTV.setText(movie.getSubject());
         viewHolder.bodyTV.setText(movie.getBody());
+        viewHolder.ratingRatingBar.setRating(movie.getRating());
     }
 }

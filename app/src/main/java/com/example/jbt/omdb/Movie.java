@@ -15,34 +15,40 @@ public class Movie implements Parcelable {
     private final String mBody;
     private final String mUrl;
     private final String mImdbId;
+    private final float mRating;
     private byte[] mImageBytes;
 
     public byte[] getImageByteArray() {
         return mImageBytes;
     }
 
-    public Movie(long _id, String subject, String body, String url, String imdbId, byte[] imageBytes) {
-        this(subject, body, url, imdbId, null);
+    public Movie(long _id, String subject, String body, String url, String imdbId, float rating, byte[] imageBytes) {
         mId = _id;
+        mSubject = subject;
+        mBody = body;
+        mUrl = url;
+        mImdbId = imdbId;
+        mRating = rating;
         mImageBytes = imageBytes;
     }
 
-    public Movie(long _id, String subject, String body, String url, String imdbId, Bitmap image) {
-        this(subject, body, url, imdbId, image);
+    public Movie(long _id, String subject, String body, String url, String imdbId, float rating, Bitmap image) {
+        this(subject, body, url, imdbId, rating, image);
         mId = _id;
     }
 
-    public Movie(String subject, String body, String url, String imdbId, Bitmap image) {
+    public Movie(String subject, String body, String url, String imdbId, float rating, Bitmap image) {
         mId = NOT_IN_DB;
         mSubject = subject;
         mBody = body;
         mUrl = url;
         mImdbId = imdbId;
+        mRating = rating;
         mImageBytes = Utility.convertBitmapToByteArray(image);
     }
 
     public Movie(String subject) {
-        this(subject, "", "", "", null);
+        this(subject, "", "", "", 0f, null);
     }
 
     private Movie(Parcel in) {
@@ -52,6 +58,7 @@ public class Movie implements Parcelable {
         mBody = in.readString();
         mUrl = in.readString();
         mImdbId = in.readString();
+        mRating = in.readFloat();
 
         mImageBytes = new byte[in.readInt()];
         in.readByteArray(mImageBytes);
@@ -89,6 +96,10 @@ public class Movie implements Parcelable {
         return mImdbId;
     }
 
+    public float getRating() {
+        return mRating;
+    }
+
     public Bitmap getImage() {
 
         return mImageBytes == null ?
@@ -107,9 +118,10 @@ public class Movie implements Parcelable {
         String bodyTitle = context.getResources().getString(R.string.omdb_res_plot_field);
         String urlTitle = context.getResources().getString(R.string.omdb_res_poster_field);
         String imdbTitle = context.getResources().getString(R.string.omdb_res_imdbid_field);
+        String ratingTitle = context.getResources().getString(R.string.omdb_res_rating_field);
 
-        return String.format("%s: %s\n\n%s: %s\n\n%s: %s\n\n%s: %s\n\n",
-                subjectTitle, mSubject, bodyTitle, mBody, imdbTitle, mImdbId, urlTitle, mUrl);
+        return String.format("%s: %s\n\n%s: %s\n\n%s: %s\n\n%s: %s\n\n%s: %s\n",
+                subjectTitle, mSubject, bodyTitle, mBody, imdbTitle, mImdbId, urlTitle, mUrl, ratingTitle, mRating);
     }
 
     @Override
@@ -124,6 +136,7 @@ public class Movie implements Parcelable {
         dest.writeString(mBody);
         dest.writeString(mUrl);
         dest.writeString(mImdbId);
+        dest.writeFloat(mRating);
 
         if ( mImageBytes != null) {
             dest.writeInt(mImageBytes.length);

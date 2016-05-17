@@ -91,6 +91,35 @@
 
     </LinearLayout>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/ratingLinearLayout"
+        android:layout_below="@+id/urlLinearLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rating_text_view"
+            android:id="@+id/ratingTextView" />
+
+        <SeekBar
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingSeekBar"
+            android:layout_weight="1"
+            android:max="50" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingValueTextView" />
+
+    </LinearLayout>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -125,7 +154,7 @@
         android:layout_below="@id/urlLinearLayout"
         android:layout_above="@id/confirmationLinearLayout"
         android:layout_centerHorizontal="true"
-        android:scaleType="centerCrop"
+        android:scaleType="centerInside"
         android:cropToPadding="false"
         android:paddingBottom="@dimen/elements_vertical_margin"
         android:paddingTop="@dimen/elements_vertical_margin" />

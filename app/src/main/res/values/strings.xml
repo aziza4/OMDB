@@ -8,6 +8,7 @@
     <string name="subject_text_view">Subject:</string>
     <string name="body_text_view">Body:</string>
     <string name="url_text_view">URL:</string>
+    <string name="rating_text_view">Rating:</string>
     <string name="show_capture_button_show">Show</string>
     <string name="show_capture_button_capture">Capture</string>
     <string name="ok_button">OK</string>
@@ -59,6 +60,7 @@
     <string name="omdb_res_poster_field" translatable="false">Poster</string>
     <string name="omdb_res_imdbid_field" translatable="false">imdbID</string>
     <string name="omdb_res_na_value" translatable="false">N/A</string>
+    <string name="omdb_res_rating_field" translatable="false">Rating</string>
 
 
 </resources>

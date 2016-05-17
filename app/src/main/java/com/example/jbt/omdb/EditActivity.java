@@ -19,9 +19,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.File;
+import java.util.Locale;
 
 public class EditActivity extends AppCompatActivity {
 
@@ -34,6 +36,8 @@ public class EditActivity extends AppCompatActivity {
     private Button mShowCaptureBtn;
     private ImageView mPosterImageView;
     private ProgressBar mProgBar;
+    private SeekBar mSeekBar;
+    private TextView mSeekBarTV;
 
     private Movie mMovie;
 
@@ -61,6 +65,8 @@ public class EditActivity extends AppCompatActivity {
         mShowCaptureBtn = (Button) findViewById(R.id.urlShowCaptureButton);
         mPosterImageView = (ImageView) findViewById(R.id.posterImageView);
         mProgBar = (ProgressBar) findViewById(R.id.downloadProgressBar);
+        mSeekBar = (SeekBar) findViewById(R.id.ratingSeekBar);
+        mSeekBarTV = (TextView) findViewById(R.id.ratingValueTextView);
         Button okBtn = (Button) findViewById(R.id.okButton);
         Button cancelBtn = (Button) findViewById(R.id.cancelButton);
 
@@ -71,6 +77,8 @@ public class EditActivity extends AppCompatActivity {
         mBodyET.setText(mMovie.getBody());
         mUrlET.setText(mMovie.getUrl());
         mProgBar.setVisibility(View.INVISIBLE);
+        mSeekBarTV.setText(""+mMovie.getRating());
+        mSeekBar.setProgress((int)mMovie.getRating()*10);
         Bitmap image = mMovie.getImage();
 
         if (image != null)
@@ -125,6 +133,17 @@ public class EditActivity extends AppCompatActivity {
                 if (uri.getScheme().equals(mHttpScheme))
                     new omdbImageDownloadAsyncTask().execute(uri.toString());
             }
+        });
+
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                String value = String.format(Locale.ENGLISH, "%.1f", progress/10f);
+                mSeekBarTV.setText(value);
+            }
+
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
         Utility.hideKeyboard(this);
@@ -212,6 +231,7 @@ public class EditActivity extends AppCompatActivity {
         String subject = mSubjectET.getText().toString();
         String body = mBodyET.getText().toString();
         String url = mUrlET.getText().toString();
+        float rating = Float.parseFloat(mSeekBarTV.getText().toString());
         String imdbid = mMovie.getImdbId();
 
         BitmapDrawable bitmapDrawable = (BitmapDrawable)mPosterImageView.getDrawable();
@@ -223,7 +243,7 @@ public class EditActivity extends AppCompatActivity {
             return false;
         }
 
-        Movie movie = new Movie(_id, subject, body, url, imdbid, image);
+        Movie movie = new Movie(_id, subject, body, url, imdbid, rating, image);
         MoviesDBHelper dbHelper = new MoviesDBHelper(EditActivity.this);
 
         if ( dbHelper.updateOrInsertMovie(movie) ) {
