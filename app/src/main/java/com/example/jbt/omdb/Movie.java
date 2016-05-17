@@ -1,5 +1,6 @@
 package com.example.jbt.omdb;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -98,6 +99,17 @@ public class Movie implements Parcelable {
     @Override
     public String toString() {
         return mSubject;
+    }
+
+    public String getDetailsAsText(Context context)
+    {
+        String subjectTitle = context.getResources().getString(R.string.omdb_res_title_field);
+        String bodyTitle = context.getResources().getString(R.string.omdb_res_plot_field);
+        String urlTitle = context.getResources().getString(R.string.omdb_res_poster_field);
+        String imdbTitle = context.getResources().getString(R.string.omdb_res_imdbid_field);
+
+        return String.format("%s: %s\n\n%s: %s\n\n%s: %s\n\n%s: %s\n\n",
+                subjectTitle, mSubject, bodyTitle, mBody, imdbTitle, mImdbId, urlTitle, mUrl);
     }
 
     @Override
