@@ -18,7 +18,7 @@ public class Movie implements Parcelable {
     private final float mRating;
     private byte[] mImageBytes;
 
-    protected Movie(Parcel in) {
+    private Movie(Parcel in) {
         mId = in.readLong();
         mSubject = in.readString();
         mBody = in.readString();

@@ -28,7 +28,7 @@ import java.util.Locale;
 public class EditActivity extends AppCompatActivity {
 
     private static final int REQUEST_TAKE_PHOTO = 1;
-    private static final float SEEKBAR_FACTOR = 10f;
+    private static final float SEEK_BAR_FACTOR = 10f;
 
     private EditText mSubjectET;
     private EditText mBodyET;
@@ -37,7 +37,6 @@ public class EditActivity extends AppCompatActivity {
     private Button mShowCaptureBtn;
     private ImageView mPosterImageView;
     private ProgressBar mProgBar;
-    private SeekBar mSeekBar;
     private TextView mSeekBarTV;
 
     private Movie mMovie;
@@ -46,8 +45,6 @@ public class EditActivity extends AppCompatActivity {
     private String mCaptureText;
     private String mHttpScheme;
     private String mFileScheme;
-
-    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,22 +63,25 @@ public class EditActivity extends AppCompatActivity {
         mShowCaptureBtn = (Button) findViewById(R.id.urlShowCaptureButton);
         mPosterImageView = (ImageView) findViewById(R.id.posterImageView);
         mProgBar = (ProgressBar) findViewById(R.id.downloadProgressBar);
-        mSeekBar = (SeekBar) findViewById(R.id.ratingSeekBar);
         mSeekBarTV = (TextView) findViewById(R.id.ratingValueTextView);
         Button okBtn = (Button) findViewById(R.id.okButton);
         Button cancelBtn = (Button) findViewById(R.id.cancelButton);
+        SeekBar seekBar = (SeekBar) findViewById(R.id.ratingSeekBar);
 
         Intent intent = getIntent();
         mMovie = intent.getParcelableExtra(WebSearchActivity.INTENT_MOVIE_KEY);
 
         String ratingStr = "" + mMovie.getRating();
-        int ratingProgValue = (int) (mMovie.getRating()*SEEKBAR_FACTOR);
+        int ratingValue = (int) (mMovie.getRating() * SEEK_BAR_FACTOR);
         mSeekBarTV.setText(ratingStr);
         mSubjectET.setText(mMovie.getSubject());
         mBodyET.setText(mMovie.getBody());
         mUrlET.setText(mMovie.getUrl());
         mProgBar.setVisibility(View.INVISIBLE);
-        mSeekBar.setProgress(ratingProgValue);
+
+        if (seekBar != null)
+            seekBar.setProgress(ratingValue);
+
         Bitmap image = mMovie.getImage();
 
         if (image != null)
@@ -138,16 +138,17 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String value = String.format(Locale.ENGLISH, "%.1f", progress/SEEKBAR_FACTOR);
-                mSeekBarTV.setText(value);
-            }
+        if (seekBar != null)
+            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    String value = String.format(Locale.ENGLISH, "%.1f", progress/ SEEK_BAR_FACTOR);
+                    mSeekBarTV.setText(value);
+                }
 
-            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
-            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
+                @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
 
         Utility.hideKeyboard(this);
     }
@@ -157,7 +158,7 @@ public class EditActivity extends AppCompatActivity {
 
         getMenuInflater().inflate(R.menu.edit_menu, menu);
         MenuItem item = menu.findItem(R.id.action_share);
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
 
         if (mShareActionProvider != null) {
 
