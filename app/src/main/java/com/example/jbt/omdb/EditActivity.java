@@ -28,6 +28,7 @@ import java.util.Locale;
 public class EditActivity extends AppCompatActivity {
 
     private static final int REQUEST_TAKE_PHOTO = 1;
+    private static final float SEEKBAR_FACTOR = 10f;
 
     private EditText mSubjectET;
     private EditText mBodyET;
@@ -73,12 +74,14 @@ public class EditActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mMovie = intent.getParcelableExtra(WebSearchActivity.INTENT_MOVIE_KEY);
 
+        String ratingStr = "" + mMovie.getRating();
+        int ratingProgValue = (int) (mMovie.getRating()*SEEKBAR_FACTOR);
+        mSeekBarTV.setText(ratingStr);
         mSubjectET.setText(mMovie.getSubject());
         mBodyET.setText(mMovie.getBody());
         mUrlET.setText(mMovie.getUrl());
         mProgBar.setVisibility(View.INVISIBLE);
-        mSeekBarTV.setText(""+mMovie.getRating());
-        mSeekBar.setProgress((int)mMovie.getRating()*10);
+        mSeekBar.setProgress(ratingProgValue);
         Bitmap image = mMovie.getImage();
 
         if (image != null)
@@ -138,7 +141,7 @@ public class EditActivity extends AppCompatActivity {
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String value = String.format(Locale.ENGLISH, "%.1f", progress/10f);
+                String value = String.format(Locale.ENGLISH, "%.1f", progress/SEEKBAR_FACTOR);
                 mSeekBarTV.setText(value);
             }
 

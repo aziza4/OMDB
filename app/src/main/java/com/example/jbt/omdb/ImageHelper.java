@@ -39,7 +39,7 @@ class ImageHelper {
     public static Bitmap getImageFromGallery(String path)
     {
         BitmapFactory.Options o2 = new BitmapFactory.Options();
-        o2.inSampleSize = 4;
+        o2.inSampleSize = 8;
 
         Bitmap image = BitmapFactory.decodeFile(path, o2);
 

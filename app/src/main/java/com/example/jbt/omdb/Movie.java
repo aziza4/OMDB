@@ -18,41 +18,7 @@ public class Movie implements Parcelable {
     private final float mRating;
     private byte[] mImageBytes;
 
-    public byte[] getImageByteArray() {
-        return mImageBytes;
-    }
-
-    public Movie(long _id, String subject, String body, String url, String imdbId, float rating, byte[] imageBytes) {
-        mId = _id;
-        mSubject = subject;
-        mBody = body;
-        mUrl = url;
-        mImdbId = imdbId;
-        mRating = rating;
-        mImageBytes = imageBytes;
-    }
-
-    public Movie(long _id, String subject, String body, String url, String imdbId, float rating, Bitmap image) {
-        this(subject, body, url, imdbId, rating, image);
-        mId = _id;
-    }
-
-    public Movie(String subject, String body, String url, String imdbId, float rating, Bitmap image) {
-        mId = NOT_IN_DB;
-        mSubject = subject;
-        mBody = body;
-        mUrl = url;
-        mImdbId = imdbId;
-        mRating = rating;
-        mImageBytes = Utility.convertBitmapToByteArray(image);
-    }
-
-    public Movie(String subject) {
-        this(subject, "", "", "", 0f, null);
-    }
-
-    private Movie(Parcel in) {
-
+    protected Movie(Parcel in) {
         mId = in.readLong();
         mSubject = in.readString();
         mBody = in.readString();
@@ -75,6 +41,35 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
+
+    public byte[] getImageByteArray() {
+        return mImageBytes;
+    }
+
+    public Movie(long _id, String subject, String body, String url, String imdbId, float rating, byte[] imageBytes) {
+        this(subject, body, url, imdbId, rating, null);
+        mId = _id;
+        mImageBytes = imageBytes;
+    }
+
+    public Movie(long _id, String subject, String body, String url, String imdbId, float rating, Bitmap image) {
+        this(subject, body, url, imdbId, rating, image);
+        mId = _id;
+    }
+
+    public Movie(String subject, String body, String url, String imdbId, float rating, Bitmap image) {
+        mId = NOT_IN_DB;
+        mSubject = subject;
+        mBody = body;
+        mUrl = url;
+        mImdbId = imdbId;
+        mRating = rating;
+        mImageBytes = image == null ? null : Utility.convertBitmapToByteArray(image);
+    }
+
+    public Movie(String subject) {
+        this(subject, "", "", "", 0f, null);
+    }
 
     public long getId() {
         return mId;
@@ -123,6 +118,7 @@ public class Movie implements Parcelable {
         return String.format("%s: %s\n\n%s: %s\n\n%s: %s\n\n%s: %s\n\n%s: %s\n",
                 subjectTitle, mSubject, bodyTitle, mBody, imdbTitle, mImdbId, urlTitle, mUrl, ratingTitle, mRating);
     }
+
 
     @Override
     public int describeContents() {
