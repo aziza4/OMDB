@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button addBtn = (Button) findViewById(R.id.addButton);
         mListView = (ListView)findViewById(R.id.mainListView);
 
         mDbHelper = new MoviesDBHelper(this);
@@ -42,8 +41,9 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new MovieAdapter(this, mDbHelper.GetDetailsMovieCursor());
         mListView.setAdapter(mAdapter);
 
-        if (addBtn != null)
-            addBtn.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton addFab = (FloatingActionButton) findViewById(R.id.addFAB);
+        if (addFab != null)
+            addFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 

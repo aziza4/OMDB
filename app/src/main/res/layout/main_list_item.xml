@@ -39,7 +39,8 @@
                 android:text="Large Text"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:id="@+id/subjectTextView" />
+                android:id="@+id/subjectTextView"
+                android:textColor="@color/colorPrimaryDark" />
 
             <RatingBar
                 android:id="@+id/restRatingBar"
