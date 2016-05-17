@@ -76,7 +76,6 @@ public class EditActivity extends AppCompatActivity {
 
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
             @Override public void afterTextChanged(Editable s) {
                 setShowCaptureButtonText();
             }
@@ -121,6 +120,8 @@ public class EditActivity extends AppCompatActivity {
                     new omdbImageDownloadAsyncTask().execute(uri.toString());
             }
         });
+
+        Utility.hideKeyboard(this);
     }
 
 
@@ -131,19 +132,20 @@ public class EditActivity extends AppCompatActivity {
             return;
 
         mUrlET.setText(mInvisibleTV.getText());
+
         Uri uri = Uri.parse(mUrlET.getText().toString());
         String path = uri.getPath();
 
-        if ( path.isEmpty())
-            return;
-
-        saveImageToGallery(path);
-        displayImageFromGallery(path);
+        if ( ! path.isEmpty())
+            saveImageToGallery(path);
     }
 
-    private void displayImageFromGallery(String path) {
+    private void displayImageFromGallery(String path)
+    {
         Bitmap image = ImageHelper.getImageFromGallery(path);
-        mPosterImageView.setImageBitmap(image);
+
+        if (image != null)
+            mPosterImageView.setImageBitmap(image);
     }
 
 

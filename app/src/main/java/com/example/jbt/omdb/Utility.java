@@ -7,7 +7,8 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Patterns;
+import android.view.WindowManager;
+
 import java.io.ByteArrayOutputStream;
 
 
@@ -60,6 +61,11 @@ class Utility {
             return null;
 
         return BitmapFactory.decodeByteArray(byteArray , 0, byteArray.length);
+    }
+
+    public static void hideKeyboard(Activity activity)
+    {
+        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
 }

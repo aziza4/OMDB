@@ -20,37 +20,38 @@ class ImageHelper {
         String timestampFormat = context.getResources().getString(R.string.filename_timestap_format);
         String timeStamp = new SimpleDateFormat(timestampFormat, Locale.US).format( new Date());
         String imageFileName = "JPEG_" + timeStamp + "_" ;
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment. DIRECTORY_PICTURES);
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
         File image = null;
 
         try {
-            image = File. createTempFile(
-                    imageFileName,  /* prefix */
-                    ".jpg",         /* suffix */
-                    storageDir      /* directory */
-            );
-        } catch (IOException e) {
 
+            image = File. createTempFile( imageFileName, ".jpg", storageDir);
+
+        } catch (IOException e) {
             Log.e(MainActivity.LOG_CAT, "" + e.getMessage());
         }
 
         return image;
     }
 
+
     public static Bitmap getImageFromGallery(String path)
     {
         BitmapFactory.Options o2 = new BitmapFactory.Options();
         o2.inSampleSize = 4;
 
-        Bitmap cachedImage = BitmapFactory.decodeFile(path, o2);
+        Bitmap image = BitmapFactory.decodeFile(path, o2);
 
         int rotate = getCameraPhotoOrientation(path);
 
-        if (rotate != 0)
-            cachedImage = RotateImage(cachedImage, rotate);
+        if (rotate < 0)
+            return null;
 
-        return cachedImage;
+        if (rotate != 0)
+            image = RotateImage(image, rotate);
+
+        return image;
     }
 
 
@@ -65,28 +66,32 @@ class ImageHelper {
                     ExifInterface.ORIENTATION_NORMAL);
 
             switch (orientation) {
+
                 case ExifInterface.ORIENTATION_ROTATE_270:
                     rotate = 270;
                     break;
+
                 case ExifInterface.ORIENTATION_ROTATE_180:
                     rotate = 180;
                     break;
+
                 case ExifInterface.ORIENTATION_ROTATE_90:
                     rotate = 90;
                     break;
             }
         } catch (Exception e) {
+            rotate = -1;
             Log.e(MainActivity.LOG_CAT, "" + e.getMessage());
         }
+
         return rotate;
     }
+
 
     private static Bitmap RotateImage(Bitmap image, int rotate)
     {
         Matrix matrix = new Matrix();
         matrix.postRotate(rotate);
-
-        // Here you will get the image bitmap which has changed orientation
         return Bitmap.createBitmap(image , 0, 0, image.getWidth(), image.getHeight(), matrix, true);
     }
 }
