@@ -19,8 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WebSearchActivity" />
-        <activity android:name=".EditActivity" />
+        <activity android:name=".WebSearchActivity" android:parentActivityName=".MainActivity" />
+        <activity android:name=".EditActivity" android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>
