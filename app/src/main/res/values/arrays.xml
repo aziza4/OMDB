@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string-array name="add_menu_items">
         <item>@string/add_dialog_web_item</item>
         <item>@string/add_dialog_manual_item</item>
     </string-array>
+
+    <string-array name="pref_sort_options">
+        <item>@string/pref_sort_label_title</item>
+        <item>@string/pref_sort_label_rating</item>
+    </string-array>
+
+    <string-array name="pref_sort_values">
+        <item>@string/pref_sort_title</item>
+        <item>@string/pref_sort_rating</item>
+    </string-array>
+
 </resources>

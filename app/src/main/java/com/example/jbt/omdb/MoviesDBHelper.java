@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 class MoviesDBHelper extends SQLiteOpenHelper {
 
+
     private static final String DATABASE_NAME = "movies.db";
     private static final int DATABASE_VERSION = 1;
 
@@ -27,10 +28,11 @@ class MoviesDBHelper extends SQLiteOpenHelper {
     public static final String DETAILS_COL_RATING = "rating";
     public static final String DETAILS_COL_IMAGE = "image";
 
-
+    private final Context mContext;
 
     public MoviesDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        mContext = context;
     }
 
     @Override
@@ -123,8 +125,23 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
     public Cursor GetDetailsMovieCursor()
     {
+        String sortBy, sortOrder;
+
         SQLiteDatabase db = getReadableDatabase();
-        String sqlQuery = "SELECT * FROM " + DETAILS_TABLE_NAME + " ORDER BY " + DETAILS_COL_SUBJECT + ";";
+
+        if (Utility.isSortByTitle(mContext)) {
+
+            sortBy = DETAILS_COL_SUBJECT;
+            sortOrder = "";
+        } else {
+
+            sortBy = DETAILS_COL_RATING;
+            sortOrder = "DESC";
+        }
+
+        String sqlQuery = "SELECT * FROM " + DETAILS_TABLE_NAME +
+                " ORDER BY " + sortBy + " " + sortOrder + ";";
+
         return db.rawQuery(sqlQuery, null);
     }
 

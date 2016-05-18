@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                         if ( mDbHelper.deleteMovie(movie.getId())) {
                             String movieDeletedMsg = getResources().getString(R.string.movie_deleted_msg);
                             Toast.makeText(MainActivity.this, movieDeletedMsg, Toast.LENGTH_SHORT).show();
-                            RefreshMainList();
+                            refreshMainList();
                             mode.finish();
                         }
                         return true;
@@ -166,8 +166,12 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
+            case R.id.settingsMenuItem:
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                return true;
+
             case R.id.deleteAllMenuItem:
-                ShowDeleteConfirmationDialog();
+                showDeleteConfirmationDialog();
                 return true;
 
             case R.id.exitMenuItem:
@@ -183,11 +187,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        RefreshMainList();
+        refreshMainList();
     }
 
 
-    private void ShowDeleteConfirmationDialog() {
+    private void showDeleteConfirmationDialog() {
 
         final Resources r = getResources();
         final String deleteTitle = r.getString(R.string.delete_all_title);
@@ -207,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
                                 if ( mDbHelper.deleteAllMovies() )
                                 {
                                     Toast.makeText(MainActivity.this, deleteAllConfMsg, Toast.LENGTH_SHORT).show();
-                                    RefreshMainList();
+                                    refreshMainList();
                                 }
                                 dialog.dismiss();
                             }
@@ -233,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void RefreshMainList() {
+    private void refreshMainList() {
         mAdapter.changeCursor(mDbHelper.GetDetailsMovieCursor());
     }
 }

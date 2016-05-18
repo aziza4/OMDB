@@ -1,7 +1,6 @@
 package com.example.jbt.omdb;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.util.Log;
 import org.json.JSONArray;
@@ -35,26 +34,24 @@ class OmdbHelper {
 
     public OmdbHelper(Context context) {
 
-        Resources resources = context.getResources();
+        mScheme = context.getString(R.string.http_scheme);
+        mAuthority = context.getString(R.string.authority);
+        mSearchKey = context.getString(R.string.omdb_search_key);
+        mDataTypeKey = context.getString(R.string.omdb_data_type_key);
+        mDataTypeValue = context.getString(R.string.omdb_data_type_value);
+        mPageKey = context.getString(R.string.omdb_page_key);
+        mSearchTitleKey = context.getString(R.string.omdb_search_title_key);
+        mPlotKey = context.getString(R.string.omdb_plot_key);
+        mPlotValue = context.getString(R.string.omdb_plot_value);
+        mTotalResult = context.getString(R.string.omdb_res_total_results_field);
 
-        mScheme = resources.getString(R.string.http_scheme);
-        mAuthority = resources.getString(R.string.authority);
-        mSearchKey = resources.getString(R.string.omdb_search_key);
-        mDataTypeKey = resources.getString(R.string.omdb_data_type_key);
-        mDataTypeValue = resources.getString(R.string.omdb_data_type_value);
-        mPageKey = resources.getString(R.string.omdb_page_key);
-        mSearchTitleKey = resources.getString(R.string.omdb_search_title_key);
-        mPlotKey = resources.getString(R.string.omdb_plot_key);
-        mPlotValue = resources.getString(R.string.omdb_plot_value);
-        mTotalResult = resources.getString(R.string.omdb_res_total_results_field);
-
-        mMainObjName = resources.getString(R.string.omdb_res_main_obj);
-        mTitleName = resources.getString(R.string.omdb_res_title_field);
-        mResponseName = resources.getString(R.string.omdb_res_response_field);
-        mPlotName = resources.getString(R.string.omdb_res_plot_field);
-        mPosterName = resources.getString(R.string.omdb_res_poster_field);
-        mImdbName = resources.getString(R.string.omdb_res_imdbid_field);
-        mNAvalue = resources.getString(R.string.omdb_res_na_value);
+        mMainObjName = context.getString(R.string.omdb_res_main_obj);
+        mTitleName = context.getString(R.string.omdb_res_title_field);
+        mResponseName = context.getString(R.string.omdb_res_response_field);
+        mPlotName = context.getString(R.string.omdb_res_plot_field);
+        mPosterName = context.getString(R.string.omdb_res_poster_field);
+        mImdbName = context.getString(R.string.omdb_res_imdbid_field);
+        mNAvalue = context.getString(R.string.omdb_res_na_value);
     }
 
 

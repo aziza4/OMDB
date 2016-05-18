@@ -12,7 +12,7 @@
         android:id="@+id/movieImageView"
         android:contentDescription="@string/content_desc_poster"
         android:width="0dp"
-        android:layout_marginLeft="@dimen/elements_horizontal_margin"
+        android:layout_marginEnd="@dimen/elements_horizontal_margin"
         android:layout_marginRight="@dimen/elements_horizontal_margin"
         android:src="@android:drawable/ic_menu_report_image" />
 

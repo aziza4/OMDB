@@ -4,7 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -16,11 +19,28 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WebSearchActivity" android:parentActivityName=".MainActivity" />
-        <activity android:name=".EditActivity" android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".WebSearchActivity"
+            android:label="@string/web_search_name"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/WebSearchTheme"/>
+
+        <activity
+            android:name=".EditActivity"
+            android:label="@string/edit_name"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/EditTheme"/>
+
+        <activity android:name=".SettingsActivity"
+            android:label="@string/settings_name"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/SettingsTheme"/>
+
     </application>
 
 </manifest>

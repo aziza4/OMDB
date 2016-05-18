@@ -2,11 +2,14 @@ package com.example.jbt.omdb;
 
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.preference.PreferenceManager;
 import android.view.WindowManager;
 
 import java.io.ByteArrayOutputStream;
@@ -67,6 +70,17 @@ class Utility {
     public static void hideKeyboard(Activity activity)
     {
         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+    public static boolean isSortByTitle(Context context) {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String key = context.getString(R.string.pref_sort_key);
+        String defualtVal = context.getString(R.string.pref_sort_title);
+        String title = context.getString(R.string.pref_sort_title);
+
+        return prefs.getString(key, defualtVal).equals(title);
     }
 
 }
