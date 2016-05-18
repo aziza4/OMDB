@@ -109,11 +109,11 @@ public class Movie implements Parcelable {
 
     public String getDetailsAsText(Context context)
     {
-        String subjectTitle = context.getResources().getString(R.string.omdb_res_title_field);
-        String bodyTitle = context.getResources().getString(R.string.omdb_res_plot_field);
-        String urlTitle = context.getResources().getString(R.string.omdb_res_poster_field);
-        String imdbTitle = context.getResources().getString(R.string.omdb_res_imdbid_field);
-        String ratingTitle = context.getResources().getString(R.string.omdb_res_rating_field);
+        String subjectTitle = context.getString(R.string.omdb_res_title_field);
+        String bodyTitle = context.getString(R.string.omdb_res_plot_field);
+        String urlTitle = context.getString(R.string.omdb_res_poster_field);
+        String imdbTitle = context.getString(R.string.omdb_res_imdbid_field);
+        String ratingTitle = context.getString(R.string.omdb_res_rating_field);
 
         return String.format("%s: %s\n\n%s: %s\n\n%s: %s\n\n%s: %s\n\n%s: %s\n",
                 subjectTitle, mSubject, bodyTitle, mBody, imdbTitle, mImdbId, urlTitle, mUrl, ratingTitle, mRating);

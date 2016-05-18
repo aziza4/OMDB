@@ -51,10 +51,10 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-        mShowText = getResources().getString(R.string.show_capture_button_show);
-        mCaptureText = getResources().getString(R.string.show_capture_button_capture);
-        mHttpScheme = getResources().getString(R.string.http_scheme);
-        mFileScheme = getResources().getString(R.string.file_scheme);
+        mShowText = getString(R.string.show_capture_button_show);
+        mCaptureText = getString(R.string.show_capture_button_capture);
+        mHttpScheme = getString(R.string.http_scheme);
+        mFileScheme = getString(R.string.file_scheme);
 
         mSubjectET = ((EditText) findViewById(R.id.subjectEditText));
         mBodyET = ((EditText) findViewById(R.id.bodyEditText));
@@ -223,7 +223,7 @@ public class EditActivity extends AppCompatActivity {
                 return;
             }
 
-            String errorMsg = getResources().getString(R.string.show_error_msg);
+            String errorMsg = getString(R.string.show_error_msg);
             Toast.makeText(EditActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
         }
     }
@@ -242,7 +242,7 @@ public class EditActivity extends AppCompatActivity {
         Bitmap image = bitmapDrawable == null ? null : bitmapDrawable.getBitmap();
 
         if (subject.isEmpty()) {
-            String emptyMsg = getResources().getString(R.string.subject_must_not_be_empty);
+            String emptyMsg = getString(R.string.subject_must_not_be_empty);
             Toast.makeText(EditActivity.this, emptyMsg, Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -251,7 +251,7 @@ public class EditActivity extends AppCompatActivity {
         MoviesDBHelper dbHelper = new MoviesDBHelper(EditActivity.this);
 
         if ( dbHelper.updateOrInsertMovie(movie) ) {
-            String movieSavedMsg = getResources().getString(R.string.movie_saved_msg);
+            String movieSavedMsg = getString(R.string.movie_saved_msg);
             Toast.makeText(EditActivity.this, movieSavedMsg, Toast.LENGTH_SHORT).show();
         }
 

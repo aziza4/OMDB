@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
                     final String[] items = getResources().getStringArray(R.array.add_menu_items);
-                    final String title = getResources().getString(R.string.add_dialog_title);
+                    final String title = getString(R.string.add_dialog_title);
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.deleteMenuItem:
                         if ( mDbHelper.deleteMovie(movie.getId())) {
-                            String movieDeletedMsg = getResources().getString(R.string.movie_deleted_msg);
+                            String movieDeletedMsg = getString(R.string.movie_deleted_msg);
                             Toast.makeText(MainActivity.this, movieDeletedMsg, Toast.LENGTH_SHORT).show();
                             refreshMainList();
                             mode.finish();
@@ -193,12 +193,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void showDeleteConfirmationDialog() {
 
-        final Resources r = getResources();
-        final String deleteTitle = r.getString(R.string.delete_all_title);
-        final String deleteMsg = r.getString(R.string.delete_all_message);
-        final String deleteButton = r.getString(R.string.delete_all_delete_button);
-        final String cancelButton = r.getString(R.string.delete_all_Cancel_button);
-        final String deleteAllConfMsg = r.getString(R.string.all_movie_deleted_msg);
+        final String deleteTitle = getString(R.string.delete_all_title);
+        final String deleteMsg = getString(R.string.delete_all_message);
+        final String deleteButton = getString(R.string.delete_all_delete_button);
+        final String cancelButton = getString(R.string.delete_all_Cancel_button);
+        final String deleteAllConfMsg = getString(R.string.all_movie_deleted_msg);
 
         new AlertDialog.Builder(this)
                 .setTitle(deleteTitle)

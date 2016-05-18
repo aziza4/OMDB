@@ -130,8 +130,8 @@ public class WebSearchActivity extends AppCompatActivity {
 
             Utility.RestrictDeviceOrientation(WebSearchActivity.this);
 
-            String msg =  getResources().getString(R.string.progress_bar_message);
-            String enoughString = getResources().getString(R.string.enough_button);
+            String msg =  getString(R.string.progress_bar_message);
+            String enoughString = getString(R.string.enough_button);
             mProgDialog = new ProgressDialog(WebSearchActivity.this);
             mProgDialog.setMessage(msg);
             mProgDialog.setIndeterminate(false);
