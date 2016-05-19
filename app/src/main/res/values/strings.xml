@@ -15,7 +15,6 @@
     <string name="show_capture_button_show">Show</string>
     <string name="show_capture_button_capture">Capture</string>
     <string name="ok_button">OK</string>
-    <string name="add_button">+</string>
     <string name="search_view_hint">Search for a movie title…</string>
     <string name="show_error_msg">Poster not found</string>
 

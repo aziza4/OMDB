@@ -46,7 +46,7 @@ public class SettingsActivity extends PreferenceActivity
                 preference.setSummary(listPreference.getEntries()[index]);
 
         } else {
-            // For other preferences, set the summary to the value's simple string representation.
+
             preference.setSummary(valueStr);
         }
 
