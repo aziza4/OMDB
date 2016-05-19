@@ -8,10 +8,10 @@
     <string name="cancel_button">Cancel</string>
     <string name="enough_button">Show results now</string>
     <string name="progress_bar_message">Downloading Titles…</string>
-    <string name="subject_text_view">Subject:</string>
-    <string name="body_text_view">Body:</string>
-    <string name="url_text_view">URL:</string>
-    <string name="rating_text_view">Rating:</string>
+    <string name="subject_hint">Title…</string>
+    <string name="body_hint">Plot…</string>
+    <string name="url_hint">URL…</string>
+    <string name="rating_text_view">Rating</string>
     <string name="show_capture_button_show">Show</string>
     <string name="show_capture_button_capture">Capture</string>
     <string name="ok_button">OK</string>

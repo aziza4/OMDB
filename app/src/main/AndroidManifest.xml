@@ -23,24 +23,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".WebSearchActivity"
             android:label="@string/web_search_name"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/WebSearchTheme"/>
-
+            android:theme="@style/WebSearchTheme" />
         <activity
             android:name=".EditActivity"
             android:label="@string/edit_name"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/EditTheme"/>
-
-        <activity android:name=".SettingsActivity"
+            android:theme="@style/EditTheme" />
+        <activity
+            android:name=".SettingsActivity"
+            android:theme="@style/SettingsTheme"
             android:label="@string/settings_name"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/SettingsTheme"/>
-
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.jbt.omdb.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -14,37 +14,15 @@
         android:freezesText="true"
         android:visibility="invisible"/>
 
-    <LinearLayout
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:orientation="horizontal"
-        android:id="@+id/subjectLinearLayout">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/subject_text_view"
-            android:id="@+id/subjectTextView" />
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:id="@+id/subjectEditText"
-            android:singleLine="true"
-            android:inputType="text"
-            android:textSize="@dimen/large_text"
-            android:textIsSelectable="false" />
-
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/body_text_view"
-        android:id="@+id/bodyTextView"
-        android:layout_below="@id/subjectLinearLayout"/>
+        android:id="@+id/subjectEditText"
+        android:singleLine="true"
+        android:inputType="text"
+        android:hint="@string/subject_hint"
+        android:textSize="@dimen/large_text"
+        android:textIsSelectable="false" />
 
     <EditText
         android:layout_width="match_parent"
@@ -53,8 +31,9 @@
         android:inputType="text|textMultiLine"
         android:scrollbars="vertical"
         android:maxLines="5"
+        android:hint="@string/body_hint"
         android:id="@+id/bodyEditText"
-        android:layout_below="@id/bodyTextView"
+        android:layout_below="@id/subjectEditText"
         android:textSize="@dimen/small_text" />
 
     <LinearLayout
@@ -64,21 +43,16 @@
         android:id="@+id/urlLinearLayout"
         android:layout_below="@id/bodyEditText">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/url_text_view"
-            android:id="@+id/urlTextView" />
-
         <EditText
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:hint="@string/url_hint"
             android:id="@+id/urlEditText"
             android:gravity="top"
             android:inputType="textUri|textMultiLine"
             android:scrollbars="vertical"
-            android:maxLines="4"
+            android:maxLines="3"
             android:textSize="@dimen/small_text"
             android:textIsSelectable="true" />
 
@@ -96,14 +70,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="@dimen/elements_vertical_margin"
         android:id="@+id/ratingLinearLayout"
         android:layout_below="@+id/urlLinearLayout">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/elements_horizontal_margin"
+            android:layout_marginEnd="@dimen/elements_horizontal_margin"
             android:text="@string/rating_text_view"
             android:id="@+id/ratingTextView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/large_text"
+            android:id="@+id/ratingValueTextView"/>
 
         <SeekBar
             android:layout_width="0dp"
@@ -111,11 +95,6 @@
             android:id="@+id/ratingSeekBar"
             android:layout_weight="1"
             android:max="50" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/ratingValueTextView" />
 
     </LinearLayout>
 
