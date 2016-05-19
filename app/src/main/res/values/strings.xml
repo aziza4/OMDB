@@ -29,6 +29,10 @@
     <string name="pref_sort_label">Sort By</string>
     <string name="pref_sort_label_title">Title ascending</string>
     <string name="pref_sort_label_rating">Rating descending</string>
+    <string name="pref_enable_save_images_label">Save posters on DB</string>
+    <string name="pref_enable_save_image_true">Enabled</string>
+    <string name="pref_enable_save_image_false">Not Enabled</string>
+
 
 
     <string name="delete_all_title">Delete All Movies</string>
@@ -74,5 +78,8 @@
     <string name="pref_sort_title" translatable="false">title</string>
     <string name="pref_sort_rating" translatable="false">rating</string>
 
+
+    <string name="pref_enable_save_image_key" translatable="false">save_image</string>
+    <string name="pref_enable_save_image_default" translatable="false">true</string>
 
 </resources>

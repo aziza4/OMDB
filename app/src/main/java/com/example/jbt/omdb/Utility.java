@@ -77,10 +77,18 @@ class Utility {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
         String key = context.getString(R.string.pref_sort_key);
-        String defualtVal = context.getString(R.string.pref_sort_title);
+        String def = context.getString(R.string.pref_sort_title);
         String title = context.getString(R.string.pref_sort_title);
 
-        return prefs.getString(key, defualtVal).equals(title);
+        return prefs.getString(key, def).equals(title);
     }
 
+    public static boolean isSaveImagesToDB(Context context) {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String key = context.getString(R.string.pref_enable_save_image_key);
+        String def = context.getString(R.string.pref_enable_save_image_default);
+        return prefs.getBoolean(key, Boolean.parseBoolean(def));
+    }
 }

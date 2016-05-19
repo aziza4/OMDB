@@ -34,15 +34,21 @@ public class SettingsActivity extends PreferenceActivity
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
 
-        if (! (preference instanceof ListPreference) )
-            return true;
-
         String valueStr = newValue.toString();
-        ListPreference listPreference = (ListPreference) preference;
-        int index = listPreference.findIndexOfValue(valueStr);
 
-        if (index >= 0)
-            preference.setSummary(listPreference.getEntries()[index]);
+        if ( preference instanceof ListPreference )
+        {
+
+            ListPreference listPreference = (ListPreference) preference;
+            int index = listPreference.findIndexOfValue(valueStr);
+
+            if (index >= 0)
+                preference.setSummary(listPreference.getEntries()[index]);
+
+        } else {
+            // For other preferences, set the summary to the value's simple string representation.
+            preference.setSummary(valueStr);
+        }
 
         return true;
     }

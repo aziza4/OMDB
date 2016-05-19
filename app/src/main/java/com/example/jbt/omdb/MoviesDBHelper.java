@@ -157,13 +157,15 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
 
+        boolean saveImage = Utility.isSaveImagesToDB(mContext);
+
         ContentValues values = new ContentValues();
         values.put(DETAILS_COL_SUBJECT, movie.getSubject());
         values.put(DETAILS_COL_BODY, movie.getBody());
         values.put(DETAILS_COL_URL, movie.getUrl());
         values.put(DETAILS_COL_IMDBID, movie.getImdbId());
         values.put(DETAILS_COL_RATING, movie.getRating());
-        values.put(DETAILS_COL_IMAGE, movie.getImageByteArray());
+        values.put(DETAILS_COL_IMAGE, saveImage ? movie.getImageByteArray() : null);
 
         long rowId = db.insert(DETAILS_TABLE_NAME, null, values);
         db.close();
@@ -176,13 +178,15 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
 
+        boolean saveImage = Utility.isSaveImagesToDB(mContext);
+
         ContentValues values = new ContentValues();
         values.put(DETAILS_COL_SUBJECT, movie.getSubject());
         values.put(DETAILS_COL_BODY, movie.getBody());
         values.put(DETAILS_COL_URL, movie.getUrl());
         values.put(DETAILS_COL_IMDBID, movie.getImdbId());
         values.put(DETAILS_COL_RATING, movie.getRating());
-        values.put(DETAILS_COL_IMAGE, movie.getImageByteArray());
+        values.put(DETAILS_COL_IMAGE, saveImage ? movie.getImageByteArray() : null);
 
         long rowsAffected = db.update(DETAILS_TABLE_NAME, values, DETAILS_COL_ID + "=" + movie.getId(), null);
         db.close();
