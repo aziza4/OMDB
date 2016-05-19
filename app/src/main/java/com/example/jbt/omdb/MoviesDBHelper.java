@@ -20,13 +20,13 @@ class MoviesDBHelper extends SQLiteOpenHelper {
     private static final String SEARCH_COL_SUBJECT = "subject";
 
     private static final String DETAILS_TABLE_NAME = "details";
-    public static final String DETAILS_COL_ID = "_id";
-    public static final String DETAILS_COL_SUBJECT = "subject";
-    public static final String DETAILS_COL_BODY = "body";
-    public static final String DETAILS_COL_URL = "url";
-    public static final String DETAILS_COL_IMDBID = "imdbid";
-    public static final String DETAILS_COL_RATING = "rating";
-    public static final String DETAILS_COL_IMAGE = "image";
+    private static final String DETAILS_COL_ID = "_id";
+    private static final String DETAILS_COL_SUBJECT = "subject";
+    private static final String DETAILS_COL_BODY = "body";
+    private static final String DETAILS_COL_URL = "url";
+    private static final String DETAILS_COL_IMDBID = "imdbid";
+    private static final String DETAILS_COL_RATING = "rating";
+    private static final String DETAILS_COL_IMAGE = "image";
 
     private final Context mContext;
 
@@ -123,7 +123,9 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
     // ============================= Details table operations =============================
 
-    public Cursor GetDetailsMovieCursor()
+
+
+    private Cursor getDetailsMovieCursor()
     {
         String sortBy, sortOrder;
 
@@ -143,6 +145,29 @@ class MoviesDBHelper extends SQLiteOpenHelper {
                 " ORDER BY " + sortBy + " " + sortOrder + ";";
 
         return db.rawQuery(sqlQuery, null);
+    }
+
+    public ArrayList<Movie> getDetailsMovieArrayList()
+    {
+        ArrayList<Movie> movies = new ArrayList<>();
+
+        Cursor c = getDetailsMovieCursor();
+
+        while(c.moveToNext()) {
+
+            long _id = c.getInt(c.getColumnIndex(DETAILS_COL_ID));
+            String subject = c.getString( c.getColumnIndex(DETAILS_COL_SUBJECT) );
+            String body = c.getString( c.getColumnIndex(DETAILS_COL_BODY) );
+            String url = c.getString( c.getColumnIndex(DETAILS_COL_URL) );
+            String imdbid = c.getString( c.getColumnIndex(DETAILS_COL_IMDBID) );
+            float rating = c.getFloat(c.getColumnIndex(DETAILS_COL_RATING));
+            byte[] imageBytes = c.getBlob( c.getColumnIndex(DETAILS_COL_IMAGE));
+
+            movies.add(new Movie(_id,subject, body, url, imdbid, rating, imageBytes));
+        }
+
+        return movies;
+
     }
 
     public boolean updateOrInsertMovie(Movie movie)
