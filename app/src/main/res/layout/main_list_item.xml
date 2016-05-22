@@ -44,7 +44,7 @@
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:id="@+id/subjectTextView"
-                    android:textColor="@color/abc_primary_text_material_light" />
+                    android:textColor="@android:color/black" />
 
                 <RatingBar
                     android:id="@+id/restRatingBar"
@@ -59,7 +59,7 @@
             </LinearLayout>
 
             <TextView
-                android:layout_width="280dp"
+                android:layout_width="278dp"
                 android:layout_height="wrap_content"
                 android:paddingTop="5dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"

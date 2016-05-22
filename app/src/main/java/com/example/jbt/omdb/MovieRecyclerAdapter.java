@@ -42,8 +42,10 @@
             @Override
             public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
+
+                LayoutInflater inflater = LayoutInflater.from(mContext);
                 @SuppressLint("InflateParams")
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_list_item, null);
+                View view = inflater.inflate(R.layout.main_list_item, null);
                 return new MovieViewHolder(view);
             }
 
@@ -58,7 +60,7 @@
                 return mMovies.size();
             }
 
-            public class MovieViewHolder extends RecyclerView.ViewHolder{
+            class MovieViewHolder extends RecyclerView.ViewHolder{
 
                 public final ImageView posterIV;
                 public final TextView subjectTV;

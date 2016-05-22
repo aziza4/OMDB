@@ -35,6 +35,7 @@ class MoviesDBHelper extends SQLiteOpenHelper {
         mContext = context;
     }
 
+
     @Override
     public void onCreate(SQLiteDatabase db) {
 
@@ -56,13 +57,12 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-    }
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 
 
 
     // ============================= Search table operations =============================
+
 
     public int bulkInsertSearchResults(Movie[] movies) {
 
@@ -94,6 +94,7 @@ class MoviesDBHelper extends SQLiteOpenHelper {
         return returnCount;
     }
 
+
     public int deleteAllSearchResult() {
 
         SQLiteDatabase db = getWritableDatabase();
@@ -102,6 +103,7 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
         return rowsDeleted;
     }
+
 
     public ArrayList<Movie> getAllSearchResults()
     {
@@ -122,8 +124,6 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
 
     // ============================= Details table operations =============================
-
-
 
     private Cursor getDetailsMovieCursor()
     {
@@ -147,36 +147,45 @@ class MoviesDBHelper extends SQLiteOpenHelper {
         return db.rawQuery(sqlQuery, null);
     }
 
+
     public ArrayList<Movie> getDetailsMovieArrayList()
     {
         ArrayList<Movie> movies = new ArrayList<>();
 
         Cursor c = getDetailsMovieCursor();
 
+        final int id_index = c.getColumnIndex(DETAILS_COL_ID);
+        final int id_subject = c.getColumnIndex(DETAILS_COL_SUBJECT);
+        final int id_body = c.getColumnIndex(DETAILS_COL_BODY);
+        final int id_url = c.getColumnIndex(DETAILS_COL_URL);
+        final int id_imdbid = c.getColumnIndex(DETAILS_COL_IMDBID);
+        final int id_rating = c.getColumnIndex(DETAILS_COL_RATING);
+        final int id_image = c.getColumnIndex(DETAILS_COL_IMAGE);
+
         while(c.moveToNext()) {
 
-            long _id = c.getInt(c.getColumnIndex(DETAILS_COL_ID));
-            String subject = c.getString( c.getColumnIndex(DETAILS_COL_SUBJECT) );
-            String body = c.getString( c.getColumnIndex(DETAILS_COL_BODY) );
-            String url = c.getString( c.getColumnIndex(DETAILS_COL_URL) );
-            String imdbid = c.getString( c.getColumnIndex(DETAILS_COL_IMDBID) );
-            float rating = c.getFloat(c.getColumnIndex(DETAILS_COL_RATING));
-            byte[] imageBytes = c.getBlob( c.getColumnIndex(DETAILS_COL_IMAGE));
+            long _id = c.getInt(id_index);
+            String subject = c.getString(id_subject);
+            String body = c.getString(id_body);
+            String url = c.getString(id_url);
+            String imdbid = c.getString(id_imdbid);
+            float rating = c.getFloat(id_rating);
+            byte[] imageBytes = c.getBlob(id_image);
 
             movies.add(new Movie(_id,subject, body, url, imdbid, rating, imageBytes));
         }
 
+        c.close();
         return movies;
 
     }
 
+
     public boolean updateOrInsertMovie(Movie movie)
     {
-        if (movie.getId() > 0 )
-            return updateMovie(movie);
-
-        return insertMovie(movie);
+        return movie.getId() > 0 ? updateMovie(movie) : insertMovie(movie);
     }
+
 
     private boolean insertMovie(Movie movie) {
 
@@ -219,6 +228,7 @@ class MoviesDBHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
+
     public boolean deleteMovie(long id) {
 
         SQLiteDatabase db = getWritableDatabase();
@@ -227,6 +237,7 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
         return rowsDeleted > 0;
     }
+
 
     public boolean deleteAllMovies() {
 

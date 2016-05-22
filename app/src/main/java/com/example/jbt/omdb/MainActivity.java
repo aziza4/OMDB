@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String LOG_CAT = "OMDB:";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +41,14 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         FloatingActionButton addFab = (FloatingActionButton) findViewById(R.id.addFAB);
+
         if (addFab != null)
             addFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    final int WEB_OPTION_INDEX = 0;
+                    final int MAN_OPTION_INDEX = 1;
 
                     final String[] items = getResources().getStringArray(R.array.add_menu_items);
                     final String title = getString(R.string.add_dialog_title);
@@ -54,17 +59,21 @@ public class MainActivity extends AppCompatActivity {
                     builder.setItems(items, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int item) {
 
-                            if (item == 0 ) // web
+                            Intent intent;
+
+                            switch (item)
                             {
-                                Intent intent = new Intent(MainActivity.this, WebSearchActivity.class);
-                                startActivity(intent);
+                                case WEB_OPTION_INDEX:
+                                    intent = new Intent(MainActivity.this, WebSearchActivity.class);
+                                    startActivity(intent);
+                                    break;
 
-                            } else { // manual
-
-                                Movie movie = new Movie("");
-                                Intent intent = new Intent(MainActivity.this, EditActivity.class);
-                                intent.putExtra(WebSearchActivity.INTENT_MOVIE_KEY, movie);
-                                startActivity(intent);
+                                case MAN_OPTION_INDEX:
+                                    Movie movie = new Movie("");
+                                    intent = new Intent(MainActivity.this, EditActivity.class);
+                                    intent.putExtra(WebSearchActivity.INTENT_MOVIE_KEY, movie);
+                                    startActivity(intent);
+                                    break;
                             }
                         }
                     });
@@ -76,12 +85,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
