@@ -162,7 +162,7 @@ public class WebSearchActivity extends AppCompatActivity {
             }
 
             Utility.ReleaseDeviceOrientationRestriction(WebSearchActivity.this);
-            mSearchSV.setQuery("",false); // for user convinience
+            mSearchSV.setQuery("",false); // for user convenience
             mProgDialog.dismiss();
         }
 
@@ -196,7 +196,7 @@ public class WebSearchActivity extends AppCompatActivity {
             return all;
         }
 
-        public void setCancelRequested() { // responds to progree bar "Show Results" button
+        public void setCancelRequested() { // responds to progress bar "Show Results" button
             mCancelRequested = true;
         }
     }
