@@ -2,6 +2,8 @@ package com.example.jbt.omdb;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Utility.changeLocale(this);
         setContentView(R.layout.activity_main);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.mainListView);
@@ -81,8 +84,14 @@ public class MainActivity extends AppCompatActivity {
                     builder.create().show();
                 }
             });
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshMainList();
+        Utility.changeLocale(this);
+        invalidateOptionsMenu();
     }
 
 
@@ -114,13 +123,6 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        refreshMainList();
     }
 
 

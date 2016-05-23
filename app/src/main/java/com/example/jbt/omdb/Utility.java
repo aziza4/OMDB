@@ -6,19 +6,19 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 import android.view.WindowManager;
 
 import java.io.ByteArrayOutputStream;
-
+import java.util.Locale;
 
 
 class Utility {
 
-    public static void RestrictDeviceOrientation(Activity activity)
-    {
+    public static void RestrictDeviceOrientation(Activity activity) {
         int current_orientation = activity.getResources().getConfiguration().orientation;
 
         int newFixedOrientation =
@@ -35,8 +35,7 @@ class Utility {
     }
 
 
-    public static byte[] convertBitmapToByteArray(Bitmap bitmap)
-    {
+    public static byte[] convertBitmapToByteArray(Bitmap bitmap) {
         if (bitmap == null)
             return null;
 
@@ -45,16 +44,14 @@ class Utility {
         return stream.toByteArray();
     }
 
-    public static Bitmap convertByteArrayToBitmap(byte[] byteArray)
-    {
+    public static Bitmap convertByteArrayToBitmap(byte[] byteArray) {
         if (byteArray == null)
             return null;
 
-        return BitmapFactory.decodeByteArray(byteArray , 0, byteArray.length);
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
     }
 
-    public static void hideKeyboard(Activity activity)
-    {
+    public static void hideKeyboard(Activity activity) {
         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
@@ -77,4 +74,21 @@ class Utility {
         String def = context.getString(R.string.pref_enable_save_image_default);
         return prefs.getBoolean(key, Boolean.parseBoolean(def));
     }
+
+    public static void changeLocale(Context context) {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String key = context.getString(R.string.pref_lang_key);
+        String def = context.getString(R.string.pref_lang_english);
+        String lang = prefs.getString(key, def);
+
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration configuration = new Configuration();
+        configuration.locale = locale;
+        Resources resources = context.getResources();
+        resources.updateConfiguration(configuration, context.getResources().getDisplayMetrics());
+    }
 }
+

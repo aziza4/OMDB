@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">הסרטים שלי</string>
+    <string name="action_share">שתף</string>
+    <string name="add_dialog_manual_item">ידני</string>
+    <string name="add_dialog_title">הוסף פריט חדש</string>
+    <string name="add_dialog_web_item">אינטרנט</string>
+    <string name="all_movie_deleted_msg">מחיקת כל הסרטים</string>
+    <string name="body_hint">עלילה…</string>
+    <string name="cancel_button">ביטול</string>
+    <string name="content_desc_poster">פוסטר</string>
+    <string name="delete_all_Cancel_button">ביטול</string>
+    <string name="delete_all_delete_button">מחיקה</string>
+    <string name="delete_all_message">האם אתה בטוח?</string>
+    <string name="delete_all_title">מחיקת כל הסרטים</string>
+    <string name="edit_name">עריכה</string>
+    <string name="enough_button">הראה תוצאות כעת</string>
+    <string name="menu_item_delete">מחיקה</string>
+    <string name="menu_item_delete_all">מחיקת הכל</string>
+    <string name="menu_item_edit">עריכה</string>
+    <string name="menu_item_exit">יציאה</string>
+    <string name="menu_item_settings">הגדרות</string>
+    <string name="movie_deleted_msg">הסרט נמחק</string>
+    <string name="movie_saved_msg">הסרט נשמר</string>
+    <string name="ok_button">אישור</string>
+    <string name="pref_enable_save_image_false">מושתק</string>
+    <string name="pref_enable_save_image_true">מופעל</string>
+    <string name="pref_enable_save_images_label">שמירת הסרט בבסיס הנתונים</string>
+    <string name="pref_lang_label">שפת ממשק</string>
+    <string name="pref_lang_label_english">אנגלית</string>
+    <string name="pref_lang_label_hebrew">עברית</string>
+    <string name="pref_sort_label">מיון לפי</string>
+    <string name="pref_sort_label_rating">על פי דירוג - בסדר יורד</string>
+    <string name="pref_sort_label_title">על פי כותר - בסדר עולה</string>
+    <string name="progress_bar_message">הורדת כותרים…</string>
+    <string name="rating_text_view">דירוג</string>
+    <string name="search_view_hint">חפש לפי כותר…</string>
+    <string name="settings_name">הגדרות</string>
+    <string name="show_capture_button_capture">צילום</string>
+    <string name="show_capture_button_show">הצג</string>
+    <string name="show_error_msg">פוסטר לא נמצא</string>
+    <string name="subject_hint">כותר…</string>
+    <string name="subject_must_not_be_empty">כותר חייב להיות לא ריק</string>
+    <string name="url_hint">כתובת URL…</string>
+    <string name="web_search_name">חיפוש באינטרנט</string>
+</resources>

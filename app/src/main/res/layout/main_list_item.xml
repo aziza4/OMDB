@@ -59,7 +59,7 @@
             </LinearLayout>
 
             <TextView
-                android:layout_width="278dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="5dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
@@ -79,8 +79,8 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/separator"
-        android:layout_marginLeft="@dimen/elements_horizontal_margin"
         android:layout_marginStart="@dimen/elements_horizontal_margin"
+        android:layout_marginEnd="@dimen/elements_horizontal_margin"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">

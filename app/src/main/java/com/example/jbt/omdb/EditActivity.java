@@ -49,6 +49,7 @@ public class EditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Utility.changeLocale(this);
         setContentView(R.layout.activity_edit);
 
         mShowText = getString(R.string.show_capture_button_show);

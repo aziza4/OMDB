@@ -10,6 +10,13 @@
         android:entryValues="@array/pref_sort_values"
         android:entries="@array/pref_sort_options" />
 
+    <ListPreference
+        android:title="@string/pref_lang_label"
+        android:key="@string/pref_lang_key"
+        android:defaultValue="@string/pref_lang_english"
+        android:entryValues="@array/pref_lang_values"
+        android:entries="@array/pref_lang_options" />
+
     <CheckBoxPreference
         android:title="@string/pref_enable_save_images_label"
         android:key="@string/pref_enable_save_image_key"

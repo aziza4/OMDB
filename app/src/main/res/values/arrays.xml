@@ -16,4 +16,14 @@
         <item>@string/pref_sort_rating</item>
     </string-array>
 
+    <string-array name="pref_lang_options">
+        <item>@string/pref_lang_label_english</item>
+        <item>@string/pref_lang_label_hebrew</item>
+    </string-array>
+
+    <string-array name="pref_lang_values">
+        <item>@string/pref_lang_english</item>
+        <item>@string/pref_lang_hebrew</item>
+    </string-array>
+
 </resources>

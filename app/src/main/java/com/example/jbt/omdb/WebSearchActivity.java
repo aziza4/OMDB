@@ -30,13 +30,14 @@ public class WebSearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Utility.changeLocale(this);
         setContentView(R.layout.activity_web_search);
 
         mSearchSV = (SearchView) findViewById(R.id.searchSearchView);
 
         Button cancelBtn = (Button) findViewById(R.id.cancelButton);
         ListView list = (ListView)findViewById(R.id.moviesListView);
-
 
         if(list == null || cancelBtn == null)
             return;
@@ -84,7 +85,7 @@ public class WebSearchActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onResume() {
+    protected void onResume() { // support list availability on various cases, including device orientation
         super.onResume();
 
         MoviesDBHelper dbHelper = new MoviesDBHelper(this);
@@ -128,6 +129,8 @@ public class WebSearchActivity extends AppCompatActivity {
             MoviesDBHelper dbHelper = new MoviesDBHelper(WebSearchActivity.this);
             dbHelper.deleteAllSearchResult();
 
+            // restrics device orientation during download,
+            // however provides "show Results" button as escape alternative - see listener below
             Utility.RestrictDeviceOrientation(WebSearchActivity.this);
 
             String msg =  getString(R.string.progress_bar_message);
@@ -159,7 +162,7 @@ public class WebSearchActivity extends AppCompatActivity {
             }
 
             Utility.ReleaseDeviceOrientationRestriction(WebSearchActivity.this);
-            mSearchSV.setQuery("",false);
+            mSearchSV.setQuery("",false); // for user convinience
             mProgDialog.dismiss();
         }
 
@@ -179,7 +182,7 @@ public class WebSearchActivity extends AppCompatActivity {
             ArrayList<Movie> all = new ArrayList<>();
             ArrayList<Movie> page = new ArrayList<>();
 
-            for(int pageNum = 1; page != null && !mCancelRequested; pageNum++) {
+            for(int pageNum = 1; page != null && !mCancelRequested; pageNum++) { // page == null is either download error or last page available
 
                 URL url = omdbHelper.GetSearchURL(searchPhrase, pageNum);
                 page = GetNextPageFromOMDB(url);
@@ -193,7 +196,7 @@ public class WebSearchActivity extends AppCompatActivity {
             return all;
         }
 
-        public void setCancelRequested() {
+        public void setCancelRequested() { // responds to progree bar "Show Results" button
             mCancelRequested = true;
         }
     }
