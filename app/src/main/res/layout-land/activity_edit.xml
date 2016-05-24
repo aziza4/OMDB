@@ -118,7 +118,6 @@
             android:gravity="end"
             android:id="@+id/confirmationLinearLayout"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true">
 
             <Button

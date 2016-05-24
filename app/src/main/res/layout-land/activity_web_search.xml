@@ -26,7 +26,6 @@
             android:layout_height="match_parent"
             android:id="@+id/moviesListView"
             android:layout_below="@id/searchSearchView"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
     </RelativeLayout>

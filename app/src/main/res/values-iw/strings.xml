@@ -25,7 +25,7 @@
     <string name="ok_button">אישור</string>
     <string name="pref_enable_save_image_false">מושתק</string>
     <string name="pref_enable_save_image_true">מופעל</string>
-    <string name="pref_enable_save_images_label">שמירת הסרט בבסיס הנתונים</string>
+    <string name="pref_enable_save_images_label">שמירת הפוסטר בבסיס הנתונים</string>
     <string name="pref_lang_label">שפת ממשק</string>
     <string name="pref_lang_label_english">אנגלית</string>
     <string name="pref_lang_label_hebrew">עברית</string>

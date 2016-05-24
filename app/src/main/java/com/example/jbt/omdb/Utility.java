@@ -90,5 +90,18 @@ class Utility {
         Resources resources = context.getResources();
         resources.updateConfiguration(configuration, context.getResources().getDisplayMetrics());
     }
+
+    public static boolean wasLocaleChanged(Context context) {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String currentLang = context.getResources().getConfiguration().locale.getLanguage();
+
+        String key = context.getString(R.string.pref_lang_key);
+        String def = context.getString(R.string.pref_lang_english);
+        String newLang = prefs.getString(key, def);
+
+        return ! currentLang.equals(newLang);
+    }
 }
 

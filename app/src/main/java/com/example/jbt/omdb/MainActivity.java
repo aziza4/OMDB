@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         Utility.changeLocale(this);
         setContentView(R.layout.activity_main);
 
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.mainListView);
 
         if (recyclerView == null )
@@ -87,9 +88,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         refreshMainList();
-        Utility.changeLocale(this);
         invalidateOptionsMenu();
+
+        if (Utility.wasLocaleChanged(this))
+            recreate();
     }
 
 
