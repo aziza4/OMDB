@@ -1,64 +1,21 @@
 package com.example.jbt.omdb;
 
-import android.annotation.TargetApi;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 
 
-@SuppressWarnings("deprecation")
-public class SettingsActivity extends PreferenceActivity
-        implements Preference.OnPreferenceChangeListener {
+public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Utility.changeLocale(this);
+        setContentView(R.layout.activity_settings);
+        Utility.resetTitle(this, R.string.settings_name); // workaround android bug...
 
-        addPreferencesFromResource(R.xml.pref_general);
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_sort_key)));
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_lang_key)));
-    }
-
-    private void bindPreferenceSummaryToValue(Preference preference) {
-        preference.setOnPreferenceChangeListener(this);
-
-        onPreferenceChange(preference,
-                PreferenceManager
-                        .getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), ""));
-    }
-
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-
-        String valueStr = newValue.toString();
-
-        if ( preference instanceof ListPreference )
-        {
-
-            ListPreference listPreference = (ListPreference) preference;
-            int index = listPreference.findIndexOfValue(valueStr);
-
-            if (index >= 0)
-                preference.setSummary(listPreference.getEntries()[index]);
-
-        } else {
-
-            preference.setSummary(valueStr);
-        }
-
-        return true;
-    }
-
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    @Override
-    public Intent getParentActivityIntent() {
-        Intent intent = super.getParentActivityIntent();
-        return intent != null ? intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) : null;
+        getFragmentManager()
+                .beginTransaction()
+                .add(R.id.container, new SettingsFragment())
+                .commit();
     }
 }

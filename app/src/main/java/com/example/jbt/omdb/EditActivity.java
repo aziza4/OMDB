@@ -52,6 +52,7 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Utility.changeLocale(this);
         setContentView(R.layout.activity_edit);
+        Utility.resetTitle(this, R.string.edit_name); // workaround android bug...
 
         mShowText = getString(R.string.show_capture_button_show);
         mCaptureText = getString(R.string.show_capture_button_capture);

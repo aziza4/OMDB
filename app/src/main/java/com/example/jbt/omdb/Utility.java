@@ -10,6 +10,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 import java.io.ByteArrayOutputStream;
 import java.util.Locale;
@@ -101,6 +103,15 @@ class Utility {
         String newLang = prefs.getString(key, def);
 
         return ! currentLang.equals(newLang);
+    }
+
+    // workaround android bug: http://stackoverflow.com/questions/22884068/troubles-with-activity-title-language
+    public static void resetTitle(AppCompatActivity activity, int id)
+    {
+        ActionBar actionBar = activity.getSupportActionBar();
+
+        if (actionBar != null)
+            actionBar.setTitle(activity.getString(id));
     }
 }
 

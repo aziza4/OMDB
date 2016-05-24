@@ -29,9 +29,9 @@ public class WebSearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Utility.changeLocale(this);
         setContentView(R.layout.activity_web_search);
+        Utility.resetTitle(this, R.string.web_search_name); // workaround android bug...
 
         mSearchSV = (SearchView) findViewById(R.id.searchSearchView);
 
