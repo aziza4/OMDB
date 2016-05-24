@@ -184,7 +184,7 @@ public class EditActivity extends AppCompatActivity {
         if (requestCode != REQUEST_TAKE_PHOTO || resultCode != RESULT_OK)
             return;
 
-        mUrlET.setText(mInvisibleTV.getText());
+        mUrlET.setText(mInvisibleTV.getText()); // save data in view to accommodate device rotation
 
         Uri uri = Uri.parse(mUrlET.getText().toString());
         String path = uri.getPath();

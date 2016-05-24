@@ -39,7 +39,7 @@ class ImageHelper {
     public static Bitmap getImageFromGallery(String path)
     {
         BitmapFactory.Options o2 = new BitmapFactory.Options();
-        o2.inSampleSize = 8;
+        o2.inSampleSize = 8; // cannot pass too large data within intent extra, see: http://stackoverflow.com/questions/34460827/i-cant-pass-too-large-arraylist-of-objects-between-2-activities
 
         Bitmap image = BitmapFactory.decodeFile(path, o2);
 

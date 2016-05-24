@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
-
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -103,7 +102,7 @@ public class WebSearchActivity extends AppCompatActivity {
 
     private class OmdbSearchAsyncTask extends AsyncTask<String, Integer, ArrayList<Movie>>
     {
-        private boolean mCancelRequested = false;
+        private boolean mCancelRequested = false; // allow user to request cancelation during download
         private int mTotalResults;
 
         private ArrayList<Movie> GetNextPageFromOMDB(URL url)
@@ -129,8 +128,8 @@ public class WebSearchActivity extends AppCompatActivity {
             MoviesDBHelper dbHelper = new MoviesDBHelper(WebSearchActivity.this);
             dbHelper.deleteAllSearchResult();
 
-            // restrics device orientation during download,
-            // however provides "show Results" button as escape alternative - see listener below
+            // Restrics device orientation during download not to lose results on device rotation
+            // However, I do provide "show Results" button as escape alternative - see listener below
             Utility.RestrictDeviceOrientation(WebSearchActivity.this);
 
             String msg =  getString(R.string.progress_bar_message);
@@ -182,12 +181,12 @@ public class WebSearchActivity extends AppCompatActivity {
             ArrayList<Movie> all = new ArrayList<>();
             ArrayList<Movie> page = new ArrayList<>();
 
-            for(int pageNum = 1; page != null && !mCancelRequested; pageNum++) { // page == null is either download error or last page available
+            for(int pageNum = 1; page != null && !mCancelRequested; pageNum++) {
 
                 URL url = omdbHelper.GetSearchURL(searchPhrase, pageNum);
                 page = GetNextPageFromOMDB(url);
 
-                if (page != null) {
+                if (page != null) { // page == null is either download error or last page available
                     all.addAll(page);
                     publishProgress(mTotalResults, all.size());
                 }

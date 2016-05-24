@@ -16,9 +16,10 @@ public class Movie implements Parcelable {
     private final String mUrl;
     private final String mImdbId;
     private final float mRating;
-    private byte[] mImageBytes;
+    private byte[] mImageBytes; // byte[] instead of Bitmap since Parcel crashes with Bitmap... (android bug)
 
-    private Movie(Parcel in) {
+    private Movie(Parcel in)
+    {
         mId = in.readLong();
         mSubject = in.readString();
         mBody = in.readString();
@@ -26,7 +27,7 @@ public class Movie implements Parcelable {
         mImdbId = in.readString();
         mRating = in.readFloat();
 
-        mImageBytes = new byte[in.readInt()];
+        mImageBytes = new byte[in.readInt()]; // array size
         in.readByteArray(mImageBytes);
     }
 
@@ -126,7 +127,8 @@ public class Movie implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeLong(mId);
         dest.writeString(mSubject);
         dest.writeString(mBody);
@@ -135,6 +137,7 @@ public class Movie implements Parcelable {
         dest.writeFloat(mRating);
 
         if ( mImageBytes != null) {
+
             dest.writeInt(mImageBytes.length);
             dest.writeByteArray(mImageBytes);
         }
