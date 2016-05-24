@@ -3,6 +3,7 @@ package com.example.jbt.omdb;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,9 +26,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Utility.changeLocale(this);
         setContentView(R.layout.activity_main);
 
+        resetAppName(); // workaround android bug...
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.mainListView);
 
@@ -93,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         invalidateOptionsMenu();
 
         if (Utility.wasLocaleChanged(this))
-            recreate();
+            recreate(); // language change to take immediately affect
     }
 
 
@@ -166,5 +169,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void refreshMainList() {
         mAdapter.setData(mDbHelper.getDetailsMovieArrayList());
+    }
+
+    private void resetAppName()
+    {
+        // workaround android bug: http://stackoverflow.com/questions/22884068/troubles-with-activity-title-language
+        String appName = getString(R.string.app_name);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
+            actionBar.setTitle(appName);
     }
 }
