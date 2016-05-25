@@ -22,8 +22,10 @@ public class MainFragment extends Fragment {
 
     private MovieRecyclerAdapter mAdapter;
     private MoviesDBHelper mDbHelper;
+    private boolean mIsTabletMode;
 
     public MainFragment() {}
+    public void setTabletMode(boolean isTabletMode) { mIsTabletMode = isTabletMode; }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class MainFragment extends Fragment {
         mDbHelper = new MoviesDBHelper(getActivity());
         mDbHelper.deleteAllSearchResult();
 
-        mAdapter = new MovieRecyclerAdapter(getActivity(), mDbHelper.getDetailsMovieArrayList());
+        mAdapter = new MovieRecyclerAdapter(getActivity(), mDbHelper.getDetailsMovieArrayList(), mIsTabletMode);
 
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

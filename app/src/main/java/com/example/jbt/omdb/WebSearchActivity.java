@@ -127,7 +127,7 @@ public class WebSearchActivity extends AppCompatActivity {
             MoviesDBHelper dbHelper = new MoviesDBHelper(WebSearchActivity.this);
             dbHelper.deleteAllSearchResult();
 
-            // Restrics device orientation during download not to lose results on device rotation
+            // Restricts device orientation during download not to lose results on device rotation
             // However, I do provide "show Results" button as escape alternative - see listener below
             Utility.RestrictDeviceOrientation(WebSearchActivity.this);
 

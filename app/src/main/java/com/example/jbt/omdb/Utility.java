@@ -81,7 +81,7 @@ class Utility {
     }
 
 
-    public static void changeLocale(Context context) {
+    private static void changeLocale(Context context) {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
@@ -114,19 +114,6 @@ class Utility {
         changeLocale(activity);
         activity.setContentView(layoutId);
         resetTitle(activity, titleId);
-    }
-
-    public static boolean wasLocaleChanged(Context context) {
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-
-        String currentLang = context.getResources().getConfiguration().locale.getLanguage();
-
-        String key = context.getString(R.string.pref_lang_key);
-        String def = context.getString(R.string.pref_lang_english);
-        String newLang = prefs.getString(key, def);
-
-        return ! currentLang.equals(newLang);
     }
 }
 

@@ -5,6 +5,7 @@
         import android.content.Intent;
         import android.graphics.Bitmap;
         import android.graphics.BitmapFactory;
+        import android.support.v4.app.FragmentManager;
         import android.support.v7.app.AppCompatActivity;
         import android.support.v7.view.ActionMode;
         import android.support.v7.widget.RecyclerView;
@@ -26,10 +27,12 @@
             private final Context mContext;
             private final MoviesDBHelper mDbHelper;
             private ArrayList<Movie> mMovies;
+            private final boolean mIsTabletMode;
 
-            public MovieRecyclerAdapter(Context context, ArrayList<Movie> movies) {
+            public MovieRecyclerAdapter(Context context, ArrayList<Movie> movies, boolean isTabletMode) {
                 mContext = context;
                 mMovies = movies;
+                mIsTabletMode = isTabletMode;
                 mDbHelper = new MoviesDBHelper(mContext);
             }
 
@@ -153,9 +156,25 @@
 
                 private void launchEditActivity(Movie movie)
                 {
-                    Intent intent = new Intent(mContext, EditActivity.class);
-                    intent.putExtra(WebSearchActivity.INTENT_MOVIE_KEY, movie);
-                    mContext.startActivity(intent);
+                    AppCompatActivity mainActivity = (AppCompatActivity) mContext;
+
+                    if ( ! mIsTabletMode )
+                    {
+                        Intent intent = new Intent(mContext, EditActivity.class);
+                        intent.putExtra(WebSearchActivity.INTENT_MOVIE_KEY, movie);
+                        mContext.startActivity(intent);
+
+                    } else {
+
+                        EditFragment editFrag = new EditFragment();
+                        editFrag.setMovie(movie);
+
+                        FragmentManager manager = mainActivity.getSupportFragmentManager();
+
+                        manager.beginTransaction()
+                                .replace(R.id.editFragContainer, editFrag)
+                                .commit();
+                    }
                 }
 
                 private void refreshMainList() {
