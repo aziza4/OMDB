@@ -9,9 +9,8 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utility.changeLocale(this);
-        setContentView(R.layout.activity_settings);
-        Utility.resetTitle(this, R.string.settings_name); // workaround android bug...
+
+        Utility.setContentViewWithLocaleChange(this, R.layout.activity_settings, R.string.settings_name);
 
         getFragmentManager()
                 .beginTransaction()

@@ -20,7 +20,8 @@
         android:id="@+id/moviesListView"
         android:layout_below="@+id/searchSearchView"
         android:layout_above="@id/cancelButton"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -30,7 +31,8 @@
         android:layout_marginStart="@dimen/elements_horizontal_margin"
         android:text="@string/cancel_button"
         android:id="@+id/cancelButton"
-        style="?android:attr/buttonBarButtonStyle"/>
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_marginLeft="@dimen/elements_horizontal_margin" />
 
 
 

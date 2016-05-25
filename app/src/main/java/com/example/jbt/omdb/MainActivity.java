@@ -11,9 +11,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utility.changeLocale(this);
-        setContentView(R.layout.activity_main);
-        Utility.resetTitle(this, R.string.app_name); // workaround android bug...
+
+        Utility.setContentViewWithLocaleChange(this, R.layout.activity_main, R.string.app_name);
     }
 
     @Override

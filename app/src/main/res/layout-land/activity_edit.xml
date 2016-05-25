@@ -45,7 +45,7 @@
                 android:gravity="top"
                 android:inputType="text|textMultiLine"
                 android:scrollbars="vertical"
-                android:maxLines="4"
+                android:maxLines="3"
                 android:hint="@string/body_hint"
                 android:id="@+id/bodyEditText"
                 android:textSize="@dimen/small_text" />
@@ -120,7 +120,8 @@
             android:gravity="end"
             android:id="@+id/confirmationLinearLayout"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true">
 
             <Button
                 android:layout_width="wrap_content"

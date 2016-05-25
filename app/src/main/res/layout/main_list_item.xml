@@ -17,7 +17,8 @@
             android:contentDescription="@string/content_desc_poster"
             android:width="0dp"
             android:layout_marginEnd="@dimen/elements_horizontal_margin"
-            android:src="@android:drawable/ic_menu_report_image" />
+            android:src="@android:drawable/ic_menu_report_image"
+            android:layout_marginRight="@dimen/elements_horizontal_margin" />
 
         <LinearLayout
 
@@ -54,7 +55,8 @@
                     style="?android:attr/ratingBarStyleSmall"
                     android:numStars="5"
                     android:stepSize="0.1"
-                    android:isIndicator="true"/>
+                    android:isIndicator="true"
+                    android:layout_marginLeft="@dimen/elements_horizontal_margin" />
 
             </LinearLayout>
 
@@ -82,7 +84,8 @@
         android:layout_marginStart="@dimen/elements_horizontal_margin"
         android:layout_marginEnd="@dimen/elements_horizontal_margin"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true">
     </LinearLayout>
 
 </RelativeLayout>

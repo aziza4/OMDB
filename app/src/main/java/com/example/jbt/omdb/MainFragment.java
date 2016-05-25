@@ -1,7 +1,6 @@
 package com.example.jbt.omdb;
 
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,10 +31,6 @@ public class MainFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

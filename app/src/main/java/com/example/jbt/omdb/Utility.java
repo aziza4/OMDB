@@ -30,6 +30,7 @@ class Utility {
         activity.setRequestedOrientation(newFixedOrientation);
     }
 
+
     public static void ReleaseDeviceOrientationRestriction(Activity activity) {
 
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
@@ -45,6 +46,7 @@ class Utility {
         return stream.toByteArray();
     }
 
+
     public static Bitmap convertByteArrayToBitmap(byte[] byteArray) {
         if (byteArray == null)
             return null;
@@ -55,6 +57,7 @@ class Utility {
     public static void hideKeyboard(Activity activity) {
         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
+
 
     public static boolean isSortByTitle(Context context) {
 
@@ -67,6 +70,7 @@ class Utility {
         return prefs.getString(key, def).equals(title);
     }
 
+
     public static boolean isSaveImagesToDB(Context context) {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -75,6 +79,7 @@ class Utility {
         String def = context.getString(R.string.pref_enable_save_image_default);
         return prefs.getBoolean(key, Boolean.parseBoolean(def));
     }
+
 
     public static void changeLocale(Context context) {
 
@@ -86,10 +91,29 @@ class Utility {
 
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
+
         Configuration configuration = new Configuration();
         configuration.locale = locale;
         Resources resources = context.getResources();
         resources.updateConfiguration(configuration, context.getResources().getDisplayMetrics());
+    }
+
+
+    // Workaround android bug: http://stackoverflow.com/questions/22884068/troubles-with-activity-title-language
+    private static void resetTitle(AppCompatActivity activity, int id)
+    {
+        ActionBar actionBar = activity.getSupportActionBar();
+
+        if (actionBar != null)
+            actionBar.setTitle(activity.getString(id));
+    }
+
+
+    public static void setContentViewWithLocaleChange(AppCompatActivity activity, int layoutId, int titleId)
+    {
+        changeLocale(activity);
+        activity.setContentView(layoutId);
+        resetTitle(activity, titleId);
     }
 
     public static boolean wasLocaleChanged(Context context) {
@@ -103,15 +127,6 @@ class Utility {
         String newLang = prefs.getString(key, def);
 
         return ! currentLang.equals(newLang);
-    }
-
-    // workaround android bug: http://stackoverflow.com/questions/22884068/troubles-with-activity-title-language
-    public static void resetTitle(AppCompatActivity activity, int id)
-    {
-        ActionBar actionBar = activity.getSupportActionBar();
-
-        if (actionBar != null)
-            actionBar.setTitle(activity.getString(id));
     }
 }
 
