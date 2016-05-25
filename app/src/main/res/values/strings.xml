@@ -84,4 +84,7 @@
     <string name="pref_enable_save_image_key" translatable="false">save_image</string>
     <string name="pref_enable_save_image_default" translatable="false">true</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

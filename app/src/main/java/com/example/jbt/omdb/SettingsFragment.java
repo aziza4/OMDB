@@ -12,15 +12,12 @@ public class SettingsFragment extends PreferenceFragment
         implements Preference.OnPreferenceChangeListener{
 
 
-    public SettingsFragment() {
-        // Required empty public constructor
-    }
+    public SettingsFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Utility.changeLocale(getActivity());
         addPreferencesFromResource(R.xml.pref_general);
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_sort_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_lang_key)));
@@ -44,7 +41,6 @@ public class SettingsFragment extends PreferenceFragment
 
         if ( preference instanceof ListPreference)
         {
-
             ListPreference listPreference = (ListPreference) preference;
             int index = listPreference.findIndexOfValue(valueStr);
 
@@ -52,7 +48,6 @@ public class SettingsFragment extends PreferenceFragment
                 preference.setSummary(listPreference.getEntries()[index]);
 
         } else {
-
             preference.setSummary(valueStr);
         }
 
