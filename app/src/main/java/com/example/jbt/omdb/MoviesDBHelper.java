@@ -28,6 +28,17 @@ class MoviesDBHelper extends SQLiteOpenHelper {
     private static final String DETAILS_COL_RATING = "rating";
     private static final String DETAILS_COL_IMAGE = "image";
 
+    private static final String EDIT_TABLE_NAME = "edit";
+    private static final String EDIT_COL_ID = "_id";
+    private static final String EDIT_COL_ORIGINAL_ID = "originalid";
+    private static final String EDIT_COL_SUBJECT = "subject";
+    private static final String EDIT_COL_BODY = "body";
+    private static final String EDIT_COL_URL = "url";
+    private static final String EDIT_COL_IMDBID = "imdbid";
+    private static final String EDIT_COL_RATING = "rating";
+    private static final String EDIT_COL_IMAGE = "image";
+    private static final long EDIT_COL_ID_CONST = -2;
+
     private final Context mContext;
 
     public MoviesDBHelper(Context context) {
@@ -53,6 +64,15 @@ class MoviesDBHelper extends SQLiteOpenHelper {
                 DETAILS_COL_RATING, DETAILS_COL_IMAGE);
 
         db.execSQL(createDetailsTable);
+
+        String createEditTable = String.format(
+                "CREATE TABLE %s (%s INTEGER PRIMARY KEY, %s INTEGER, %s TEXT NOT NULL, " +
+                        "%s TEXT, %s TEXT, %s TEXT, %s REAL, %s BLOB);",
+                EDIT_TABLE_NAME, EDIT_COL_ID, EDIT_COL_ORIGINAL_ID,
+                EDIT_COL_SUBJECT, EDIT_COL_BODY, EDIT_COL_URL,
+                EDIT_COL_IMDBID, EDIT_COL_RATING, EDIT_COL_IMAGE);
+
+        db.execSQL(createEditTable);
     }
 
 
@@ -183,7 +203,9 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
     public boolean updateOrInsertMovie(Movie movie)
     {
-        return movie.getId() > 0 ? updateMovie(movie) : insertMovie(movie);
+        return movie.getId() > 0 ?
+                updateMovie(movie) :
+                insertMovie(movie);
     }
 
 
@@ -247,4 +269,95 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
         return rowsDeleted > 0;
     }
+
+
+
+// ============================= Edit table operations =============================
+
+
+    public Movie getEditMovie()
+    {
+        long originalId = -1;
+        String subject = "", body = "", url = "", imdbid = "";
+        float rating = 0f;
+        byte[] imageBytes = null;
+
+        SQLiteDatabase db = getReadableDatabase();
+        String sqlQuery = "SELECT * FROM " + EDIT_TABLE_NAME + ";";
+        Cursor c = db.rawQuery(sqlQuery, null);
+
+        if ( c.moveToNext() ) {
+
+            originalId = c.getInt(c.getColumnIndex(EDIT_COL_ORIGINAL_ID));
+            subject = c.getString(c.getColumnIndex(EDIT_COL_SUBJECT));
+            body = c.getString(c.getColumnIndex(EDIT_COL_BODY));
+            url = c.getString(c.getColumnIndex(EDIT_COL_URL));
+            imdbid = c.getString(c.getColumnIndex(EDIT_COL_IMDBID));
+            rating = c.getFloat(c.getColumnIndex(EDIT_COL_RATING));
+            imageBytes = c.getBlob(c.getColumnIndex(EDIT_COL_IMAGE));
+        }
+
+        Movie movie = new Movie(originalId,subject, body, url, imdbid, rating, imageBytes);
+
+        if ( ! c.moveToNext() )
+            insertEditMovie(movie);
+
+        c.close();
+        db.close();
+
+        return movie;
+    }
+
+
+    public boolean updateOrInsertEditMovie(Movie movie)
+    {
+        return updateEditMovie(movie) || insertEditMovie(movie);
+    }
+
+
+    private boolean insertEditMovie(Movie movie) {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        boolean saveImage = Utility.isSaveImagesToDB(mContext);
+
+        ContentValues values = new ContentValues();
+        values.put(EDIT_COL_ID, EDIT_COL_ID_CONST);
+        values.put(EDIT_COL_ORIGINAL_ID, movie.getId());
+        values.put(EDIT_COL_SUBJECT, movie.getSubject());
+        values.put(EDIT_COL_BODY, movie.getBody());
+        values.put(EDIT_COL_URL, movie.getUrl());
+        values.put(EDIT_COL_IMDBID, movie.getImdbId());
+        values.put(EDIT_COL_RATING, movie.getRating());
+        values.put(EDIT_COL_IMAGE, saveImage ? movie.getImageByteArray() : null);
+
+        long rowId = db.insert(EDIT_TABLE_NAME, null, values);
+        db.close();
+
+        return rowId > 0;
+    }
+
+
+    private boolean updateEditMovie(Movie movie) {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        boolean saveImage = Utility.isSaveImagesToDB(mContext);
+
+        ContentValues values = new ContentValues();
+        values.put(EDIT_COL_ORIGINAL_ID, movie.getId());
+        values.put(EDIT_COL_SUBJECT, movie.getSubject());
+        values.put(EDIT_COL_BODY, movie.getBody());
+        values.put(EDIT_COL_URL, movie.getUrl());
+        values.put(EDIT_COL_IMDBID, movie.getImdbId());
+        values.put(EDIT_COL_RATING, movie.getRating());
+        values.put(EDIT_COL_IMAGE, saveImage ? movie.getImageByteArray() : null);
+
+        long rowsAffected = db.update(EDIT_TABLE_NAME, values, EDIT_COL_ID + "=" + EDIT_COL_ID_CONST, null);
+        db.close();
+
+        return rowsAffected > 0;
+    }
+
 }
+

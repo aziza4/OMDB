@@ -4,12 +4,14 @@ package com.example.jbt.omdb;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -38,6 +40,10 @@ public class EditFragment extends Fragment {
 
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final float SEEK_BAR_FACTOR = 10f;
+    public static final String GALLERY_URL_KEY = "gellery_url";
+
+    private Movie mMovie;
+    private MoviesDBHelper mDbHelper;
 
     private EditText mSubjectET;
     private EditText mBodyET;
@@ -46,21 +52,20 @@ public class EditFragment extends Fragment {
     private Button mShowCaptureBtn;
     private ImageView mPosterImageView;
     private ProgressBar mProgBar;
+    private SeekBar mSeekBar;
     private TextView mSeekBarTV;
-
-    private Movie mMovie;
 
     private String mShowText;
     private String mCaptureText;
     private String mHttpScheme;
     private String mFileScheme;
 
+    private boolean mHasCamera;
     private boolean mIsTabletMode;
     private OnEditDoneListener mListener;
 
     public EditFragment() {}
 
-    public void setMovie(Movie movie) { mMovie = movie; }
     public void setTabletMode(boolean isTabletMode) { mIsTabletMode = isTabletMode; }
 
     @Override
@@ -79,10 +84,11 @@ public class EditFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        mDbHelper = new MoviesDBHelper(getActivity());
+
         View viewRoot = inflater.inflate(R.layout.fragment_edit, container, false);
 
-        if (mMovie == null)
-            return viewRoot;
+        mHasCamera = getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
 
         mShowText = getString(R.string.show_capture_button_show);
         mCaptureText = getString(R.string.show_capture_button_capture);
@@ -96,28 +102,10 @@ public class EditFragment extends Fragment {
         mShowCaptureBtn = (Button) viewRoot.findViewById(R.id.urlShowCaptureButton);
         mPosterImageView = (ImageView) viewRoot.findViewById(R.id.posterImageView);
         mProgBar = (ProgressBar) viewRoot.findViewById(R.id.downloadProgressBar);
+        mSeekBar = (SeekBar) viewRoot.findViewById(R.id.ratingSeekBar);
         mSeekBarTV = (TextView) viewRoot.findViewById(R.id.ratingValueTextView);
         Button okBtn = (Button) viewRoot.findViewById(R.id.okButton);
         Button cancelBtn = (Button) viewRoot.findViewById(R.id.cancelButton);
-        SeekBar seekBar = (SeekBar) viewRoot.findViewById(R.id.ratingSeekBar);
-
-        String ratingStr = "" + mMovie.getRating();
-        int ratingValue = (int) (mMovie.getRating() * SEEK_BAR_FACTOR);
-        mSeekBarTV.setText(ratingStr);
-        mSubjectET.setText(mMovie.getSubject());
-        mBodyET.setText(mMovie.getBody());
-        mUrlET.setText(mMovie.getUrl());
-        mProgBar.setVisibility(View.INVISIBLE);
-
-        if (seekBar != null)
-            seekBar.setProgress(ratingValue);
-
-        Bitmap image = mMovie.getImage();
-
-        if (image != null)
-            mPosterImageView.setImageBitmap(image);
-
-        setShowCaptureButtonText();
 
         mUrlET.addTextChangedListener(new TextWatcher() {
 
@@ -128,7 +116,8 @@ public class EditFragment extends Fragment {
             }
         });
 
-        if (cancelBtn != null)
+        if (cancelBtn != null) {
+
             cancelBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -136,21 +125,28 @@ public class EditFragment extends Fragment {
                 }
             });
 
-        if (mIsTabletMode)
-            cancelBtn.setVisibility(View.GONE);
+            if (mIsTabletMode)
+                cancelBtn.setVisibility(View.GONE);
+        }
 
         if (okBtn != null)
             okBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    saveMovieToDB();
+                    if ( ! saveMovieToDB()) {
+                        String emptyMsg = getString(R.string.subject_must_not_be_empty);
+                        Toast.makeText(getActivity(), emptyMsg, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
                     if (mIsTabletMode) {
                         mListener.onMovieSaved();
-                    } else {
-                        getActivity().finish();
+                        return;
                     }
+
+                    getActivity().finish();
+
                 }
             });
 
@@ -159,12 +155,15 @@ public class EditFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if ( mShowCaptureBtn.getText().equals(mCaptureText)) {
+                if ( mShowCaptureBtn.getText().toString().equals(mCaptureText)) {
                     takePicture();
                     return;
                 }
 
                 Uri uri = Uri.parse(mUrlET.getText().toString());
+
+                if (uri.getScheme() == null)
+                    return;
 
                 if (uri.getScheme().equals(mFileScheme)) {
                     displayImageFromGallery(uri.getPath());
@@ -176,23 +175,35 @@ public class EditFragment extends Fragment {
             }
         });
 
-        if (seekBar != null)
-            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    String value = String.format(Locale.ENGLISH, "%.1f", progress/ SEEK_BAR_FACTOR);
-                    mSeekBarTV.setText(value);
-                }
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                String value = String.format(Locale.ENGLISH, "%.1f", progress/ SEEK_BAR_FACTOR);
+                mSeekBarTV.setText(value);
+            }
 
-                @Override public void onStartTrackingTouch(SeekBar seekBar) {}
-                @Override public void onStopTrackingTouch(SeekBar seekBar) {}
-            });
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
 
         setHasOptionsMenu(true);
 
         Utility.hideKeyboard(getActivity());
 
         return viewRoot;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshLayout();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        saveLayout();
     }
 
     @Override
@@ -218,12 +229,11 @@ public class EditFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        getActivity(); // for accessing static member Activity.RESULT_OK on line below
-
         if (requestCode != REQUEST_TAKE_PHOTO || resultCode != Activity.RESULT_OK)
             return;
 
-        mUrlET.setText(mInvisibleTV.getText()); // save data in view to accommodate device rotation
+        String url = mInvisibleTV.getText().toString();
+        mUrlET.setText(url); // save data in view to accommodate device rotation
 
         Uri uri = Uri.parse(mUrlET.getText().toString());
         String path = uri.getPath();
@@ -272,29 +282,30 @@ public class EditFragment extends Fragment {
         }
     }
 
-
-    private boolean saveMovieToDB()
+    private Movie getMovieFromLayout()
     {
         long _id = mMovie.getId();
         String subject = mSubjectET.getText().toString();
         String body = mBodyET.getText().toString();
         String url = mUrlET.getText().toString();
-        float rating = Float.parseFloat(mSeekBarTV.getText().toString());
+        String seekBarText = mSeekBarTV.getText().toString();
+        float rating = seekBarText.isEmpty() ? 0f : Float.parseFloat(mSeekBarTV.getText().toString());
         String imdbid = mMovie.getImdbId();
 
-        BitmapDrawable bitmapDrawable = (BitmapDrawable)mPosterImageView.getDrawable();
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) mPosterImageView.getDrawable();
         Bitmap image = bitmapDrawable == null ? null : bitmapDrawable.getBitmap();
 
-        if (subject.isEmpty()) {
-            String emptyMsg = getString(R.string.subject_must_not_be_empty);
-            Toast.makeText(getActivity(), emptyMsg, Toast.LENGTH_SHORT).show();
+        return new Movie(_id, subject, body, url, imdbid, rating, image);
+    }
+
+    private boolean saveMovieToDB()
+    {
+        Movie movieToSave = getMovieFromLayout();
+
+        if (movieToSave.getSubject().isEmpty())
             return false;
-        }
 
-        Movie movie = new Movie(_id, subject, body, url, imdbid, rating, image);
-        MoviesDBHelper dbHelper = new MoviesDBHelper(getActivity());
-
-        if ( dbHelper.updateOrInsertMovie(movie) ) {
+        if ( mDbHelper.updateOrInsertMovie(movieToSave)) {
             String movieSavedMsg = getString(R.string.movie_saved_msg);
             Toast.makeText(getActivity(), movieSavedMsg, Toast.LENGTH_SHORT).show();
         }
@@ -302,10 +313,17 @@ public class EditFragment extends Fragment {
         return true;
     }
 
+    private boolean saveLayout()
+    {
+        Movie editMovie = getMovieFromLayout();
+        return mDbHelper.updateOrInsertEditMovie(editMovie);
+    }
+
 
     private void setShowCaptureButtonText()
     {
-        String showCaptureText = mUrlET.getText().toString().isEmpty() ? mCaptureText : mShowText;
+        boolean urlEmpty = mUrlET.getText().toString().isEmpty();
+        String showCaptureText = mHasCamera && urlEmpty ? mCaptureText : mShowText;
         mShowCaptureBtn.setText(showCaptureText);
     }
 
@@ -324,6 +342,11 @@ public class EditFragment extends Fragment {
 
         Uri uri = Uri.fromFile(photoFile);
 
+        PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .edit()
+                .putString(EditFragment.GALLERY_URL_KEY,uri.toString())
+                .apply();
+
         mInvisibleTV.setText(uri.toString());
         takePictureIntent.putExtra(MediaStore. EXTRA_OUTPUT, uri);
         startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
@@ -337,6 +360,33 @@ public class EditFragment extends Fragment {
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
         getActivity().sendBroadcast(mediaScanIntent);
+    }
+
+
+    private void SetViewsValues(Movie movie)
+    {
+        String ratingStr = "" + movie.getRating();
+        int ratingValue = (int) (movie.getRating() * SEEK_BAR_FACTOR);
+        mSeekBarTV.setText(ratingStr);
+        mSubjectET.setText(movie.getSubject());
+        mBodyET.setText(movie.getBody());
+        mUrlET.setText(movie.getUrl());
+        mProgBar.setVisibility(View.INVISIBLE);
+        mSeekBar.setProgress(ratingValue);
+
+        Bitmap image = movie.getImage();
+
+        if (image != null)
+            mPosterImageView.setImageBitmap(image);
+
+        setShowCaptureButtonText();
+    }
+
+
+    public void refreshLayout()
+    {
+        mMovie = mDbHelper.getEditMovie();
+        SetViewsValues(mMovie);
     }
 
 

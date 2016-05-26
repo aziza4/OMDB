@@ -160,18 +160,25 @@
                     if ( mIsTabletMode )
                     {
                         EditFragment editFrag = new EditFragment();
-                        editFrag.setMovie(movie);
                         editFrag.setTabletMode(true);
 
                         FragmentManager manager = mainActivity.getSupportFragmentManager();
 
                         manager.beginTransaction()
-                                .replace(R.id.editFragContainer, editFrag)
+                                .replace(R.id.editFragContainer, editFrag, "editFragTag")
                                 .commit();
+
+                        manager.executePendingTransactions();
+
+                        mDbHelper.updateOrInsertEditMovie(movie);
+
+                        editFrag = (EditFragment)manager.findFragmentById(R.id.editFragContainer);
+                        editFrag.refreshLayout();
+
                     } else {
 
+                        mDbHelper.updateOrInsertEditMovie(movie);
                         Intent intent = new Intent(mContext, EditActivity.class);
-                        intent.putExtra(WebSearchActivity.INTENT_MOVIE_KEY, movie);
                         mContext.startActivity(intent);
                     }
                 }

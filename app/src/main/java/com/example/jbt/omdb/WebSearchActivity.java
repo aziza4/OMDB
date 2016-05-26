@@ -17,8 +17,6 @@ import java.util.ArrayList;
 
 public class WebSearchActivity extends AppCompatActivity {
 
-    public static final String INTENT_MOVIE_KEY = "movie";
-
     private ArrayAdapter<Movie> mAdapter;
     private OmdbSearchAsyncTask mOmdbSearchAsyncTask;
 
@@ -226,8 +224,10 @@ public class WebSearchActivity extends AppCompatActivity {
             if (movie == null)
                 return;
 
+            MoviesDBHelper dbHelper = new MoviesDBHelper(WebSearchActivity.this);
+            dbHelper.updateOrInsertEditMovie(movie);
+
             Intent intent = new Intent(WebSearchActivity.this, EditActivity.class);
-            intent.putExtra(WebSearchActivity.INTENT_MOVIE_KEY, movie);
             startActivity(intent);
         }
     }

@@ -82,8 +82,8 @@ public class MainFragment extends Fragment {
 
                                 case MAN_OPTION_INDEX:
                                     Movie movie = new Movie("");
+                                    mDbHelper.updateOrInsertEditMovie(movie);
                                     intent = new Intent(getActivity(), EditActivity.class);
-                                    intent.putExtra(WebSearchActivity.INTENT_MOVIE_KEY, movie);
                                     startActivity(intent);
                                     break;
                             }

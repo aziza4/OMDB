@@ -1,5 +1,6 @@
 package com.example.jbt.omdb;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,11 @@ public class MainActivity extends AppCompatActivity implements EditFragment.OnEd
 
         transaction.commit();
         mMainFrag.setTabletMode(isTabletMode);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data); // ensures frag onActivityResult() to get called
     }
 
     @Override

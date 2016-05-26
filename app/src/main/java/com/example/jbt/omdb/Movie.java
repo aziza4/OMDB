@@ -8,7 +8,7 @@ import android.os.Parcelable;
 
 public class Movie implements Parcelable {
 
-    private final static long NOT_IN_DB = -1;
+    private final static long NOT_IN_DB = -1L;
 
     private long mId;
     private final String mSubject;
@@ -74,6 +74,10 @@ public class Movie implements Parcelable {
 
     public long getId() {
         return mId;
+    }
+
+    public long getIdForNewMovie() {
+        return NOT_IN_DB;
     }
 
     public String getSubject() {
