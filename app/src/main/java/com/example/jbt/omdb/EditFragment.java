@@ -1,7 +1,6 @@
 package com.example.jbt.omdb;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -38,7 +37,7 @@ import java.util.Locale;
 
 public class EditFragment extends Fragment {
 
-    private static final int REQUEST_TAKE_PHOTO = 1;
+
     private static final float SEEK_BAR_FACTOR = 10f;
     public static final String GALLERY_URL_KEY = "gellery_url";
 
@@ -47,7 +46,6 @@ public class EditFragment extends Fragment {
 
     private EditText mSubjectET;
     private EditText mBodyET;
-    private TextView mInvisibleTV;
     private EditText mUrlET;
     private Button mShowCaptureBtn;
     private ImageView mPosterImageView;
@@ -98,7 +96,6 @@ public class EditFragment extends Fragment {
         mSubjectET = ((EditText) viewRoot.findViewById(R.id.subjectEditText));
         mBodyET = ((EditText) viewRoot.findViewById(R.id.bodyEditText));
         mUrlET = ((EditText) viewRoot.findViewById(R.id.urlEditText));
-        mInvisibleTV = ((TextView) viewRoot.findViewById(R.id.invisibleTextView));
         mShowCaptureBtn = (Button) viewRoot.findViewById(R.id.urlShowCaptureButton);
         mPosterImageView = (ImageView) viewRoot.findViewById(R.id.posterImageView);
         mProgBar = (ProgressBar) viewRoot.findViewById(R.id.downloadProgressBar);
@@ -226,22 +223,6 @@ public class EditFragment extends Fragment {
         mShareActionProvider.setShareIntent(shareIntent);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode != REQUEST_TAKE_PHOTO || resultCode != Activity.RESULT_OK)
-            return;
-
-        String url = mInvisibleTV.getText().toString();
-        mUrlET.setText(url); // save data in view to accommodate device rotation
-
-        Uri uri = Uri.parse(mUrlET.getText().toString());
-        String path = uri.getPath();
-
-        if ( ! path.isEmpty())
-            saveImageToGallery(path);
-    }
-
 
     private void displayImageFromGallery(String path)
     {
@@ -347,10 +328,27 @@ public class EditFragment extends Fragment {
                 .putString(EditFragment.GALLERY_URL_KEY,uri.toString())
                 .apply();
 
-        mInvisibleTV.setText(uri.toString());
+        mUrlET.setText(uri.toString());
+        saveLayout();
+
         takePictureIntent.putExtra(MediaStore. EXTRA_OUTPUT, uri);
-        startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+        getActivity().startActivityForResult(takePictureIntent, EditActivity.REQUEST_TAKE_PHOTO);
     }
+
+    public void getUrlAndSaveImageToGallery()
+    {
+
+        String url = PreferenceManager
+                .getDefaultSharedPreferences(getActivity())
+                .getString(EditFragment.GALLERY_URL_KEY,"");
+
+        Uri uri = Uri.parse(url);
+        String path = uri.getPath();
+
+        if ( ! path.isEmpty())
+            saveImageToGallery(path);
+    }
+
 
 
     private void saveImageToGallery(String path)

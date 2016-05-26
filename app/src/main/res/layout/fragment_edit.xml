@@ -6,14 +6,6 @@
     android:padding="@dimen/activity_vertical_margin"
     tools:context="com.example.jbt.omdb.EditActivity">
 
-
-    <TextView android:id="@+id/invisibleTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:freezesText="true"
-        android:visibility="invisible"/>
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
