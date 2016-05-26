@@ -63,7 +63,8 @@
                 return mMovies.size();
             }
 
-            class MovieViewHolder extends RecyclerView.ViewHolder{
+
+            class MovieViewHolder extends RecyclerView.ViewHolder {
 
                 public final ImageView posterIV;
                 public final TextView subjectTV;
@@ -137,8 +138,6 @@
                             return true;
                         }
                     });
-
-
                 }
 
                 public void bind(Movie movie)
@@ -158,22 +157,22 @@
                 {
                     AppCompatActivity mainActivity = (AppCompatActivity) mContext;
 
-                    if ( ! mIsTabletMode )
+                    if ( mIsTabletMode )
                     {
-                        Intent intent = new Intent(mContext, EditActivity.class);
-                        intent.putExtra(WebSearchActivity.INTENT_MOVIE_KEY, movie);
-                        mContext.startActivity(intent);
-
-                    } else {
-
                         EditFragment editFrag = new EditFragment();
                         editFrag.setMovie(movie);
+                        editFrag.setTabletMode(true);
 
                         FragmentManager manager = mainActivity.getSupportFragmentManager();
 
                         manager.beginTransaction()
                                 .replace(R.id.editFragContainer, editFrag)
                                 .commit();
+                    } else {
+
+                        Intent intent = new Intent(mContext, EditActivity.class);
+                        intent.putExtra(WebSearchActivity.INTENT_MOVIE_KEY, movie);
+                        mContext.startActivity(intent);
                     }
                 }
 
@@ -181,6 +180,5 @@
                     mMovies = mDbHelper.getDetailsMovieArrayList();
                     notifyDataSetChanged();
                 }
-
             }
         }

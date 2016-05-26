@@ -25,7 +25,9 @@ public class MainFragment extends Fragment {
     private boolean mIsTabletMode;
 
     public MainFragment() {}
+
     public void setTabletMode(boolean isTabletMode) { mIsTabletMode = isTabletMode; }
+    public void onMovieSaved() { refreshMainList(); }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

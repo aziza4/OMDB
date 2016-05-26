@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class EditActivity extends AppCompatActivity {
+public class EditActivity extends AppCompatActivity implements EditFragment.OnEditDoneListener{
 
     private Movie mMovie;
 
@@ -26,5 +26,10 @@ public class EditActivity extends AppCompatActivity {
                 .commit();
 
         editFrag.setMovie(mMovie);
+        editFrag.setTabletMode(false);
     }
+
+    @Override
+    public void onMovieSaved() {}
+
 }

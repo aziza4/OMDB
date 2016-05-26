@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements EditFragment.OnEditDoneListener {
 
     public static final String LOG_CAT = "OMDB:";
+
+    private MainFragment mMainFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,18 +19,22 @@ public class MainActivity extends AppCompatActivity {
         Utility.setContentViewWithLocaleChange(this, R.layout.activity_main, R.string.app_name);
 
         boolean isTabletMode = false;
-        MainFragment mainFrag = new MainFragment();
+        mMainFrag = new MainFragment();
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
 
-        transaction.replace(R.id.mainFragContainer, mainFrag);
+        transaction.replace(R.id.mainFragContainer, mMainFrag);
 
         if (findViewById(R.id.editFragContainer) != null) {
             isTabletMode = true;
-            //transaction.add(R.id.editFragContainer, new EditFragment());
         }
 
         transaction.commit();
-        mainFrag.setTabletMode(isTabletMode);
+        mMainFrag.setTabletMode(isTabletMode);
+    }
+
+    @Override
+    public void onMovieSaved() {
+        mMainFrag.onMovieSaved();
     }
 }

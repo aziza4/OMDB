@@ -2,6 +2,7 @@ package com.example.jbt.omdb;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -54,9 +55,25 @@ public class EditFragment extends Fragment {
     private String mHttpScheme;
     private String mFileScheme;
 
+    private boolean mIsTabletMode;
+    private OnEditDoneListener mListener;
 
     public EditFragment() {}
+
     public void setMovie(Movie movie) { mMovie = movie; }
+    public void setTabletMode(boolean isTabletMode) { mIsTabletMode = isTabletMode; }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mListener = (OnEditDoneListener) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -119,13 +136,21 @@ public class EditFragment extends Fragment {
                 }
             });
 
+        if (mIsTabletMode)
+            cancelBtn.setVisibility(View.GONE);
+
         if (okBtn != null)
             okBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    if (saveMovieToDB())
+                    saveMovieToDB();
+
+                    if (mIsTabletMode) {
+                        mListener.onMovieSaved();
+                    } else {
                         getActivity().finish();
+                    }
                 }
             });
 
@@ -315,4 +340,7 @@ public class EditFragment extends Fragment {
     }
 
 
+    public interface OnEditDoneListener {
+        void onMovieSaved();
+    }
 }
