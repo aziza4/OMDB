@@ -7,12 +7,18 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -157,11 +163,32 @@ public class EditFragment extends Fragment {
                 @Override public void onStopTrackingTouch(SeekBar seekBar) {}
             });
 
+        setHasOptionsMenu(true);
+
         Utility.hideKeyboard(getActivity());
 
         return viewRoot;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.edit_menu, menu);
+        MenuItem item = menu.findItem(R.id.action_share);
+        ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+
+        if (mShareActionProvider == null)
+            return;
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+        }
+
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, mMovie.getDetailsAsText(getActivity()));
+        mShareActionProvider.setShareIntent(shareIntent);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
