@@ -25,7 +25,7 @@
 
             private final Context mContext;
             private final MoviesDBHelper mDbHelper;
-            private FragmentHelper mFragmentHelper;
+            private final FragmentHelper mFragmentHelper;
             private ArrayList<Movie> mMovies;
             private final boolean mIsTabletMode;
 

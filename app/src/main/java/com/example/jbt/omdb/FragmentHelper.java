@@ -5,17 +5,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 
-public class FragmentHelper {
+class FragmentHelper {
 
-    boolean mInTabletMode;
-    MoviesDBHelper mDbHelper;
-    AppCompatActivity mActivity;
-    FragmentManager mFragManager;
+    private final boolean mInTabletMode;
+    private final MoviesDBHelper mDbHelper;
+    private final FragmentManager mFragManager;
 
 
     public FragmentHelper(Activity activity, boolean inTabletMode)
     {
-        mActivity = (AppCompatActivity)activity;
+        AppCompatActivity mActivity = (AppCompatActivity) activity;
         mInTabletMode = inTabletMode;
         mFragManager = mActivity.getSupportFragmentManager();
         mDbHelper = new MoviesDBHelper(activity);

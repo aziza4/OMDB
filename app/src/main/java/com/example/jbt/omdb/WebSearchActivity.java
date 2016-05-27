@@ -99,7 +99,7 @@ public class WebSearchActivity extends AppCompatActivity {
 
     private class OmdbSearchAsyncTask extends AsyncTask<String, Integer, ArrayList<Movie>>
     {
-        private boolean mCancelRequested = false; // allow user to request cancelation during download
+        private boolean mCancelRequested = false; // allow user to request cancellation during download
         private int mTotalResults;
 
         private ArrayList<Movie> GetNextPageFromOMDB(URL url)

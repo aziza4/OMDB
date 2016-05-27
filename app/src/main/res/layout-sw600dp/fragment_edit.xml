@@ -123,18 +123,18 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/ok_button"
+                android:text="@string/cancel_button"
                 android:textSize="@dimen/small_text"
-                android:id="@+id/okButton"
+                android:visibility="gone"
+                android:id="@+id/cancelButton"
                 style="?android:attr/buttonBarButtonStyle"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/cancel_button"
+                android:text="@string/ok_button"
                 android:textSize="@dimen/small_text"
-                android:visibility="gone"
-                android:id="@+id/cancelButton"
+                android:id="@+id/okButton"
                 style="?android:attr/buttonBarButtonStyle"/>
 
         </LinearLayout>

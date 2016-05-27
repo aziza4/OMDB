@@ -76,10 +76,6 @@ public class Movie implements Parcelable {
         return mId;
     }
 
-    public long getIdForNewMovie() {
-        return NOT_IN_DB;
-    }
-
     public String getSubject() {
         return mSubject;
     }

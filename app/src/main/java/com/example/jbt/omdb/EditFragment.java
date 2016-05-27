@@ -39,7 +39,6 @@ public class EditFragment extends Fragment {
 
     public static final int REQUEST_TAKE_PHOTO = 1;
     private static final float SEEK_BAR_FACTOR = 10f;
-    public static final String GALLERY_URL_KEY = "gallery_url";
 
     private Movie mMovie;
     private MoviesDBHelper mDbHelper;
