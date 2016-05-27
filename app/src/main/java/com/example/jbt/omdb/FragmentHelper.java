@@ -60,8 +60,6 @@ class FragmentHelper {
 
         mFragManager.executePendingTransactions();
 
-        editFragment.setTabletMode(mInTabletMode);
-
         return editFragment;
     }
 

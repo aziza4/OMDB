@@ -63,8 +63,6 @@ public class EditFragment extends Fragment {
 
     public EditFragment() {}
 
-    public void setTabletMode(boolean isTabletMode) { mIsTabletMode = isTabletMode; }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -82,10 +80,12 @@ public class EditFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         mDbHelper = new MoviesDBHelper(getActivity());
+        mHasCamera = getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+
+        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
+        mIsTabletMode = sharedPrefHelper.getTabletMode();
 
         View viewRoot = inflater.inflate(R.layout.fragment_edit, container, false);
-
-        mHasCamera = getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
 
         mShowText = getString(R.string.show_capture_button_show);
         mCaptureText = getString(R.string.show_capture_button_capture);

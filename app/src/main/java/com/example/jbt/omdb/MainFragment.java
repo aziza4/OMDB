@@ -27,8 +27,6 @@ public class MainFragment extends Fragment {
 
     public MainFragment() {}
 
-    // both methods below are called from containing activity
-    public void setTabletMode(boolean isTabletMode) { mIsTabletMode = isTabletMode; }
     public void onMovieSaved() { refreshMainFrag(); }
 
 
@@ -46,6 +44,9 @@ public class MainFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.mainListView);
+
+        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
+        mIsTabletMode = sharedPrefHelper.getTabletMode();
 
         mDbHelper = new MoviesDBHelper(getActivity());
         mDbHelper.deleteAllSearchResult();

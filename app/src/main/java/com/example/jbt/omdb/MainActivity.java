@@ -20,11 +20,11 @@ public class MainActivity extends AppCompatActivity implements EditFragment.OnEd
         Utility.setContentViewWithLocaleChange(this, R.layout.activity_main, R.string.app_name);
 
         boolean isTabletMode = findViewById(R.id.editFragContainer) != null;
+        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
+        sharedPrefHelper.saveTabletMode(isTabletMode);
 
         mFragmentHelper = new FragmentHelper(this, isTabletMode);
         mMainFrag = mFragmentHelper.replaceMainFragment(); // create main fragment
-
-        mMainFrag.setTabletMode(isTabletMode);
     }
 
     @Override

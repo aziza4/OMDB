@@ -50,4 +50,17 @@ class SharedPrefHelper {
         Resources resources = mContext.getResources();
         resources.updateConfiguration(configuration, mContext.getResources().getDisplayMetrics());
     }
+
+    public void saveTabletMode(boolean isTabletMode)
+    {
+        String key = mContext.getString(R.string.pref_is_tablet_key);
+        mPrefs.edit().putBoolean(key, isTabletMode).apply();
+    }
+
+    public boolean getTabletMode()
+    {
+        String key = mContext.getString(R.string.pref_is_tablet_key);
+        String def = mContext.getString(R.string.pref_is_tablet_default);
+        return mPrefs.getBoolean(key,Boolean.parseBoolean(def));
+    }
 }
