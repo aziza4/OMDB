@@ -315,16 +315,9 @@ class MoviesDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean updateOrInsertEditMovie(Movie movie)
-    {
-        boolean wasUpdated = updateEditMovie(movie);
+    public boolean updateOrInsertEditMovie(Movie movie) {
 
-        if (wasUpdated)
-            return true;
-
-        boolean wasInserted =insertEditMovie(movie);
-
-        return wasInserted;
+        return updateEditMovie(movie) || insertEditMovie(movie);
     }
 
 
