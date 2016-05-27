@@ -87,6 +87,7 @@ public class WebSearchActivity extends AppCompatActivity {
         MoviesDBHelper dbHelper = new MoviesDBHelper(this);
         ArrayList<Movie> list = dbHelper.getAllSearchResults();
         RefreshSearchList(list);
+        Utility.hideKeyboard(this); // stop irritating auto keyboard popup
     }
 
 
