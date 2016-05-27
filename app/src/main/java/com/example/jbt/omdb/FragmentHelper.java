@@ -38,6 +38,10 @@ public class FragmentHelper {
     public void replaceMovieOnEditFragment(Movie movie)
     {
         mDbHelper.updateOrInsertEditMovie(movie);
+
+        if (! mInTabletMode)
+            return;
+
         EditFragment editFrag = (EditFragment)mFragManager.findFragmentById(R.id.editFragContainer);
 
         if (editFrag == null)

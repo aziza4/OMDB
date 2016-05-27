@@ -326,8 +326,6 @@ public class EditFragment extends Fragment {
 
         Uri uri = Uri.fromFile(photoFile);
 
-        Utility.setPreferenceStringPrm(getActivity(), EditFragment.GALLERY_URL_KEY, uri.toString());
-
         mUrlET.setText(uri.toString());
         saveLayout();
 
@@ -338,7 +336,7 @@ public class EditFragment extends Fragment {
 
     public void onCameraActivityResult()
     {
-        String url = Utility.getPreferenceStringPrm(getActivity(), EditFragment.GALLERY_URL_KEY, "");
+        String url = mUrlET.getText().toString();
         Uri uri = Uri.parse(url);
         String path = uri.getPath();
 
