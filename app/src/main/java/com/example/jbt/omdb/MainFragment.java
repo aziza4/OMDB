@@ -22,12 +22,14 @@ public class MainFragment extends Fragment {
 
     private MovieRecyclerAdapter mAdapter;
     private MoviesDBHelper mDbHelper;
+    private FragmentHelper mFragmentHelper;
     private boolean mIsTabletMode;
 
     public MainFragment() {}
 
     public void setTabletMode(boolean isTabletMode) { mIsTabletMode = isTabletMode; }
-    public void onMovieSaved() { refreshMainList(); }
+
+    public void onMovieSaved() { refreshMainFrag(); }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class MainFragment extends Fragment {
 
         mDbHelper = new MoviesDBHelper(getActivity());
         mDbHelper.deleteAllSearchResult();
+        mFragmentHelper = new FragmentHelper(getActivity(), mIsTabletMode);
 
         mAdapter = new MovieRecyclerAdapter(getActivity(), mDbHelper.getDetailsMovieArrayList(), mIsTabletMode);
 
@@ -81,10 +84,11 @@ public class MainFragment extends Fragment {
                                     break;
 
                                 case MAN_OPTION_INDEX:
-                                    Movie movie = new Movie("");
-                                    mDbHelper.updateOrInsertEditMovie(movie);
-                                    intent = new Intent(getActivity(), EditActivity.class);
-                                    startActivity(intent);
+                                    refreshEditFragWithBlankMovie();
+                                    if (! mIsTabletMode) {
+                                        intent = new Intent(getActivity(), EditActivity.class);
+                                        startActivity(intent);
+                                    }
                                     break;
                             }
                         }
@@ -101,7 +105,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        refreshMainList();
+        refreshMainFrag();
     }
 
 
@@ -150,10 +154,11 @@ public class MainFragment extends Fragment {
                 .setPositiveButton(deleteButton,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                if ( mDbHelper.deleteAllMovies() )
+                                if ( deleteAllMovies() )
                                 {
                                     Toast.makeText(getActivity(), deleteAllConfMsg, Toast.LENGTH_SHORT).show();
-                                    refreshMainList();
+                                    removeEditFrag();
+                                    refreshMainFrag();
                                 }
                                 dialog.dismiss();
                             }
@@ -170,7 +175,21 @@ public class MainFragment extends Fragment {
                 .show();
     }
 
-    private void refreshMainList() {
+    private void refreshMainFrag() {
         mAdapter.setData(mDbHelper.getDetailsMovieArrayList());
+    }
+
+    private void refreshEditFragWithBlankMovie() {
+        mFragmentHelper.replaceMovieOnEditFragment(new Movie(""));
+    }
+
+    private void removeEditFrag() {
+        mFragmentHelper.removeEditFragmentIfExists();
+    }
+
+    private boolean deleteAllMovies()
+    {
+        mDbHelper.deleteAllEditMovies();
+        return mDbHelper.deleteAllMovies();
     }
 }

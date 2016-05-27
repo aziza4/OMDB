@@ -115,5 +115,17 @@ class Utility {
         activity.setContentView(layoutId);
         resetTitle(activity, titleId);
     }
+
+
+    public static void setPreferenceStringPrm(Context context, String key, String val)
+    {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(key, val).apply();
+    }
+
+    public static String getPreferenceStringPrm(Context context, String key, String defVal)
+    {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(key, defVal);
+    }
+
 }
 

@@ -359,5 +359,14 @@ class MoviesDBHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
+    public boolean deleteAllEditMovies() {
+
+        SQLiteDatabase db = getWritableDatabase();
+        long rowsDeleted = db.delete(EDIT_TABLE_NAME, null , null);
+        db.close();
+
+        return rowsDeleted > 0;
+    }
+
 }
 

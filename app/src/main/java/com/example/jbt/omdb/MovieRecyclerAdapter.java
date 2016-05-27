@@ -5,7 +5,6 @@
         import android.content.Intent;
         import android.graphics.Bitmap;
         import android.graphics.BitmapFactory;
-        import android.support.v4.app.FragmentManager;
         import android.support.v7.app.AppCompatActivity;
         import android.support.v7.view.ActionMode;
         import android.support.v7.widget.RecyclerView;
@@ -26,6 +25,7 @@
 
             private final Context mContext;
             private final MoviesDBHelper mDbHelper;
+            private FragmentHelper mFragmentHelper;
             private ArrayList<Movie> mMovies;
             private final boolean mIsTabletMode;
 
@@ -34,6 +34,7 @@
                 mMovies = movies;
                 mIsTabletMode = isTabletMode;
                 mDbHelper = new MoviesDBHelper(mContext);
+                mFragmentHelper = new FragmentHelper((AppCompatActivity)mContext, mIsTabletMode);
             }
 
             public void setData(ArrayList<Movie> movies)
@@ -120,6 +121,7 @@
                                                 String movieDeletedMsg = mContext.getString(R.string.movie_deleted_msg);
                                                 Toast.makeText(mContext, movieDeletedMsg, Toast.LENGTH_SHORT).show();
                                                 refreshMainList();
+                                                removeEditFrag();
                                                 mode.finish();
                                             }
                                             return true;
@@ -130,9 +132,7 @@
                                 }
 
                                 @Override
-                                public void onDestroyActionMode(ActionMode mode) {
-
-                                }
+                                public void onDestroyActionMode(ActionMode mode) { }
                             });
 
                             return true;
@@ -155,37 +155,23 @@
 
                 private void launchEditActivity(Movie movie)
                 {
-                    AppCompatActivity mainActivity = (AppCompatActivity) mContext;
-
-                    if ( mIsTabletMode )
-                    {
-                        EditFragment editFrag = new EditFragment();
-                        editFrag.setTabletMode(true);
-
-                        FragmentManager manager = mainActivity.getSupportFragmentManager();
-
-                        manager.beginTransaction()
-                                .replace(R.id.editFragContainer, editFrag, "editFragTag")
-                                .commit();
-
-                        manager.executePendingTransactions();
-
-                        mDbHelper.updateOrInsertEditMovie(movie);
-
-                        editFrag = (EditFragment)manager.findFragmentById(R.id.editFragContainer);
-                        editFrag.refreshLayout();
-
+                    if ( mIsTabletMode ) {
+                        mFragmentHelper.replaceEditFragment();
                     } else {
-
-                        mDbHelper.updateOrInsertEditMovie(movie);
                         Intent intent = new Intent(mContext, EditActivity.class);
                         mContext.startActivity(intent);
                     }
+
+                    mFragmentHelper.replaceMovieOnEditFragment(movie);
                 }
 
                 private void refreshMainList() {
                     mMovies = mDbHelper.getDetailsMovieArrayList();
                     notifyDataSetChanged();
+                }
+
+                private void removeEditFrag() {
+                    mFragmentHelper.removeEditFragmentIfExists();
                 }
             }
         }

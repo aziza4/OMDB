@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -38,8 +37,9 @@ import java.util.Locale;
 public class EditFragment extends Fragment {
 
 
+    public static final int REQUEST_TAKE_PHOTO = 1;
     private static final float SEEK_BAR_FACTOR = 10f;
-    public static final String GALLERY_URL_KEY = "gellery_url";
+    public static final String GALLERY_URL_KEY = "gallery_url";
 
     private Movie mMovie;
     private MoviesDBHelper mDbHelper;
@@ -52,6 +52,7 @@ public class EditFragment extends Fragment {
     private ProgressBar mProgBar;
     private SeekBar mSeekBar;
     private TextView mSeekBarTV;
+    private Button mCancelBtn;
 
     private String mShowText;
     private String mCaptureText;
@@ -101,8 +102,8 @@ public class EditFragment extends Fragment {
         mProgBar = (ProgressBar) viewRoot.findViewById(R.id.downloadProgressBar);
         mSeekBar = (SeekBar) viewRoot.findViewById(R.id.ratingSeekBar);
         mSeekBarTV = (TextView) viewRoot.findViewById(R.id.ratingValueTextView);
-        Button okBtn = (Button) viewRoot.findViewById(R.id.okButton);
-        Button cancelBtn = (Button) viewRoot.findViewById(R.id.cancelButton);
+        Button mOkBtn = (Button) viewRoot.findViewById(R.id.okButton);
+        mCancelBtn = (Button) viewRoot.findViewById(R.id.cancelButton);
 
         mUrlET.addTextChangedListener(new TextWatcher() {
 
@@ -113,39 +114,32 @@ public class EditFragment extends Fragment {
             }
         });
 
-        if (cancelBtn != null) {
-
-            cancelBtn.setOnClickListener(new View.OnClickListener() {
+        mCancelBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     getActivity().finish();
                 }
             });
 
-            if (mIsTabletMode)
-                cancelBtn.setVisibility(View.GONE);
-        }
+        mOkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        if (okBtn != null)
-            okBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if ( ! saveMovieToDB()) {
-                        String emptyMsg = getString(R.string.subject_must_not_be_empty);
-                        Toast.makeText(getActivity(), emptyMsg, Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    if (mIsTabletMode) {
-                        mListener.onMovieSaved();
-                        return;
-                    }
-
-                    getActivity().finish();
-
+                if ( ! saveMovieToDB()) {
+                    String emptyMsg = getString(R.string.subject_must_not_be_empty);
+                    Toast.makeText(getActivity(), emptyMsg, Toast.LENGTH_SHORT).show();
+                    return;
                 }
-            });
+
+                if (mIsTabletMode) {
+                    mListener.onMovieSaved();
+                    return;
+                }
+
+                getActivity().finish();
+
+            }
+        });
 
         mShowCaptureBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -172,6 +166,7 @@ public class EditFragment extends Fragment {
             }
         });
 
+
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -192,19 +187,22 @@ public class EditFragment extends Fragment {
 
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         refreshLayout();
     }
 
+
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         saveLayout();
     }
 
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
         inflater.inflate(R.menu.edit_menu, menu);
         MenuItem item = menu.findItem(R.id.action_share);
         ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
@@ -263,6 +261,7 @@ public class EditFragment extends Fragment {
         }
     }
 
+
     private Movie getMovieFromLayout()
     {
         long _id = mMovie.getId();
@@ -279,6 +278,7 @@ public class EditFragment extends Fragment {
         return new Movie(_id, subject, body, url, imdbid, rating, image);
     }
 
+
     private boolean saveMovieToDB()
     {
         Movie movieToSave = getMovieFromLayout();
@@ -294,10 +294,13 @@ public class EditFragment extends Fragment {
         return true;
     }
 
-    private boolean saveLayout()
+
+    private void saveLayout()
     {
-        Movie editMovie = getMovieFromLayout();
-        return mDbHelper.updateOrInsertEditMovie(editMovie);
+        Movie movie = getMovieFromLayout();
+
+        FragmentHelper fragmentHelper = new FragmentHelper(getActivity(), mIsTabletMode);
+        fragmentHelper.replaceMovieOnEditFragment(movie);
     }
 
 
@@ -323,32 +326,25 @@ public class EditFragment extends Fragment {
 
         Uri uri = Uri.fromFile(photoFile);
 
-        PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .edit()
-                .putString(EditFragment.GALLERY_URL_KEY,uri.toString())
-                .apply();
+        Utility.setPreferenceStringPrm(getActivity(), EditFragment.GALLERY_URL_KEY, uri.toString());
 
         mUrlET.setText(uri.toString());
         saveLayout();
 
-        takePictureIntent.putExtra(MediaStore. EXTRA_OUTPUT, uri);
-        getActivity().startActivityForResult(takePictureIntent, EditActivity.REQUEST_TAKE_PHOTO);
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        getActivity().startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
     }
 
-    public void getUrlAndSaveImageToGallery()
+
+    public void onCameraActivityResult()
     {
-
-        String url = PreferenceManager
-                .getDefaultSharedPreferences(getActivity())
-                .getString(EditFragment.GALLERY_URL_KEY,"");
-
+        String url = Utility.getPreferenceStringPrm(getActivity(), EditFragment.GALLERY_URL_KEY, "");
         Uri uri = Uri.parse(url);
         String path = uri.getPath();
 
         if ( ! path.isEmpty())
             saveImageToGallery(path);
     }
-
 
 
     private void saveImageToGallery(String path)
@@ -372,10 +368,13 @@ public class EditFragment extends Fragment {
         mProgBar.setVisibility(View.INVISIBLE);
         mSeekBar.setProgress(ratingValue);
 
-        Bitmap image = movie.getImage();
+        if (movie.getImage() != null)
+            mPosterImageView.setImageBitmap(movie.getImage());
+        else
+            mPosterImageView.setImageResource(0);
 
-        if (image != null)
-            mPosterImageView.setImageBitmap(image);
+        if (mIsTabletMode)
+            mCancelBtn.setVisibility(View.GONE);
 
         setShowCaptureButtonText();
     }
