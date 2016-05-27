@@ -8,120 +8,106 @@
     android:orientation="vertical"
     tools:context="com.example.jbt.omdb.EditActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/subjectEditText"
+        android:singleLine="true"
+        android:inputType="text"
+        android:hint="@string/subject_hint"
+        android:textSize="@dimen/large_text"
+        android:textIsSelectable="false" />
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:inputType="text|textMultiLine"
+        android:scrollbars="vertical"
+        android:maxLines="4"
+        android:hint="@string/body_hint"
+        android:id="@+id/bodyEditText"
+        android:textSize="@dimen/small_text" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/urlLinearLayout">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:hint="@string/url_hint"
+            android:id="@+id/urlEditText"
+            android:gravity="top"
+            android:inputType="textUri|textMultiLine"
+            android:scrollbars="vertical"
+            android:maxLines="3"
+            android:textSize="@dimen/very_small_text"
+            android:textIsSelectable="true" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:text="@string/show_capture_button_show"
+            android:textSize="@dimen/small_text"
+            android:id="@+id/urlShowCaptureButton" />
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/subjectEditText"
-                android:singleLine="true"
-                android:inputType="text"
-                android:hint="@string/subject_hint"
-                android:textSize="@dimen/large_text"
-                android:textIsSelectable="false" />
+    </LinearLayout>
 
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="top"
-                android:inputType="text|textMultiLine"
-                android:scrollbars="vertical"
-                android:maxLines="3"
-                android:hint="@string/body_hint"
-                android:id="@+id/bodyEditText"
-                android:textSize="@dimen/small_text" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/urlLinearLayout">
-
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/url_hint"
-                    android:id="@+id/urlEditText"
-                    android:gravity="top"
-                    android:inputType="textUri|textMultiLine"
-                    android:scrollbars="vertical"
-                    android:maxLines="3"
-                    android:textSize="@dimen/small_text"
-                    android:textIsSelectable="true" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:text="@string/show_capture_button_show"
-                    android:id="@+id/urlShowCaptureButton" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:id="@+id/ratingLinearLayout">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/elements_horizontal_margin"
-                    android:paddingLeft="@dimen/elements_horizontal_margin"
-                    android:paddingEnd="@dimen/elements_horizontal_margin"
-                    android:paddingRight="@dimen/elements_horizontal_margin"
-                    android:text="@string/rating_text_view"
-                    android:id="@+id/ratingTextView" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/elements_horizontal_margin"
-                    android:paddingLeft="@dimen/elements_horizontal_margin"
-                    android:paddingEnd="@dimen/elements_horizontal_margin"
-                    android:paddingRight="@dimen/elements_horizontal_margin"
-                    android:textSize="@dimen/large_text"
-                    android:textColor="@color/colorAccent"
-                    android:id="@+id/ratingValueTextView"/>
-
-                <SeekBar
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/ratingSeekBar"
-                    android:layout_weight="1"
-                    android:max="50" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-
-    </RelativeLayout>
-
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="@dimen/elements_horizontal_margin"
+        android:layout_marginTop="@dimen/elements_horizontal_margin"
+        android:id="@+id/ratingLinearLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/rating_text_view"
+            android:textSize="@dimen/small_text"
+            android:id="@+id/ratingTextView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/elements_horizontal_margin"
+            android:paddingLeft="@dimen/elements_horizontal_margin"
+            android:paddingEnd="@dimen/elements_horizontal_margin"
+            android:paddingRight="@dimen/elements_horizontal_margin"
+            android:textSize="@dimen/large_text"
+            android:textColor="@color/colorAccent"
+            android:id="@+id/ratingValueTextView"/>
+
+        <SeekBar
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingSeekBar"
+            android:layout_weight="1"
+            android:max="50" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@android:color/white">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:id="@+id/posterImageView"
             android:contentDescription="@string/content_desc_poster"
             android:paddingTop="@dimen/elements_vertical_margin"
@@ -132,34 +118,36 @@
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:id="@+id/downloadProgressBar"
             android:layout_gravity="center"
             style="@android:style/Widget.ProgressBar.Large"
             android:indeterminate="true" />
 
-    </FrameLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="end"
-        android:id="@+id/confirmationLinearLayout" >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:text="@string/ok_button"
+            android:textSize="@dimen/small_text"
+            android:id="@+id/okButton"
+            style="?android:attr/buttonBarButtonStyle"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel_button"
+            android:textSize="@dimen/small_text"
+            android:visibility="gone"
+            android:layout_toLeftOf="@id/okButton"
+            android:layout_toStartOf="@id/okButton"
+            android:layout_alignParentBottom="true"
             android:id="@+id/cancelButton"
             style="?android:attr/buttonBarButtonStyle"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ok_button"
-            android:id="@+id/okButton"
-            style="?android:attr/buttonBarButtonStyle"/>
+    </RelativeLayout>
 
-    </LinearLayout>
 
 </LinearLayout>

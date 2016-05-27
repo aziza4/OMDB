@@ -12,14 +12,13 @@
         android:layout_width="0dp"
         android:layout_weight="2"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin">
+        android:paddingLeft="@dimen/elements_horizontal_margin"
+        android:paddingRight="@dimen/elements_horizontal_margin">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
 
             <EditText
                 android:layout_width="match_parent"
@@ -38,7 +37,7 @@
                 android:gravity="top"
                 android:inputType="text|textMultiLine"
                 android:scrollbars="vertical"
-                android:maxLines="3"
+                android:maxLines="4"
                 android:hint="@string/body_hint"
                 android:id="@+id/bodyEditText"
                 android:textSize="@dimen/small_text" />
@@ -59,7 +58,7 @@
                     android:inputType="textUri|textMultiLine"
                     android:scrollbars="vertical"
                     android:maxLines="3"
-                    android:textSize="@dimen/small_text"
+                    android:textSize="@dimen/very_small_text"
                     android:textIsSelectable="true" />
 
                 <Button
@@ -67,6 +66,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:text="@string/show_capture_button_show"
+                    android:textSize="@dimen/small_text"
                     android:id="@+id/urlShowCaptureButton" />
 
             </LinearLayout>
@@ -76,21 +76,25 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/elements_horizontal_margin"
+                android:layout_marginTop="@dimen/elements_horizontal_margin"
                 android:id="@+id/ratingLinearLayout">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/elements_horizontal_margin"
-                    android:layout_marginEnd="@dimen/elements_horizontal_margin"
+
                     android:text="@string/rating_text_view"
+                    android:textSize="@dimen/small_text"
                     android:id="@+id/ratingTextView" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/elements_horizontal_margin"
+                    android:paddingLeft="@dimen/elements_horizontal_margin"
+                    android:paddingEnd="@dimen/elements_horizontal_margin"
+                    android:paddingRight="@dimen/elements_horizontal_margin"
                     android:textSize="@dimen/large_text"
                     android:textColor="@color/colorAccent"
                     android:id="@+id/ratingValueTextView"/>
@@ -119,15 +123,18 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/cancel_button"
-                android:id="@+id/cancelButton"
+                android:text="@string/ok_button"
+                android:textSize="@dimen/small_text"
+                android:id="@+id/okButton"
                 style="?android:attr/buttonBarButtonStyle"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/ok_button"
-                android:id="@+id/okButton"
+                android:text="@string/cancel_button"
+                android:textSize="@dimen/small_text"
+                android:visibility="gone"
+                android:id="@+id/cancelButton"
                 style="?android:attr/buttonBarButtonStyle"/>
 
         </LinearLayout>
@@ -137,8 +144,8 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/elements_horizontal_margin"
+        android:paddingRight="@dimen/elements_horizontal_margin"
         android:gravity="center">
 
         <ImageView
