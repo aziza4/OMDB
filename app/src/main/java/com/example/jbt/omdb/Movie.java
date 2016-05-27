@@ -6,9 +6,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 
-public class Movie implements Parcelable {
+public class Movie implements Parcelable { // 'parcelable' since originally I transfered image within intent (now abandoned)
 
-    private final static long NOT_IN_DB = -1L;
+    public final static long NOT_IN_DB = -1L; // -1 signals this movie is "not yet save in db"
 
     private long mId;
     private final String mSubject;
@@ -16,7 +16,7 @@ public class Movie implements Parcelable {
     private final String mUrl;
     private final String mImdbId;
     private final float mRating;
-    private byte[] mImageBytes; // byte[] instead of Bitmap since Parcel crashes with Bitmap... (android bug)
+    private byte[] mImageBytes; // Internally image is stored as byte[]. However, Bitmap getter/setter are provided as well
 
     private Movie(Parcel in)
     {
@@ -32,13 +32,10 @@ public class Movie implements Parcelable {
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
-        @Override
-        public Movie createFromParcel(Parcel in) {
+        @Override public Movie createFromParcel(Parcel in) {
             return new Movie(in);
         }
-
-        @Override
-        public Movie[] newArray(int size) {
+        @Override public Movie[] newArray(int size) {
             return new Movie[size];
         }
     };
@@ -65,7 +62,7 @@ public class Movie implements Parcelable {
         mUrl = url;
         mImdbId = imdbId;
         mRating = rating;
-        mImageBytes = image == null ? null : Utility.convertBitmapToByteArray(image);
+        mImageBytes = image == null ? null : ImageHelper.convertBitmapToByteArray(image);
     }
 
     public Movie(String subject) {
@@ -100,7 +97,7 @@ public class Movie implements Parcelable {
 
         return mImageBytes == null ?
                 null :
-                Utility.convertByteArrayToBitmap(mImageBytes);
+                ImageHelper.convertByteArrayToBitmap(mImageBytes);
     }
 
     @Override
@@ -108,7 +105,7 @@ public class Movie implements Parcelable {
         return mSubject;
     }
 
-    public String getDetailsAsText(Context context)
+    public String getDetailsAsText(Context context) // format movie as a string for share-intent
     {
         String subjectTitle = context.getString(R.string.omdb_res_title_field);
         String bodyTitle = context.getString(R.string.omdb_res_plot_field);

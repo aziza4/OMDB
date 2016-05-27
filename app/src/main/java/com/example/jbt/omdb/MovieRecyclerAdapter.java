@@ -37,7 +37,7 @@
                 mFragmentHelper = new FragmentHelper((AppCompatActivity)mContext, mIsTabletMode);
             }
 
-            public void setData(ArrayList<Movie> movies)
+            public void setData(ArrayList<Movie> movies) // called whenever refresh is needed
             {
                 mMovies = movies;
                 notifyDataSetChanged();
@@ -46,8 +46,8 @@
             @Override
             public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-
                 LayoutInflater inflater = LayoutInflater.from(mContext);
+
                 @SuppressLint("InflateParams")
                 View view = inflater.inflate(R.layout.main_list_item, null);
                 return new MovieViewHolder(view);
@@ -85,7 +85,7 @@
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            launchEditActivity(mMovie);
+                            launchEditOperation(mMovie);
                         }
                     });
 
@@ -112,7 +112,7 @@
                                     switch (item.getItemId())
                                     {
                                         case R.id.editMenuItem:
-                                            launchEditActivity(mMovie);
+                                            launchEditOperation(mMovie);
                                             mode.finish();
                                             return true;
 
@@ -140,24 +140,29 @@
                     });
                 }
 
+
                 public void bind(Movie movie)
                 {
                     mMovie = movie;
 
                     bodyTV.setText(movie.getBody());
                     Bitmap imageNA = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.image_na);
-                    Bitmap image = movie.getImage() != null ? movie.getImage() : imageNA;
+                    Bitmap image = movie.getImage() != null ? movie.getImage() : imageNA; // placeholde image if no image
                     posterIV.setImageBitmap(image);
                     subjectTV.setText(movie.getSubject());
                     bodyTV.setText(movie.getBody());
                     ratingRatingBar.setRating(movie.getRating());
                 }
 
-                private void launchEditActivity(Movie movie)
+
+                private void launchEditOperation(Movie movie)
                 {
                     if ( mIsTabletMode ) {
+
                         mFragmentHelper.replaceEditFragment();
+
                     } else {
+
                         Intent intent = new Intent(mContext, EditActivity.class);
                         mContext.startActivity(intent);
                     }
@@ -165,10 +170,13 @@
                     mFragmentHelper.replaceMovieOnEditFragment(movie);
                 }
 
-                private void refreshMainList() {
+
+                private void refreshMainList()
+                {
                     mMovies = mDbHelper.getDetailsMovieArrayList();
                     notifyDataSetChanged();
                 }
+
 
                 private void removeEditFrag() {
                     mFragmentHelper.removeEditFragmentIfExists();

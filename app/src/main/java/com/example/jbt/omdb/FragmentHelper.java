@@ -39,7 +39,7 @@ class FragmentHelper {
         mDbHelper.updateOrInsertEditMovie(movie);
 
         if (! mInTabletMode)
-            return;
+            return;  // in "phone" mode, EditActivity will take care of EditFragment
 
         EditFragment editFrag = (EditFragment)mFragManager.findFragmentById(R.id.editFragContainer);
 
@@ -78,5 +78,11 @@ class FragmentHelper {
                 .commit();
 
         mFragManager.executePendingTransactions();
+    }
+
+
+    public EditFragment getEditFragmentIfExists()
+    {
+        return  (EditFragment) mFragManager.findFragmentById(R.id.editFragContainer);
     }
 }

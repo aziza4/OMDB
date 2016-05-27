@@ -7,6 +7,8 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.os.Environment;
 import android.util.Log;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -79,6 +81,7 @@ class ImageHelper {
                     rotate = 90;
                     break;
             }
+
         } catch (Exception e) {
             rotate = -1;
             Log.e(MainActivity.LOG_CAT, "" + e.getMessage());
@@ -93,5 +96,23 @@ class ImageHelper {
         Matrix matrix = new Matrix();
         matrix.postRotate(rotate);
         return Bitmap.createBitmap(image , 0, 0, image.getWidth(), image.getHeight(), matrix, true);
+    }
+
+    public static byte[] convertBitmapToByteArray(Bitmap bitmap) {
+
+        if (bitmap == null)
+            return null;
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
+    }
+
+    public static Bitmap convertByteArrayToBitmap(byte[] byteArray) {
+
+        if (byteArray == null)
+            return null;
+
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
     }
 }

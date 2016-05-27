@@ -50,7 +50,7 @@ public class WebSearchActivity extends AppCompatActivity {
                     return false;
 
                 mOmdbSearchAsyncTask = new OmdbSearchAsyncTask();
-                mOmdbSearchAsyncTask.execute(query);
+                mOmdbSearchAsyncTask.execute(query);  // start search async task
                 return true;
             }
 
@@ -74,7 +74,7 @@ public class WebSearchActivity extends AppCompatActivity {
                 String searchTitle = mAdapter.getItem(position).toString();
 
                 if (!searchTitle.isEmpty())
-                    new OmdbDetailedAsyncTask().execute(searchTitle);
+                    new OmdbDetailedAsyncTask().execute(searchTitle);  // start get details async task
             }
         });
     }
@@ -113,7 +113,7 @@ public class WebSearchActivity extends AppCompatActivity {
             OmdbHelper omdbHelper = new OmdbHelper(WebSearchActivity.this);
             int totalRes = omdbHelper.GetTotalResult(jsonString);
 
-            if (mTotalResults == 0 && totalRes> 0 )
+            if (mTotalResults == 0 && totalRes > 0 )
                 mTotalResults = totalRes;
 
             return omdbHelper.GetMoviesTitlesOnly(jsonString);
@@ -140,7 +140,7 @@ public class WebSearchActivity extends AppCompatActivity {
             mProgDialog.setButton(DialogInterface.BUTTON_NEGATIVE, enoughString, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    mOmdbSearchAsyncTask.setCancelRequested();
+                    mOmdbSearchAsyncTask.setCancelRequested(); // user cancels download
                     dialog.dismiss();
                 }
             });
@@ -153,7 +153,7 @@ public class WebSearchActivity extends AppCompatActivity {
 
             if( list != null ) {
                 MoviesDBHelper dbHelper = new MoviesDBHelper(WebSearchActivity.this);
-                dbHelper.bulkInsertSearchResults(list.toArray(new Movie[list.size()]));
+                dbHelper.bulkInsertSearchResults(list.toArray(new Movie[list.size()])); // bulk insert
                 RefreshSearchList(list);
             }
 
@@ -213,7 +213,7 @@ public class WebSearchActivity extends AppCompatActivity {
             String jsonString = networkHelper.GetJsonString();
 
             if (jsonString != null )
-                movie = omdbHelper.GetMovieDetails(jsonString);
+                movie = omdbHelper.GetMovieDetails(jsonString); // let omdbHelper do the dirty work...
 
             return movie;
         }

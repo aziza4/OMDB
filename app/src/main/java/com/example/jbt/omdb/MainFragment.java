@@ -27,9 +27,10 @@ public class MainFragment extends Fragment {
 
     public MainFragment() {}
 
+    // both methods below are called from containing activity
     public void setTabletMode(boolean isTabletMode) { mIsTabletMode = isTabletMode; }
-
     public void onMovieSaved() { refreshMainFrag(); }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,8 @@ public class MainFragment extends Fragment {
         mDbHelper.deleteAllSearchResult();
         mFragmentHelper = new FragmentHelper(getActivity(), mIsTabletMode);
 
-        mAdapter = new MovieRecyclerAdapter(getActivity(), mDbHelper.getDetailsMovieArrayList(), mIsTabletMode);
+        mAdapter = new MovieRecyclerAdapter(getActivity(),
+                mDbHelper.getDetailsMovieArrayList(), mIsTabletMode);
 
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -84,8 +86,8 @@ public class MainFragment extends Fragment {
                                     break;
 
                                 case MAN_OPTION_INDEX:
-                                    refreshEditFragWithBlankMovie();
-                                    if (! mIsTabletMode) {
+                                    refreshEditFragWithBlankMovie(); // insert blank movie to db
+                                    if (! mIsTabletMode) { // if "phone" need to start new activity
                                         intent = new Intent(getActivity(), EditActivity.class);
                                         startActivity(intent);
                                     }
@@ -179,17 +181,20 @@ public class MainFragment extends Fragment {
         mAdapter.setData(mDbHelper.getDetailsMovieArrayList());
     }
 
+
     private void refreshEditFragWithBlankMovie() {
         mFragmentHelper.replaceMovieOnEditFragment(new Movie(""));
     }
+
 
     private void removeEditFrag() {
         mFragmentHelper.removeEditFragmentIfExists();
     }
 
+
     private boolean deleteAllMovies()
     {
-        mDbHelper.deleteAllEditMovies();
-        return mDbHelper.deleteAllMovies();
+        mDbHelper.deleteAllEditMovies(); // delete 'internal' Edit table
+        return mDbHelper.deleteAllMovies(); // delete 'user' Detail table
     }
 }

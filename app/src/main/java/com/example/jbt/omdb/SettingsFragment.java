@@ -53,7 +53,7 @@ public class SettingsFragment extends PreferenceFragment
                 boolean langChanged = !((ListPreference) preference).getValue().equals(newValue);
 
                 if ( langSelected && langChanged )
-                    restartSettingsActivity(); // lang change take immediate affect
+                    restartSettingsActivity(); // lang change to take affect immediately !
             }
 
         } else {
@@ -64,7 +64,7 @@ public class SettingsFragment extends PreferenceFragment
         return true;
     }
 
-    private void restartSettingsActivity()
+    private void restartSettingsActivity() // this works, while getActivity().recreate() fails...
     {
         Intent intent = getActivity().getIntent();
         getActivity().finish();

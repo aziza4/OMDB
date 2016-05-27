@@ -36,7 +36,6 @@ import java.util.Locale;
 
 public class EditFragment extends Fragment {
 
-
     public static final int REQUEST_TAKE_PHOTO = 1;
     private static final float SEEK_BAR_FACTOR = 10f;
 
@@ -69,7 +68,7 @@ public class EditFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mListener = (OnEditDoneListener) context;
+        mListener = (OnEditDoneListener) context; // update parent activity that movie was saved
     }
 
     @Override
@@ -156,12 +155,12 @@ public class EditFragment extends Fragment {
                     return;
 
                 if (uri.getScheme().equals(mFileScheme)) {
-                    displayImageFromGallery(uri.getPath());
+                    displayImageFromGallery(uri.getPath()); // display from gallery
                     return;
                 }
 
                 if (uri.getScheme().equals(mHttpScheme))
-                    new omdbImageDownloadAsyncTask().execute(uri.toString());
+                    new omdbImageDownloadAsyncTask().execute(uri.toString()); // or get from web
             }
         });
 
@@ -169,7 +168,7 @@ public class EditFragment extends Fragment {
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String value = String.format(Locale.ENGLISH, "%.1f", progress/ SEEK_BAR_FACTOR);
+                String value = String.format(Locale.ENGLISH, "%.1f", progress/SEEK_BAR_FACTOR); // range 0.0 - 5.0
                 mSeekBarTV.setText(value);
             }
 
@@ -177,9 +176,7 @@ public class EditFragment extends Fragment {
             @Override public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        setHasOptionsMenu(true);
-
-        Utility.hideKeyboard(getActivity());
+        setHasOptionsMenu(true); // enable 'Share' action bar item from fragment
 
         return viewRoot;
     }
@@ -188,14 +185,14 @@ public class EditFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        refreshLayout();
+        refreshLayout(); // via load data from db
     }
 
 
     @Override
     public void onStop() {
         super.onStop();
-        saveLayout();
+        saveLayout(); // to mitigate device rotation at any time
     }
 
 
@@ -204,20 +201,21 @@ public class EditFragment extends Fragment {
 
         inflater.inflate(R.menu.edit_menu, menu);
         MenuItem item = menu.findItem(R.id.action_share);
-        ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+
+        ShareActionProvider mShareActionProvider =
+                (ShareActionProvider) MenuItemCompat.getActionProvider(item);
 
         if (mShareActionProvider == null)
             return;
 
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-        }
 
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, mMovie.getDetailsAsText(getActivity()));
-        mShareActionProvider.setShareIntent(shareIntent);
+        mShareActionProvider.setShareIntent(shareIntent); // activate sharing
     }
 
 
@@ -305,6 +303,7 @@ public class EditFragment extends Fragment {
 
     private void setShowCaptureButtonText()
     {
+        // "Show" toggle to "Capture" if: device has camera, and url string is blank
         boolean urlEmpty = mUrlET.getText().toString().isEmpty();
         String showCaptureText = mHasCamera && urlEmpty ? mCaptureText : mShowText;
         mShowCaptureBtn.setText(showCaptureText);
@@ -325,8 +324,8 @@ public class EditFragment extends Fragment {
 
         Uri uri = Uri.fromFile(photoFile);
 
-        mUrlET.setText(uri.toString());
-        saveLayout();
+        mUrlET.setText(uri.toString()); // save file url to url EditText view
+        saveLayout(); // save movie immediately to db to mitigate device rotation
 
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         getActivity().startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
@@ -374,6 +373,8 @@ public class EditFragment extends Fragment {
             mCancelBtn.setVisibility(View.GONE);
 
         setShowCaptureButtonText();
+
+        Utility.hideKeyboard(getActivity()); // stop irritating auto keyboard popup
     }
 
 

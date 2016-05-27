@@ -4,11 +4,13 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-feature
-        android:name="android.hardware.camera" android:required="false" />
+    <!--allows no-camera devices although we have capture image feature-->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
+    <!--enables captured images to be save in gallery-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!--Application fully supports English/Hebrew, also toggle state in realtime-->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,22 +24,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--all activities (except MainActivity) provide back arrow on action bar -->
         <activity
             android:name=".WebSearchActivity"
             android:label="@string/web_search_name"
             android:parentActivityName=".MainActivity"
             android:theme="@style/WebSearchTheme" />
+
         <activity
             android:name=".EditActivity"
             android:label="@string/edit_name"
             android:parentActivityName=".MainActivity"
             android:theme="@style/EditTheme" />
+
         <activity
             android:name=".SettingsActivity"
             android:theme="@style/SettingsTheme"
             android:label="@string/settings_name"
-            android:parentActivityName=".MainActivity">
-        </activity>
+            android:parentActivityName=".MainActivity"/>
+
     </application>
 
 </manifest>

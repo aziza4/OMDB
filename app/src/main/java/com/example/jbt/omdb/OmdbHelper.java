@@ -11,7 +11,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-class OmdbHelper {
+class OmdbHelper { // encapsulates all OMDG website specific data logic
 
     private final String mScheme;
     private final String mAuthority;
@@ -57,7 +57,7 @@ class OmdbHelper {
 
     private String getSearchPhraseUrlString(String searchValue, int pageValue)
     {
-        // example: http://www.omdbapi.com/?s=sunday&r=json&page=1
+        // url example: http://www.omdbapi.com/?s=sunday&r=json&page=1
         // --------------------------------------------------------------------
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(mScheme)
@@ -72,7 +72,7 @@ class OmdbHelper {
 
     private String getDetailsUrlString(String searchTitleValue) {
 
-        // example: http://www.omdbapi.com/?t=Matrix&y=&plot=full&r=json
+        // url example: http://www.omdbapi.com/?t=Matrix&y=&plot=full&r=json
         // --------------------------------------------------------------------
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(mScheme)

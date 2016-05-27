@@ -15,7 +15,7 @@ public class EditActivity extends AppCompatActivity implements EditFragment.OnEd
         super.onCreate(savedInstanceState);
         Utility.setContentViewWithLocaleChange(this, R.layout.activity_edit, R.string.edit_name);
 
-        FragmentHelper fragmentHelper = new FragmentHelper(this, false);
+        FragmentHelper fragmentHelper = new FragmentHelper(this, false); // EditActivity only in 'phone' mode
         mEditFrag = fragmentHelper.replaceEditFragment();
     }
 
@@ -24,7 +24,7 @@ public class EditActivity extends AppCompatActivity implements EditFragment.OnEd
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == EditFragment.REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK)
-            mEditFrag.onCameraActivityResult();
+            mEditFrag.onCameraActivityResult(); // save captured in gallery
     }
 
     @Override

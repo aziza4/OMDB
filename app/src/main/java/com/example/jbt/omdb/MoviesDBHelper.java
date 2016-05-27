@@ -50,13 +50,13 @@ class MoviesDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String createSearchTable = String.format(
+        String createSearchTable = String.format( // holds last web search results
                 "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT);",
                 SEARCH_TABLE_NAME, SEARCH_COL_ID, SEARCH_COL_SUBJECT);
 
         db.execSQL(createSearchTable);
 
-        String createDetailsTable = String.format(
+        String createDetailsTable = String.format( // holds all user created movies
                 "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, " +
                 "%s TEXT, %s TEXT, %s TEXT, %s REAL, %s BLOB);",
                 DETAILS_TABLE_NAME, DETAILS_COL_ID, DETAILS_COL_SUBJECT,
@@ -65,7 +65,7 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
         db.execSQL(createDetailsTable);
 
-        String createEditTable = String.format(
+        String createEditTable = String.format( // holds single record only that reflects Edit fragment state at any give time
                 "CREATE TABLE %s (%s INTEGER PRIMARY KEY, %s INTEGER, %s TEXT NOT NULL, " +
                         "%s TEXT, %s TEXT, %s TEXT, %s REAL, %s BLOB);",
                 EDIT_TABLE_NAME, EDIT_COL_ID, EDIT_COL_ORIGINAL_ID,
@@ -92,21 +92,22 @@ class MoviesDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
 
-        try {
+        try
+        {
             for (int i=0; i< movies.length; i++)
             {
                 values[i] = new ContentValues();
                 values[i].put(SEARCH_COL_SUBJECT, movies[i].getSubject());
 
                 long rowId = db.insert(SEARCH_TABLE_NAME, null, values[i]);
-                if (rowId != -1) {
+
+                if (rowId != -1)
                     returnCount++;
-                }
             }
+
             db.setTransactionSuccessful();
 
         } finally {
-
             db.endTransaction();
         }
 
@@ -145,13 +146,15 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
     // ============================= Details table operations =============================
 
+
     private Cursor getDetailsMovieCursor()
     {
         String sortBy, sortOrder;
+        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(mContext);
 
         SQLiteDatabase db = getReadableDatabase();
 
-        if (Utility.isSortByTitle(mContext)) {
+        if (sharedPrefHelper.isSortByTitle()) {
 
             sortBy = DETAILS_COL_SUBJECT;
             sortOrder = "";
@@ -203,7 +206,7 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
     public boolean updateOrInsertMovie(Movie movie)
     {
-        return movie.getId() > 0 ?
+        return movie.getId() > 0 ? // movie that was already saved in db has an id >= 1
                 updateMovie(movie) :
                 insertMovie(movie);
     }
@@ -213,7 +216,8 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
 
-        boolean saveImage = Utility.isSaveImagesToDB(mContext);
+        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(mContext);
+        boolean saveImage = sharedPrefHelper.isSaveImagesToDB();
 
         ContentValues values = new ContentValues();
         values.put(DETAILS_COL_SUBJECT, movie.getSubject());
@@ -226,7 +230,7 @@ class MoviesDBHelper extends SQLiteOpenHelper {
         long rowId = db.insert(DETAILS_TABLE_NAME, null, values);
         db.close();
 
-        return rowId > 0;
+        return rowId > 0; // although return val not used, its a good practice (debug)
     }
 
 
@@ -234,7 +238,8 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
 
-        boolean saveImage = Utility.isSaveImagesToDB(mContext);
+        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(mContext);
+        boolean saveImage = sharedPrefHelper.isSaveImagesToDB();
 
         ContentValues values = new ContentValues();
         values.put(DETAILS_COL_SUBJECT, movie.getSubject());
@@ -247,7 +252,7 @@ class MoviesDBHelper extends SQLiteOpenHelper {
         long rowsAffected = db.update(DETAILS_TABLE_NAME, values, DETAILS_COL_ID + "=" + movie.getId(), null);
         db.close();
 
-        return rowsAffected > 0;
+        return rowsAffected > 0; // although return val not used, its a good practice (debug)
     }
 
 
@@ -277,7 +282,8 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
     public Movie getEditMovie()
     {
-        long originalId = -1;
+        // defaults value for the case of empty table
+        long originalId = Movie.NOT_IN_DB;
         String subject = "", body = "", url = "", imdbid = "";
         float rating = 0f;
         byte[] imageBytes = null;
@@ -286,7 +292,7 @@ class MoviesDBHelper extends SQLiteOpenHelper {
         String sqlQuery = "SELECT * FROM " + EDIT_TABLE_NAME + ";";
         Cursor c = db.rawQuery(sqlQuery, null);
 
-        if ( c.moveToNext() ) {
+        if ( c.moveToNext() ) { // expecting only single row on this table
 
             originalId = c.getInt(c.getColumnIndex(EDIT_COL_ORIGINAL_ID));
             subject = c.getString(c.getColumnIndex(EDIT_COL_SUBJECT));
@@ -311,15 +317,13 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
     public boolean updateOrInsertEditMovie(Movie movie)
     {
-        return updateEditMovie(movie) || insertEditMovie(movie);
+        return updateEditMovie(movie) || insertEditMovie(movie); // first try to update, then insert...
     }
 
 
     private boolean insertEditMovie(Movie movie) {
 
         SQLiteDatabase db = getWritableDatabase();
-
-        boolean saveImage = Utility.isSaveImagesToDB(mContext);
 
         ContentValues values = new ContentValues();
         values.put(EDIT_COL_ID, EDIT_COL_ID_CONST);
@@ -329,7 +333,7 @@ class MoviesDBHelper extends SQLiteOpenHelper {
         values.put(EDIT_COL_URL, movie.getUrl());
         values.put(EDIT_COL_IMDBID, movie.getImdbId());
         values.put(EDIT_COL_RATING, movie.getRating());
-        values.put(EDIT_COL_IMAGE, saveImage ? movie.getImageByteArray() : null);
+        values.put(EDIT_COL_IMAGE, movie.getImageByteArray());
 
         long rowId = db.insert(EDIT_TABLE_NAME, null, values);
         db.close();
@@ -342,8 +346,6 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
 
-        boolean saveImage = Utility.isSaveImagesToDB(mContext);
-
         ContentValues values = new ContentValues();
         values.put(EDIT_COL_ORIGINAL_ID, movie.getId());
         values.put(EDIT_COL_SUBJECT, movie.getSubject());
@@ -351,12 +353,12 @@ class MoviesDBHelper extends SQLiteOpenHelper {
         values.put(EDIT_COL_URL, movie.getUrl());
         values.put(EDIT_COL_IMDBID, movie.getImdbId());
         values.put(EDIT_COL_RATING, movie.getRating());
-        values.put(EDIT_COL_IMAGE, saveImage ? movie.getImageByteArray() : null);
+        values.put(EDIT_COL_IMAGE, movie.getImageByteArray());
 
         long rowsAffected = db.update(EDIT_TABLE_NAME, values, EDIT_COL_ID + "=" + EDIT_COL_ID_CONST, null);
         db.close();
 
-        return rowsAffected > 0;
+        return rowsAffected > 0; // although return val not used, its a good practice (debug)
     }
 
     public boolean deleteAllEditMovies() {
@@ -365,8 +367,7 @@ class MoviesDBHelper extends SQLiteOpenHelper {
         long rowsDeleted = db.delete(EDIT_TABLE_NAME, null , null);
         db.close();
 
-        return rowsDeleted > 0;
+        return rowsDeleted > 0; // although return val not used, its a good practice (debug)
     }
-
 }
 
