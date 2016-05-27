@@ -303,7 +303,7 @@ public class EditFragment extends Fragment {
 
     private void setShowCaptureButtonText()
     {
-        // "Show" toggle to "Capture" if: device has camera, and url string is blank
+        // "Show" toggles to "Capture" if: device has camera, and url string is blank
         boolean urlEmpty = mUrlET.getText().toString().isEmpty();
         String showCaptureText = mHasCamera && urlEmpty ? mCaptureText : mShowText;
         mShowCaptureBtn.setText(showCaptureText);

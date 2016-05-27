@@ -147,7 +147,7 @@
 
                     bodyTV.setText(movie.getBody());
                     Bitmap imageNA = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.image_na);
-                    Bitmap image = movie.getImage() != null ? movie.getImage() : imageNA; // placeholde image if no image
+                    Bitmap image = movie.getImage() != null ? movie.getImage() : imageNA; // placeholder image if no image
                     posterIV.setImageBitmap(image);
                     subjectTV.setText(movie.getSubject());
                     bodyTV.setText(movie.getBody());

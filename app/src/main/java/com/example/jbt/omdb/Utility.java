@@ -12,7 +12,7 @@ import android.view.WindowManager;
 class Utility {
 
     // disable device rotation during search titles download to avoid data lost...
-    // however, user has the option to abort download anytime with abutton click.
+    // however, user has the option to abort download anytime with a button click.
     public static void RestrictDeviceOrientation(Activity activity) {
         int current_orientation = activity.getResources().getConfiguration().orientation;
 

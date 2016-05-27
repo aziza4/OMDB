@@ -6,7 +6,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 
-public class Movie implements Parcelable { // 'parcelable' since originally I transfered image within intent (now abandoned)
+public class Movie implements Parcelable { // 'parcelable' since originally I transferred image within intent (now abandoned)
 
     public final static long NOT_IN_DB = -1L; // -1 signals this movie is "not yet save in db"
 
