@@ -84,9 +84,8 @@ class MoviesDBHelper extends SQLiteOpenHelper {
     // ============================= Search table operations =============================
 
 
-    public int bulkInsertSearchResults(Movie[] movies) {
+    public void bulkInsertSearchResults(Movie[] movies) {
 
-        int returnCount = 0;
         ContentValues[] values = new ContentValues[movies.length];
 
         SQLiteDatabase db = getWritableDatabase();
@@ -99,10 +98,7 @@ class MoviesDBHelper extends SQLiteOpenHelper {
                 values[i] = new ContentValues();
                 values[i].put(SEARCH_COL_SUBJECT, movies[i].getSubject());
 
-                long rowId = db.insert(SEARCH_TABLE_NAME, null, values[i]);
-
-                if (rowId != -1)
-                    returnCount++;
+                db.insert(SEARCH_TABLE_NAME, null, values[i]);
             }
 
             db.setTransactionSuccessful();
@@ -112,17 +108,14 @@ class MoviesDBHelper extends SQLiteOpenHelper {
         }
 
         db.close();
-        return returnCount;
     }
 
 
-    public int deleteAllSearchResult() {
+    public void deleteAllSearchResult() {
 
         SQLiteDatabase db = getWritableDatabase();
-        int rowsDeleted = db.delete(SEARCH_TABLE_NAME, null , null);
+        db.delete(SEARCH_TABLE_NAME, null , null);
         db.close();
-
-        return rowsDeleted;
     }
 
 
@@ -312,13 +305,14 @@ class MoviesDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean updateOrInsertEditMovie(Movie movie) {
+    public void updateOrInsertEditMovie(Movie movie) {
 
-        return updateEditMovie(movie) || insertEditMovie(movie);
+        if (! updateEditMovie(movie))
+            insertEditMovie(movie);
     }
 
 
-    private boolean insertEditMovie(Movie movie) {
+    private void insertEditMovie(Movie movie) {
 
         SQLiteDatabase db = getWritableDatabase();
 
@@ -332,10 +326,8 @@ class MoviesDBHelper extends SQLiteOpenHelper {
         values.put(EDIT_COL_RATING, movie.getRating());
         values.put(EDIT_COL_IMAGE, movie.getImageByteArray());
 
-        long rowId = db.insert(EDIT_TABLE_NAME, null, values);
+        db.insert(EDIT_TABLE_NAME, null, values);
         db.close();
-
-        return rowId > 0;
     }
 
 
@@ -358,13 +350,11 @@ class MoviesDBHelper extends SQLiteOpenHelper {
         return rowsAffected > 0; // although return val not used, its a good practice (debug)
     }
 
-    public boolean deleteAllEditMovies() {
+    public void deleteAllEditMovies() {
 
         SQLiteDatabase db = getWritableDatabase();
-        long rowsDeleted = db.delete(EDIT_TABLE_NAME, null , null);
+        db.delete(EDIT_TABLE_NAME, null , null);
         db.close();
-
-        return rowsDeleted > 0; // although return val not used, its a good practice (debug)
     }
 }
 

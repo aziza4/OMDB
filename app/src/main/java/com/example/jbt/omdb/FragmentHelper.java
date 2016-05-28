@@ -42,7 +42,7 @@ class FragmentHelper {
         return mainFragment;
     }
 
-    public WebSearchFragment replaceWebSearchFragment()
+    public void replaceWebSearchFragment()
     {
         WebSearchFragment webSearchFragment = new WebSearchFragment();
 
@@ -56,8 +56,6 @@ class FragmentHelper {
                     .commit();
 
         mFragManager.executePendingTransactions();
-
-        return webSearchFragment;
     }
 
 

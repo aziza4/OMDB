@@ -26,14 +26,12 @@
             private final MoviesDBHelper mDbHelper;
             private final FragmentHelper mFragmentHelper;
             private ArrayList<Movie> mMovies;
-            private final boolean mIsTabletMode;
 
             public MovieRecyclerAdapter(Context context, ArrayList<Movie> movies, boolean isTabletMode) {
                 mContext = context;
                 mMovies = movies;
-                mIsTabletMode = isTabletMode;
                 mDbHelper = new MoviesDBHelper(mContext);
-                mFragmentHelper = new FragmentHelper((AppCompatActivity)mContext, mIsTabletMode);
+                mFragmentHelper = new FragmentHelper((AppCompatActivity)mContext, isTabletMode);
             }
 
             public void setData(ArrayList<Movie> movies) // called whenever refresh is needed

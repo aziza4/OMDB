@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -279,6 +278,7 @@ public class EditFragment extends Fragment {
     }
 
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean saveMovieToDB()
     {
         Movie movieToSave = getMovieFromLayout();

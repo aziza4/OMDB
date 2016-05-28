@@ -1,20 +1,9 @@
 package com.example.jbt.omdb;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.SearchView;
-import java.net.URL;
-import java.util.ArrayList;
 
 public class WebSearchActivity extends AppCompatActivity implements EditFragment.OnEditDoneListener {
 
