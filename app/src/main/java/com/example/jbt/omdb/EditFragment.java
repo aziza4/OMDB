@@ -356,6 +356,7 @@ public class EditFragment extends Fragment {
     }
 
 
+    @SuppressWarnings("deprecation")
     private void SetViewsValues(Movie movie)
     {
         if (mIsTabletMode) {

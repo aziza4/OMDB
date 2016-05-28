@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 
 public class Movie {
 
-    public final static long NOT_IN_DB = -1L; // -1 signals this movie is "not yet save in db"
+    private final static long NOT_IN_DB = -1L; // -1 signals this movie is "not yet save in db"
 
     private long mId;
     private final String mSubject;

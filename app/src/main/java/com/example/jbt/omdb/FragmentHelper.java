@@ -2,6 +2,7 @@ package com.example.jbt.omdb;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
@@ -31,6 +32,11 @@ class FragmentHelper {
                 .replace(R.id.mainFragContainer, mainFragment)
                 .commit();
 
+        if (mInTabletMode) // no editFragContainer in phone mode
+            mFragManager.beginTransaction()
+                    .replace(R.id.editFragContainer, new BlankEditFragment())
+                    .commit();
+
         mFragManager.executePendingTransactions();
 
         return mainFragment;
@@ -44,6 +50,11 @@ class FragmentHelper {
                 .replace(R.id.webSearchFragContainer, webSearchFragment)
                 .commit();
 
+        if (mInTabletMode) // no editFragContainer in phone mode
+            mFragManager.beginTransaction()
+                    .replace(R.id.editFragContainer, new BlankEditFragment())
+                    .commit();
+
         mFragManager.executePendingTransactions();
 
         return webSearchFragment;
@@ -56,7 +67,7 @@ class FragmentHelper {
         mDbHelper.updateOrInsertEditMovie(movie);
 
         if (! mInTabletMode)
-            return;  // in "phone" mode, EditActivity will take care of EditFragment
+            return;  // on phone mode, EditActivity will take care of EditFragment
 
         EditFragment editFrag = (EditFragment)mFragManager.findFragmentById(R.id.editFragContainer);
 
@@ -84,8 +95,11 @@ class FragmentHelper {
     public void launchEditOperation(Movie movie)
     {
         if ( mInTabletMode ) {
+
             replaceEditFragment();
+
         } else {
+
             Intent intent = new Intent(mActivity, EditActivity.class);
             mActivity.startActivity(intent);
         }
@@ -96,13 +110,13 @@ class FragmentHelper {
 
     public void removeEditFragmentIfExists()
     {
-        EditFragment editFrag = (EditFragment) mFragManager.findFragmentById(R.id.editFragContainer);
+        Fragment editFrag = mFragManager.findFragmentById(R.id.editFragContainer);
 
         if (editFrag == null)
             return;
 
         mFragManager.beginTransaction()
-                .remove(editFrag)
+                .replace(R.id.editFragContainer, new BlankEditFragment())
                 .commit();
 
         mFragManager.executePendingTransactions();
