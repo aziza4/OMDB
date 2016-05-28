@@ -6,7 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 
-public class MainActivity extends AppCompatActivity implements EditFragment.OnEditDoneListener {
+public class MainActivity extends AppCompatActivity
+        implements EditFragment.OnEditFragListener, FullPosterFragment.OnPosterFragListener {
 
     public static final String LOG_CAT = "OMDB:";
 
@@ -40,8 +41,9 @@ public class MainActivity extends AppCompatActivity implements EditFragment.OnEd
             editFrag.onCameraActivityResult();
     }
 
-    @Override
-    public void onMovieSaved() {
+    @Override public void onMovieSaved() {
         mMainFrag.onMovieSaved();
     } // refresh main list
+    @Override public void onPosterClicked() { mFragmentHelper.replaceToFullPosterFragment(); }
+    @Override public void onClose() { mFragmentHelper.replaceEditFragment(); }
 }

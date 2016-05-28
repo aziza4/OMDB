@@ -6,4 +6,7 @@
     <dimen name="elements_vertical_margin">7dp</dimen>
     <dimen name="small_text">12sp</dimen>
     <dimen name="large_text">16sp</dimen>
+    <dimen name="close_button_horiz_margin">24dp</dimen>
+    <dimen name="close_button_vert_margin">48dp</dimen>
+
 </resources>

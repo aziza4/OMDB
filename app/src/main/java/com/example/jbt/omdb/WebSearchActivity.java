@@ -5,7 +5,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class WebSearchActivity extends AppCompatActivity implements EditFragment.OnEditDoneListener {
+public class WebSearchActivity extends AppCompatActivity
+        implements EditFragment.OnEditFragListener, FullPosterFragment.OnPosterFragListener  {
 
     private FragmentHelper mFragmentHelper;
 
@@ -36,6 +37,7 @@ public class WebSearchActivity extends AppCompatActivity implements EditFragment
             editFrag.onCameraActivityResult();
     }
 
-    @Override
-    public void onMovieSaved() { }
+    @Override public void onMovieSaved() { }
+    @Override public void onPosterClicked() { mFragmentHelper.replaceToFullPosterFragment(); }
+    @Override public void onClose() { mFragmentHelper.replaceEditFragment(); }
 }

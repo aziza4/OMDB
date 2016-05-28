@@ -6,17 +6,19 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class EditActivity extends AppCompatActivity implements EditFragment.OnEditDoneListener{
+public class EditActivity extends AppCompatActivity
+        implements EditFragment.OnEditFragListener, FullPosterFragment.OnPosterFragListener {
 
     private EditFragment mEditFrag;
+    private FragmentHelper mFragmentHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utility.setContentViewWithLocaleChange(this, R.layout.activity_edit, R.string.edit_name);
 
-        FragmentHelper fragmentHelper = new FragmentHelper(this, false); // EditActivity only in 'phone' mode
-        mEditFrag = fragmentHelper.replaceEditFragment();
+        mFragmentHelper = new FragmentHelper(this, false); // EditActivity only in 'phone' mode
+        mEditFrag = mFragmentHelper.replaceEditFragment();
     }
 
     @Override
@@ -27,6 +29,7 @@ public class EditActivity extends AppCompatActivity implements EditFragment.OnEd
             mEditFrag.onCameraActivityResult(); // save captured in gallery
     }
 
-    @Override
-    public void onMovieSaved() { }
+    @Override public void onMovieSaved() { }
+    @Override public void onPosterClicked() { mFragmentHelper.replaceToFullPosterFragment(); }
+    @Override public void onClose() { mFragmentHelper.replaceEditFragment(); }
 }

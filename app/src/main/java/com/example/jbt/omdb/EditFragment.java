@@ -60,14 +60,14 @@ public class EditFragment extends Fragment {
 
     private boolean mHasCamera;
     private boolean mIsTabletMode;
-    private OnEditDoneListener mListener;
+    private OnEditFragListener mListener;
 
     public EditFragment() {}
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mListener = (OnEditDoneListener) context; // update parent activity that movie was saved
+        mListener = (OnEditFragListener) context;
     }
 
     @Override
@@ -176,6 +176,15 @@ public class EditFragment extends Fragment {
 
             @Override public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        mPosterImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if ( ((ImageView)v).getDrawable() != null )
+                    mListener.onPosterClicked();
+            }
         });
 
         setHasOptionsMenu(true); // enable 'Share' action bar item from fragment
@@ -391,7 +400,8 @@ public class EditFragment extends Fragment {
     }
 
 
-    public interface OnEditDoneListener {
+    public interface OnEditFragListener {
         void onMovieSaved();
+        void onPosterClicked();
     }
 }

@@ -67,12 +67,12 @@ class FragmentHelper {
         if (! mInTabletMode)
             return;  // on phone mode, EditActivity will take care of EditFragment
 
-        EditFragment editFrag = (EditFragment)mFragManager.findFragmentById(R.id.editFragContainer);
+        Fragment editFrag = mFragManager.findFragmentById(R.id.editFragContainer);
 
-        if (editFrag == null)
+        if (editFrag instanceof BlankEditFragment || editFrag instanceof FullPosterFragment)
             editFrag = replaceEditFragment();
 
-        editFrag.refreshLayout();
+        ((EditFragment)editFrag).refreshLayout();
     }
 
 
@@ -87,6 +87,18 @@ class FragmentHelper {
         mFragManager.executePendingTransactions();
 
         return editFragment;
+    }
+
+
+    public void replaceToFullPosterFragment()
+    {
+        FullPosterFragment posterFragment = new FullPosterFragment();
+
+        mFragManager.beginTransaction()
+                .replace(R.id.editFragContainer, posterFragment)
+                .commit();
+
+        mFragManager.executePendingTransactions();
     }
 
 
