@@ -31,13 +31,13 @@ public class MainActivity extends AppCompatActivity implements EditFragment.OnEd
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == EditFragment.REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+        if (requestCode != EditFragment.REQUEST_TAKE_PHOTO || resultCode != Activity.RESULT_OK)
+            return;
 
-            EditFragment editFrag = mFragmentHelper.getEditFragmentIfExists();
+        EditFragment editFrag = mFragmentHelper.getEditFragmentIfExists();
 
-            if (editFrag != null)
-                editFrag.onCameraActivityResult();
-        }
+        if (editFrag != null)
+            editFrag.onCameraActivityResult();
     }
 
     @Override

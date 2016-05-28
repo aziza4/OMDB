@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -42,6 +43,7 @@ public class EditFragment extends Fragment {
     private Movie mMovie;
     private MoviesDBHelper mDbHelper;
 
+    private View mRootLayout;
     private EditText mSubjectET;
     private EditText mBodyET;
     private EditText mUrlET;
@@ -92,9 +94,10 @@ public class EditFragment extends Fragment {
         mHttpScheme = getString(R.string.http_scheme);
         mFileScheme = getString(R.string.file_scheme);
 
-        mSubjectET = ((EditText) viewRoot.findViewById(R.id.subjectEditText));
-        mBodyET = ((EditText) viewRoot.findViewById(R.id.bodyEditText));
-        mUrlET = ((EditText) viewRoot.findViewById(R.id.urlEditText));
+        mRootLayout = viewRoot.findViewById(R.id.editFragLayout);
+        mSubjectET = (EditText) viewRoot.findViewById(R.id.subjectEditText);
+        mBodyET = (EditText) viewRoot.findViewById(R.id.bodyEditText);
+        mUrlET = (EditText) viewRoot.findViewById(R.id.urlEditText);
         mShowCaptureBtn = (Button) viewRoot.findViewById(R.id.urlShowCaptureButton);
         mPosterImageView = (ImageView) viewRoot.findViewById(R.id.posterImageView);
         mProgBar = (ProgressBar) viewRoot.findViewById(R.id.downloadProgressBar);
@@ -355,6 +358,11 @@ public class EditFragment extends Fragment {
 
     private void SetViewsValues(Movie movie)
     {
+        if (mIsTabletMode) {
+            mRootLayout.setBackgroundColor(getResources().getColor(R.color.edit_background));
+            mCancelBtn.setVisibility(View.GONE);
+        }
+
         String ratingStr = "" + movie.getRating();
         int ratingValue = (int) (movie.getRating() * SEEK_BAR_FACTOR);
         mSeekBarTV.setText(ratingStr);
@@ -368,9 +376,6 @@ public class EditFragment extends Fragment {
             mPosterImageView.setImageBitmap(movie.getImage());
         else
             mPosterImageView.setImageResource(0);
-
-        if (mIsTabletMode)
-            mCancelBtn.setVisibility(View.GONE);
 
         setShowCaptureButtonText();
 

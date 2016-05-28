@@ -1,6 +1,7 @@
 package com.example.jbt.omdb;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
@@ -8,13 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 class FragmentHelper {
 
     private final boolean mInTabletMode;
+    private final AppCompatActivity mActivity;
     private final MoviesDBHelper mDbHelper;
     private final FragmentManager mFragManager;
 
 
     public FragmentHelper(Activity activity, boolean inTabletMode)
     {
-        AppCompatActivity mActivity = (AppCompatActivity) activity;
+        mActivity = (AppCompatActivity) activity;
         mInTabletMode = inTabletMode;
         mFragManager = mActivity.getSupportFragmentManager();
         mDbHelper = new MoviesDBHelper(activity);
@@ -33,6 +35,21 @@ class FragmentHelper {
 
         return mainFragment;
     }
+
+    public WebSearchFragment replaceWebSearchFragment()
+    {
+        WebSearchFragment webSearchFragment = new WebSearchFragment();
+
+        mFragManager.beginTransaction()
+                .replace(R.id.webSearchFragContainer, webSearchFragment)
+                .commit();
+
+        mFragManager.executePendingTransactions();
+
+        return webSearchFragment;
+    }
+
+
 
     public void replaceMovieOnEditFragment(Movie movie)
     {
@@ -61,6 +78,19 @@ class FragmentHelper {
         mFragManager.executePendingTransactions();
 
         return editFragment;
+    }
+
+
+    public void launchEditOperation(Movie movie)
+    {
+        if ( mInTabletMode ) {
+            replaceEditFragment();
+        } else {
+            Intent intent = new Intent(mActivity, EditActivity.class);
+            mActivity.startActivity(intent);
+        }
+
+        replaceMovieOnEditFragment(movie);
     }
 
 

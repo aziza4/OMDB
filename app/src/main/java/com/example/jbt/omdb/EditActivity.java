@@ -28,5 +28,5 @@ public class EditActivity extends AppCompatActivity implements EditFragment.OnEd
     }
 
     @Override
-    public void onMovieSaved() {}
+    public void onMovieSaved() { }
 }

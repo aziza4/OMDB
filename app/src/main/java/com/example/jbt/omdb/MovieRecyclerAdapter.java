@@ -2,7 +2,6 @@
 
         import android.annotation.SuppressLint;
         import android.content.Context;
-        import android.content.Intent;
         import android.graphics.Bitmap;
         import android.graphics.BitmapFactory;
         import android.support.v7.app.AppCompatActivity;
@@ -85,7 +84,7 @@
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            launchEditOperation(mMovie);
+                            mFragmentHelper.launchEditOperation(mMovie);
                         }
                     });
 
@@ -112,7 +111,7 @@
                                     switch (item.getItemId())
                                     {
                                         case R.id.editMenuItem:
-                                            launchEditOperation(mMovie);
+                                            mFragmentHelper.launchEditOperation(mMovie);
                                             mode.finish();
                                             return true;
 
@@ -153,23 +152,6 @@
                     bodyTV.setText(movie.getBody());
                     ratingRatingBar.setRating(movie.getRating());
                 }
-
-
-                private void launchEditOperation(Movie movie)
-                {
-                    if ( mIsTabletMode ) {
-
-                        mFragmentHelper.replaceEditFragment();
-
-                    } else {
-
-                        Intent intent = new Intent(mContext, EditActivity.class);
-                        mContext.startActivity(intent);
-                    }
-
-                    mFragmentHelper.replaceMovieOnEditFragment(movie);
-                }
-
 
                 private void refreshMainList()
                 {

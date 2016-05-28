@@ -282,11 +282,7 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
     public Movie getEditMovie()
     {
-        // defaults value for the case of empty table
-        long originalId = Movie.NOT_IN_DB;
-        String subject = "", body = "", url = "", imdbid = "";
-        float rating = 0f;
-        byte[] imageBytes = null;
+        Movie movie = new Movie();
 
         SQLiteDatabase db = getReadableDatabase();
         String sqlQuery = "SELECT * FROM " + EDIT_TABLE_NAME + ";";
@@ -294,19 +290,20 @@ class MoviesDBHelper extends SQLiteOpenHelper {
 
         if ( c.moveToNext() ) { // expecting only single row on this table
 
-            originalId = c.getInt(c.getColumnIndex(EDIT_COL_ORIGINAL_ID));
-            subject = c.getString(c.getColumnIndex(EDIT_COL_SUBJECT));
-            body = c.getString(c.getColumnIndex(EDIT_COL_BODY));
-            url = c.getString(c.getColumnIndex(EDIT_COL_URL));
-            imdbid = c.getString(c.getColumnIndex(EDIT_COL_IMDBID));
-            rating = c.getFloat(c.getColumnIndex(EDIT_COL_RATING));
-            imageBytes = c.getBlob(c.getColumnIndex(EDIT_COL_IMAGE));
-        }
+            long originalId = c.getInt(c.getColumnIndex(EDIT_COL_ORIGINAL_ID));
+            String subject = c.getString(c.getColumnIndex(EDIT_COL_SUBJECT));
+            String body = c.getString(c.getColumnIndex(EDIT_COL_BODY));
+            String url = c.getString(c.getColumnIndex(EDIT_COL_URL));
+            String imdbid = c.getString(c.getColumnIndex(EDIT_COL_IMDBID));
+            float rating = c.getFloat(c.getColumnIndex(EDIT_COL_RATING));
+            byte[] imageBytes = c.getBlob(c.getColumnIndex(EDIT_COL_IMAGE));
 
-        Movie movie = new Movie(originalId,subject, body, url, imdbid, rating, imageBytes);
+            movie = new Movie(originalId, subject, body, url, imdbid, rating, imageBytes);
 
-        if ( ! c.moveToNext() )
+        } else { // table is empty
+
             insertEditMovie(movie);
+        }
 
         c.close();
         db.close();
