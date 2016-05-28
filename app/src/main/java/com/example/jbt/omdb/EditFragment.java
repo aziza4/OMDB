@@ -307,9 +307,10 @@ public class EditFragment extends Fragment {
     private void saveLayout()
     {
         Movie movie = getMovieFromLayout();
+        mDbHelper.updateOrInsertEditMovie(movie);
 
         FragmentHelper fragmentHelper = new FragmentHelper(getActivity(), mIsTabletMode);
-        fragmentHelper.replaceMovieOnEditFragment(movie);
+        fragmentHelper.replaceEditFragment(false);
     }
 
 

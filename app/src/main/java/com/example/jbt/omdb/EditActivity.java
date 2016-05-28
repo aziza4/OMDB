@@ -16,9 +16,15 @@ public class EditActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utility.setContentViewWithLocaleChange(this, R.layout.activity_edit, R.string.edit_name);
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // replacing fragments works well only from OnStart() and not onCreate() see: http://stackoverflow.com/questions/17229500/oncreateview-in-fragment-is-not-called-immediately-even-after-fragmentmanager
         mFragmentHelper = new FragmentHelper(this, false); // EditActivity only in 'phone' mode
-        mEditFrag = mFragmentHelper.replaceEditFragment();
+        mEditFrag = mFragmentHelper.replaceEditActivityFragment();
     }
 
     @Override
@@ -31,5 +37,5 @@ public class EditActivity extends AppCompatActivity
 
     @Override public void onMovieSaved() { }
     @Override public void onPosterClicked() { mFragmentHelper.replaceToFullPosterFragment(); }
-    @Override public void onClose() { mFragmentHelper.replaceEditFragment(); }
+    @Override public void onClose() { mFragmentHelper.replaceEditFragment(true); }
 }

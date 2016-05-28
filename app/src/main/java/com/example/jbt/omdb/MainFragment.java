@@ -184,7 +184,9 @@ public class MainFragment extends Fragment {
 
 
     private void refreshEditFragWithBlankMovie() {
-        mFragmentHelper.replaceMovieOnEditFragment(new Movie());
+
+        mDbHelper.updateOrInsertEditMovie(new Movie());
+        mFragmentHelper.replaceEditFragment(true);
     }
 
 

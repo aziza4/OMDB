@@ -11,110 +11,129 @@ class FragmentHelper {
 
     private final boolean mInTabletMode;
     private final AppCompatActivity mActivity;
-    private final MoviesDBHelper mDbHelper;
     private final FragmentManager mFragManager;
 
-
-    public FragmentHelper(Activity activity, boolean inTabletMode)
-    {
+    public FragmentHelper(Activity activity, boolean inTabletMode) {
         mActivity = (AppCompatActivity) activity;
         mInTabletMode = inTabletMode;
         mFragManager = mActivity.getSupportFragmentManager();
-        mDbHelper = new MoviesDBHelper(activity);
     }
 
 
-    public MainFragment replaceMainFragment()
-    {
-        MainFragment mainFragment = new MainFragment();
+    public EditFragment replaceEditActivityFragment() {
 
-        mFragManager.beginTransaction()
-                .replace(R.id.mainFragContainer, mainFragment)
-                .commit();
+        if ( mInTabletMode ) // only in phone mode
+            return null;
 
-        if (mInTabletMode) // no editFragContainer in phone mode
+        Fragment frag = mFragManager.findFragmentById(R.id.editFragContainer);
+
+        EditFragment editFragment = new EditFragment();
+
+        if (frag == null || frag instanceof EditFragment) {
+
             mFragManager.beginTransaction()
-                    .replace(R.id.editFragContainer, new BlankEditFragment())
+                    .replace(R.id.editFragContainer, editFragment)
                     .commit();
 
-        mFragManager.executePendingTransactions();
+            mFragManager.executePendingTransactions();
+        }
 
+        replaceEditFragment(false);
+        return editFragment;
+
+    }
+
+    public MainFragment replaceMainActivityFragments() {
+        MainFragment mainFragment = new MainFragment();
+        replaceMainOrSearchFragments(mainFragment, R.id.mainFragContainer);
         return mainFragment;
     }
 
-    public void replaceWebSearchFragment()
-    {
+    public void replaceWebSearchActivityFragments() {
         WebSearchFragment webSearchFragment = new WebSearchFragment();
-
-        mFragManager.beginTransaction()
-                .replace(R.id.webSearchFragContainer, webSearchFragment)
-                .commit();
-
-        if (mInTabletMode) // no editFragContainer in phone mode
-            mFragManager.beginTransaction()
-                    .replace(R.id.editFragContainer, new BlankEditFragment())
-                    .commit();
-
-        mFragManager.executePendingTransactions();
+        replaceMainOrSearchFragments(webSearchFragment, R.id.webSearchFragContainer);
     }
 
-
-
-    public void replaceMovieOnEditFragment(Movie movie)
-    {
-        mDbHelper.updateOrInsertEditMovie(movie);
-
-        if (! mInTabletMode)
-            return;  // on phone mode, EditActivity will take care of EditFragment
-
-        Fragment editFrag = mFragManager.findFragmentById(R.id.editFragContainer);
-
-        if (editFrag instanceof BlankEditFragment || editFrag instanceof FullPosterFragment)
-            editFrag = replaceEditFragment();
-
-        ((EditFragment)editFrag).refreshLayout();
-    }
-
-
-    public EditFragment replaceEditFragment()
-    {
-        EditFragment editFragment = new EditFragment();
+    private void replaceMainOrSearchFragments(Fragment frag, int containerId) {
 
         mFragManager.beginTransaction()
-                .replace(R.id.editFragContainer, editFragment)
+                .replace(containerId, frag)
                 .commit();
 
         mFragManager.executePendingTransactions();
 
-        return editFragment;
+        if ( ! mInTabletMode ) // no editFragContainer in phone mode
+            return;
+
+        replaceEditFragment(false);
+    }
+
+
+    public void replaceEditFragment(boolean changeToEditFrag)
+    {
+        Fragment frag = mFragManager.findFragmentById(R.id.editFragContainer);
+
+        if (frag == null && !mInTabletMode)
+            return; // exit in phone mode - will be handled by EditActivity
+
+        if (frag == null) {
+            replaceToBlankEditFragment(); // tablet mode, need to replace with blank fragment
+            return;
+        }
+
+        if (!changeToEditFrag)
+            return; // no need to convert type or force refresh
+
+        if ( frag instanceof BlankEditFragment || frag instanceof FullPosterFragment)
+            frag = replaceToEditFragment(); // either for new movie, or close poster operations
+
+        ((EditFragment)frag).refreshLayout(); // frag was replaced, needs to be refreshed.
+    }
+
+
+    private Fragment replaceToFragment(Fragment fragment)
+    {
+        mFragManager.beginTransaction()
+                .replace(R.id.editFragContainer, fragment)
+                .commit();
+
+        mFragManager.executePendingTransactions();
+
+        return fragment;
+    }
+
+    private void replaceToBlankEditFragment()
+    {
+        replaceToFragment(new BlankEditFragment());
+    }
+
+    private EditFragment replaceToEditFragment()
+    {
+        return (EditFragment)replaceToFragment(new EditFragment());
+    }
+
+
+    private void replaceToPosterFragment()
+    {
+        replaceToFragment(new FullPosterFragment());
     }
 
 
     public void replaceToFullPosterFragment()
     {
-        FullPosterFragment posterFragment = new FullPosterFragment();
-
-        mFragManager.beginTransaction()
-                .replace(R.id.editFragContainer, posterFragment)
-                .commit();
-
-        mFragManager.executePendingTransactions();
+        replaceToPosterFragment();
     }
 
 
-    public void launchEditOperation(Movie movie)
+    public void launchEditOperation()
     {
         if ( mInTabletMode ) {
-
-            replaceEditFragment();
-
-        } else {
-
-            Intent intent = new Intent(mActivity, EditActivity.class);
-            mActivity.startActivity(intent);
+            replaceEditFragment(true);
+            return;
         }
 
-        replaceMovieOnEditFragment(movie);
+        Intent intent = new Intent(mActivity, EditActivity.class);
+        mActivity.startActivity(intent);
     }
 
 

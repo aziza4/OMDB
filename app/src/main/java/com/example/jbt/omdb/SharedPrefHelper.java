@@ -61,6 +61,21 @@ class SharedPrefHelper {
     {
         String key = mContext.getString(R.string.pref_is_tablet_key);
         String def = mContext.getString(R.string.pref_is_tablet_default);
-        return mPrefs.getBoolean(key,Boolean.parseBoolean(def));
+        return mPrefs.getBoolean(key, Boolean.parseBoolean(def));
     }
+
+    /*
+    public void savePosterViewMode(boolean isPosterMode)
+    {
+        String key = mContext.getString(R.string.pref_is_poster_view_key);
+        mPrefs.edit().putBoolean(key, isPosterMode).apply();
+    }
+
+    public boolean getPosterViewMode()
+    {
+        String key = mContext.getString(R.string.pref_is_poster_view_key);
+        String def = mContext.getString(R.string.pref_is_poster_view_default);
+        return mPrefs.getBoolean(key, Boolean.parseBoolean(def));
+    }
+    */
 }

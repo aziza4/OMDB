@@ -82,7 +82,8 @@
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mFragmentHelper.launchEditOperation(mMovie);
+                            mDbHelper.updateOrInsertEditMovie(mMovie);
+                            mFragmentHelper.launchEditOperation();
                         }
                     });
 
@@ -109,7 +110,8 @@
                                     switch (item.getItemId())
                                     {
                                         case R.id.editMenuItem:
-                                            mFragmentHelper.launchEditOperation(mMovie);
+                                            mDbHelper.updateOrInsertEditMovie(mMovie);
+                                            mFragmentHelper.launchEditOperation();
                                             mode.finish();
                                             return true;
 

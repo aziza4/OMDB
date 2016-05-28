@@ -43,6 +43,8 @@ public class FullPosterFragment extends Fragment {
 
         mDbHelper = new MoviesDBHelper(getActivity());
 
+        new SharedPrefHelper(getActivity());
+
         mPosterImageView = (ImageView) viewRoot.findViewById(R.id.fullPosterImageView);
         ImageView mCloseButton = (ImageView) viewRoot.findViewById(R.id.closeFullPosterImageView);
 
@@ -56,13 +58,14 @@ public class FullPosterFragment extends Fragment {
         return viewRoot;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
-
         Movie movie = mDbHelper.getEditMovie();
         mPosterImageView.setImageBitmap(movie.getImage());
     }
+
 
     public interface OnPosterFragListener {
         void onClose();

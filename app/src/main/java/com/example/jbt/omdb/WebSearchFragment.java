@@ -245,7 +245,8 @@ public class WebSearchFragment extends Fragment {
             dbHelper.updateOrInsertEditMovie(movie);
 
             FragmentHelper fragmentHelper = new FragmentHelper(getActivity(), mIsTabletMode);
-            fragmentHelper.launchEditOperation(movie);
+            dbHelper.updateOrInsertEditMovie(movie);
+            fragmentHelper.launchEditOperation();
         }
     }
 }

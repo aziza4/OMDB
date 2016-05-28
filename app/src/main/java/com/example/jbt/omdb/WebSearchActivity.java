@@ -15,14 +15,20 @@ public class WebSearchActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         Utility.setContentViewWithLocaleChange(this, R.layout.activity_web_search, R.string.web_search_name);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         boolean isTabletMode = findViewById(R.id.editFragContainer) != null;
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
         sharedPrefHelper.saveTabletMode(isTabletMode);
 
+        // replacing fragments works well only from OnStart() and not onCreate() see: http://stackoverflow.com/questions/17229500/oncreateview-in-fragment-is-not-called-immediately-even-after-fragmentmanager
         mFragmentHelper = new FragmentHelper(this, isTabletMode);
-        mFragmentHelper.replaceWebSearchFragment(); // create webSearch fragment
+        mFragmentHelper.replaceWebSearchActivityFragments(); // create webSearch (and other) fragments
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -39,5 +45,5 @@ public class WebSearchActivity extends AppCompatActivity
 
     @Override public void onMovieSaved() { }
     @Override public void onPosterClicked() { mFragmentHelper.replaceToFullPosterFragment(); }
-    @Override public void onClose() { mFragmentHelper.replaceEditFragment(); }
+    @Override public void onClose() { mFragmentHelper.replaceEditFragment(true); }
 }
