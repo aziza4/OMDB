@@ -1,6 +1,7 @@
 package com.example.jbt.omdb;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -345,14 +346,23 @@ public class EditFragment extends Fragment {
     }
 
 
-    public void onCameraActivityResult()
+    public void onCameraActivityResult(int resultCode)
     {
-        String url = mUrlET.getText().toString();
-        Uri uri = Uri.parse(url);
-        String path = uri.getPath();
+        switch (resultCode) {
+            case Activity.RESULT_CANCELED:
+                mUrlET.setText("");
+                saveLayout();
+                return;
 
-        if ( ! path.isEmpty())
-            saveImageToGallery(path);
+            case Activity.RESULT_OK:
+                String url = mUrlET.getText().toString();
+                Uri uri = Uri.parse(url);
+                String path = uri.getPath();
+
+                if (!path.isEmpty())
+                    saveImageToGallery(path);
+                return;
+        }
     }
 
 

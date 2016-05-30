@@ -34,13 +34,13 @@ public class WebSearchActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode != EditFragment.REQUEST_TAKE_PHOTO || resultCode != Activity.RESULT_OK)
+        if (requestCode != EditFragment.REQUEST_TAKE_PHOTO)
             return;
 
         EditFragment editFrag = mFragmentHelper.getEditFragmentIfExists();
 
         if (editFrag != null)
-            editFrag.onCameraActivityResult();
+            editFrag.onCameraActivityResult(resultCode);
     }
 
     @Override public void onMovieSaved() { }

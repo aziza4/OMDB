@@ -31,8 +31,8 @@ public class EditActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == EditFragment.REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK)
-            mEditFrag.onCameraActivityResult(); // save captured in gallery
+        if (requestCode == EditFragment.REQUEST_TAKE_PHOTO)
+            mEditFrag.onCameraActivityResult(resultCode); // save captured in gallery
     }
 
     @Override public void onMovieSaved() { }
