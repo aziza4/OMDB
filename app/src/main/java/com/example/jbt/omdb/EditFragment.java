@@ -147,6 +147,8 @@ public class EditFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                Utility.hideKeyboard(getActivity()); // stop irritating auto keyboard popup
+
                 if ( mShowCaptureBtn.getText().toString().equals(mCaptureText)) {
                     takePicture();
                     return;
@@ -304,14 +306,15 @@ public class EditFragment extends Fragment {
         return true;
     }
 
+    public void replaceMovie(Movie movie)
+    {
+        mDbHelper.updateOrInsertEditMovie(movie);
+    }
 
     private void saveLayout()
     {
         Movie movie = getMovieFromLayout();
-        mDbHelper.updateOrInsertEditMovie(movie);
-
-        FragmentHelper fragmentHelper = new FragmentHelper(getActivity(), mIsTabletMode);
-        fragmentHelper.replaceEditFragment(false);
+        replaceMovie(movie);
     }
 
 

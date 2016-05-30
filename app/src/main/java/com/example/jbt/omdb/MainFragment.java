@@ -1,6 +1,7 @@
 package com.example.jbt.omdb;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,10 +26,23 @@ public class MainFragment extends Fragment {
     private FragmentHelper mFragmentHelper;
     private boolean mIsTabletMode;
 
+    private OnMainFragListener mListener;
+
     public MainFragment() {}
 
     public void onMovieSaved() { refreshMainFrag(); }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mListener = (OnMainFragListener) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,11 +101,11 @@ public class MainFragment extends Fragment {
                                     break;
 
                                 case MAN_OPTION_INDEX:
-                                    refreshEditFragWithBlankMovie(); // insert blank movie to db
                                     if (! mIsTabletMode) { // if "phone" need to start new activity
                                         intent = new Intent(getActivity(), EditActivity.class);
                                         startActivity(intent);
-                                    }
+                                    } else
+                                        mListener.onManualSelected();
                                     break;
                             }
                         }
@@ -183,13 +197,6 @@ public class MainFragment extends Fragment {
     }
 
 
-    private void refreshEditFragWithBlankMovie() {
-
-        mDbHelper.updateOrInsertEditMovie(new Movie());
-        mFragmentHelper.replaceEditFragment(true);
-    }
-
-
     private void removeEditFrag() {
         mFragmentHelper.removeEditFragmentIfExists();
     }
@@ -199,5 +206,9 @@ public class MainFragment extends Fragment {
     {
         mDbHelper.deleteAllEditMovies(); // delete 'internal' Edit table
         return mDbHelper.deleteAllMovies(); // delete 'user' Detail table
+    }
+
+    public interface OnMainFragListener {
+        void onManualSelected();
     }
 }

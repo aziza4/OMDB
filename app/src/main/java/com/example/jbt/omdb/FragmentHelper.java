@@ -22,79 +22,38 @@ class FragmentHelper {
 
     public EditFragment replaceEditActivityFragment() {
 
-        if ( mInTabletMode ) // only in phone mode
-            return null;
+        if ( mInTabletMode )
+            return null; // on Tablet - containers are handling elsewher Edit fragment
 
         Fragment frag = mFragManager.findFragmentById(R.id.editFragContainer);
 
         EditFragment editFragment = new EditFragment();
 
-        if (frag == null || frag instanceof EditFragment) {
+        if (frag == null)
+            replaceToFragment(editFragment, R.id.editFragContainer);
 
-            mFragManager.beginTransaction()
-                    .replace(R.id.editFragContainer, editFragment)
-                    .commit();
-
-            mFragManager.executePendingTransactions();
-        }
-
-        replaceEditFragment(false);
         return editFragment;
-
-    }
-
-    public MainFragment replaceMainActivityFragments() {
-        MainFragment mainFragment = new MainFragment();
-        replaceMainOrSearchFragments(mainFragment, R.id.mainFragContainer);
-        return mainFragment;
-    }
-
-    public void replaceWebSearchActivityFragments() {
-        WebSearchFragment webSearchFragment = new WebSearchFragment();
-        replaceMainOrSearchFragments(webSearchFragment, R.id.webSearchFragContainer);
-    }
-
-    private void replaceMainOrSearchFragments(Fragment frag, int containerId) {
-
-        mFragManager.beginTransaction()
-                .replace(containerId, frag)
-                .commit();
-
-        mFragManager.executePendingTransactions();
-
-        if ( ! mInTabletMode ) // no editFragContainer in phone mode
-            return;
-
-        replaceEditFragment(false);
     }
 
 
-    public void replaceEditFragment(boolean changeToEditFrag)
-    {
-        Fragment frag = mFragManager.findFragmentById(R.id.editFragContainer);
+    public void replaceContainerFragments(Fragment frag, int containerId) {
 
-        if (frag == null && !mInTabletMode)
-            return; // exit in phone mode - will be handled by EditActivity
+        replaceToFragment(frag, containerId);
 
-        if (frag == null) {
-            replaceToBlankEditFragment(); // tablet mode, need to replace with blank fragment
-            return;
-        }
+        if ( ! mInTabletMode )
+            return;  // no editFragContainer in phone mode
 
-        if (!changeToEditFrag)
-            return; // no need to convert type or force refresh
+        Fragment editFrag = mFragManager.findFragmentById(R.id.editFragContainer);
 
-        if ( frag instanceof BlankEditFragment || frag instanceof FullPosterFragment)
-            frag = replaceToEditFragment(); // either for new movie, or close poster operations
-
-        ((EditFragment)frag).refreshLayout(); // frag was replaced, needs to be refreshed.
+        if (editFrag == null)
+            replaceToFragment(new BlankEditFragment(), R.id.editFragContainer);
     }
 
 
-    private Fragment replaceToFragment(Fragment fragment)
+    private Fragment replaceToFragment(Fragment fragment, int containerId)
     {
         mFragManager.beginTransaction()
-                .replace(R.id.editFragContainer, fragment)
+                .replace(containerId, fragment)
                 .commit();
 
         mFragManager.executePendingTransactions();
@@ -102,33 +61,45 @@ class FragmentHelper {
         return fragment;
     }
 
-    private void replaceToBlankEditFragment()
+
+    public void replaceToFullPosterFragment()
     {
-        replaceToFragment(new BlankEditFragment());
+        replaceToFragment(new FullPosterFragment(), R.id.editFragContainer);
+    }
+
+
+    public void replaceBackToEditFragment()
+    {
+        replaceToEditFragment();
     }
 
     private EditFragment replaceToEditFragment()
     {
-        return (EditFragment)replaceToFragment(new EditFragment());
+        return (EditFragment)replaceToFragment(new EditFragment(), R.id.editFragContainer);
     }
 
 
-    private void replaceToPosterFragment()
-    {
-        replaceToFragment(new FullPosterFragment());
-    }
+    public void replaceToEmptyEditFragment() {
 
+        if (!mInTabletMode)
+            return;
 
-    public void replaceToFullPosterFragment()
-    {
-        replaceToPosterFragment();
+        EditFragment editFrag =  replaceToEditFragment();
+        editFrag.replaceMovie(new Movie(""));
+        editFrag.refreshLayout();
     }
 
 
     public void launchEditOperation()
     {
         if ( mInTabletMode ) {
-            replaceEditFragment(true);
+
+            EditFragment editFrag = getEditFragmentIfExists();
+
+            if ( editFrag == null )
+                editFrag =  replaceToEditFragment();
+
+            editFrag.refreshLayout();
             return;
         }
 
@@ -139,11 +110,6 @@ class FragmentHelper {
 
     public void removeEditFragmentIfExists()
     {
-        Fragment editFrag = mFragManager.findFragmentById(R.id.editFragContainer);
-
-        if (editFrag == null)
-            return;
-
         mFragManager.beginTransaction()
                 .replace(R.id.editFragContainer, new BlankEditFragment())
                 .commit();
@@ -154,6 +120,8 @@ class FragmentHelper {
 
     public EditFragment getEditFragmentIfExists()
     {
-        return  (EditFragment) mFragManager.findFragmentById(R.id.editFragContainer);
+        Fragment frag = mFragManager.findFragmentById(R.id.editFragContainer);
+        return frag instanceof EditFragment ? (EditFragment)frag : null;
+
     }
 }

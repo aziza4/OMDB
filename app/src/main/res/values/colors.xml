@@ -4,5 +4,5 @@
     <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#D500F9</color>
     <color name="separator">#ddd</color>
-    <color name="edit_background">#ddd</color>
+    <color name="edit_background">#eee</color>
 </resources>

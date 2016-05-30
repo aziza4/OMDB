@@ -37,5 +37,5 @@ public class EditActivity extends AppCompatActivity
 
     @Override public void onMovieSaved() { }
     @Override public void onPosterClicked() { mFragmentHelper.replaceToFullPosterFragment(); }
-    @Override public void onClose() { mFragmentHelper.replaceEditFragment(true); }
+    @Override public void onClose() { mFragmentHelper.replaceBackToEditFragment(); }
 }

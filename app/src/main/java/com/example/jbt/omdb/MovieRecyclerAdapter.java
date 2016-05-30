@@ -139,7 +139,7 @@
                                                 removeItem(mMovie);
                                                 String movieDeletedMsg = mContext.getString(R.string.movie_deleted_msg);
                                                 Toast.makeText(mContext, movieDeletedMsg, Toast.LENGTH_SHORT).show();
-                                                removeEditFrag();
+                                                mFragmentHelper.removeEditFragmentIfExists();
                                                 mode.finish();
                                             }
                                             return true;
@@ -170,10 +170,6 @@
                     subjectTV.setText(movie.getSubject());
                     bodyTV.setText(movie.getBody());
                     ratingRatingBar.setRating(movie.getRating());
-                }
-
-                private void removeEditFrag() {
-                    mFragmentHelper.removeEditFragmentIfExists();
                 }
             }
         }

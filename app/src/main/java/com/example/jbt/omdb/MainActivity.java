@@ -7,7 +7,8 @@ import android.os.Bundle;
 
 
 public class MainActivity extends AppCompatActivity
-        implements EditFragment.OnEditFragListener, FullPosterFragment.OnPosterFragListener {
+        implements MainFragment.OnMainFragListener, EditFragment.OnEditFragListener,
+        FullPosterFragment.OnPosterFragListener {
 
     public static final String LOG_CAT = "OMDB:";
 
@@ -33,7 +34,8 @@ public class MainActivity extends AppCompatActivity
 
         // replacing fragments works well only from OnStart() and not onCreate() see: http://stackoverflow.com/questions/17229500/oncreateview-in-fragment-is-not-called-immediately-even-after-fragmentmanager
         mFragmentHelper = new FragmentHelper(this, isTabletMode);
-        mMainFrag = mFragmentHelper.replaceMainActivityFragments();
+        mMainFrag = new MainFragment();
+        mFragmentHelper.replaceContainerFragments(mMainFrag, R.id.mainFragContainer);
     }
 
 
@@ -52,5 +54,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override public void onMovieSaved() { mMainFrag.onMovieSaved(); } // refresh main list
     @Override public void onPosterClicked() { mFragmentHelper.replaceToFullPosterFragment(); }
-    @Override public void onClose() { mFragmentHelper.replaceEditFragment(true); }
+    @Override public void onClose() { mFragmentHelper.replaceBackToEditFragment(); }
+    @Override public void onManualSelected() { mFragmentHelper.replaceToEmptyEditFragment(); }
 }

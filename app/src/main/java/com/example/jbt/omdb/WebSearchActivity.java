@@ -27,7 +27,7 @@ public class WebSearchActivity extends AppCompatActivity
 
         // replacing fragments works well only from OnStart() and not onCreate() see: http://stackoverflow.com/questions/17229500/oncreateview-in-fragment-is-not-called-immediately-even-after-fragmentmanager
         mFragmentHelper = new FragmentHelper(this, isTabletMode);
-        mFragmentHelper.replaceWebSearchActivityFragments(); // create webSearch (and other) fragments
+        mFragmentHelper.replaceContainerFragments(new WebSearchFragment(), R.id.webSearchFragContainer);
     }
 
     @Override
@@ -45,5 +45,5 @@ public class WebSearchActivity extends AppCompatActivity
 
     @Override public void onMovieSaved() { }
     @Override public void onPosterClicked() { mFragmentHelper.replaceToFullPosterFragment(); }
-    @Override public void onClose() { mFragmentHelper.replaceEditFragment(true); }
+    @Override public void onClose() { mFragmentHelper.replaceBackToEditFragment(); }
 }
