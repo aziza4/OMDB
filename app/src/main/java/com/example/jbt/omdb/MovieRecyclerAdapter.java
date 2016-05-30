@@ -26,10 +26,12 @@
             private final MoviesDBHelper mDbHelper;
             private final FragmentHelper mFragmentHelper;
             private ArrayList<Movie> mMovies;
+            private final MainFragment.OnMainFragListener mListener;
 
-            public MovieRecyclerAdapter(Context context, ArrayList<Movie> movies, boolean isTabletMode) {
+            public MovieRecyclerAdapter(Context context, ArrayList<Movie> movies, MainFragment.OnMainFragListener listener, boolean isTabletMode) {
                 mContext = context;
                 mMovies = movies;
+                mListener = listener;
                 mDbHelper = new MoviesDBHelper(mContext);
                 mFragmentHelper = new FragmentHelper((AppCompatActivity)mContext, isTabletMode);
             }
@@ -53,7 +55,7 @@
                 notifyItemRangeRemoved(0, size);
             }
 
-            public void removeItem(Movie movie)
+            private void removeItem(Movie movie)
             {
                 mMovies.remove(movie);
                 notifyDataSetChanged();
@@ -101,8 +103,7 @@
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mDbHelper.updateOrInsertEditMovie(mMovie);
-                            mFragmentHelper.launchEditOperation();
+                            mListener.onMovieEdit(mMovie);
                         }
                     });
 
@@ -129,8 +130,7 @@
                                     switch (item.getItemId())
                                     {
                                         case R.id.editMenuItem:
-                                            mDbHelper.updateOrInsertEditMovie(mMovie);
-                                            mFragmentHelper.launchEditOperation();
+                                            mListener.onMovieEdit(mMovie);
                                             mode.finish();
                                             return true;
 
@@ -139,9 +139,10 @@
                                                 removeItem(mMovie);
                                                 String movieDeletedMsg = mContext.getString(R.string.movie_deleted_msg);
                                                 Toast.makeText(mContext, movieDeletedMsg, Toast.LENGTH_SHORT).show();
-                                                mFragmentHelper.removeEditFragmentIfExists();
-                                                mode.finish();
+                                                mFragmentHelper.onMovieDelete();
+
                                             }
+                                            mode.finish();
                                             return true;
 
                                         default:

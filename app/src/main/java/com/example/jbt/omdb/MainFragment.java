@@ -24,7 +24,6 @@ public class MainFragment extends Fragment {
     private MovieRecyclerAdapter mAdapter;
     private MoviesDBHelper mDbHelper;
     private FragmentHelper mFragmentHelper;
-    private boolean mIsTabletMode;
 
     private OnMainFragListener mListener;
 
@@ -60,14 +59,17 @@ public class MainFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.mainListView);
 
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
-        mIsTabletMode = sharedPrefHelper.getTabletMode();
+        boolean mIsTabletMode = sharedPrefHelper.getTabletMode();
 
         mDbHelper = new MoviesDBHelper(getActivity());
         mDbHelper.deleteAllSearchResult();
         mFragmentHelper = new FragmentHelper(getActivity(), mIsTabletMode);
 
-        mAdapter = new MovieRecyclerAdapter(getActivity(),
-                mDbHelper.getDetailsMovieArrayList(), mIsTabletMode);
+        mAdapter = new MovieRecyclerAdapter(
+                getActivity(),
+                mDbHelper.getDetailsMovieArrayList(),
+                mListener,
+                mIsTabletMode);
 
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -101,11 +103,7 @@ public class MainFragment extends Fragment {
                                     break;
 
                                 case MAN_OPTION_INDEX:
-                                    if (! mIsTabletMode) { // if "phone" need to start new activity
-                                        intent = new Intent(getActivity(), EditActivity.class);
-                                        startActivity(intent);
-                                    } else
-                                        mListener.onManualSelected();
+                                    mListener.onMovieEdit(new Movie());
                                     break;
                             }
                         }
@@ -173,9 +171,9 @@ public class MainFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 if ( deleteAllMovies() )
                                 {
-                                    Toast.makeText(getActivity(), deleteAllConfMsg, Toast.LENGTH_SHORT).show();
-                                    removeEditFrag();
                                     mAdapter.clearData();
+                                    Toast.makeText(getActivity(), deleteAllConfMsg, Toast.LENGTH_SHORT).show();
+                                    mFragmentHelper.onMovieDelete();
                                 }
                                 dialog.dismiss();
                             }
@@ -196,12 +194,6 @@ public class MainFragment extends Fragment {
         mAdapter.setData(mDbHelper.getDetailsMovieArrayList());
     }
 
-
-    private void removeEditFrag() {
-        mFragmentHelper.removeEditFragmentIfExists();
-    }
-
-
     private boolean deleteAllMovies()
     {
         mDbHelper.deleteAllEditMovies(); // delete 'internal' Edit table
@@ -209,6 +201,6 @@ public class MainFragment extends Fragment {
     }
 
     public interface OnMainFragListener {
-        void onManualSelected();
+        void onMovieEdit(Movie movie);
     }
 }

@@ -2,6 +2,7 @@ package com.example.jbt.omdb;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,15 +22,27 @@ import java.util.ArrayList;
 
 public class WebSearchFragment extends Fragment {
 
-    private boolean mIsTabletMode;
-
     private ArrayAdapter<Movie> mAdapter;
     private OmdbSearchAsyncTask mOmdbSearchAsyncTask;
 
     private SearchView mSearchSV;
     private ProgressDialog mProgDialog;
 
+    private OnWebSearchFragListener mListener;
+
     public WebSearchFragment() { }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mListener = (OnWebSearchFragListener) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
 
 
     @Override
@@ -37,7 +50,7 @@ public class WebSearchFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
-        mIsTabletMode = sharedPrefHelper.getTabletMode();
+        boolean mIsTabletMode = sharedPrefHelper.getTabletMode();
 
         View viewRoot = inflater.inflate(R.layout.fragment_web_search, container, false);
 
@@ -241,12 +254,11 @@ public class WebSearchFragment extends Fragment {
             if (movie == null)
                 return;
 
-            MoviesDBHelper dbHelper = new MoviesDBHelper(getActivity());
-            dbHelper.updateOrInsertEditMovie(movie);
-
-            FragmentHelper fragmentHelper = new FragmentHelper(getActivity(), mIsTabletMode);
-            dbHelper.updateOrInsertEditMovie(movie);
-            fragmentHelper.launchEditOperation();
+            mListener.onMovieEdit(movie);
         }
+    }
+
+    public interface OnWebSearchFragListener {
+        void onMovieEdit(Movie movie);
     }
 }

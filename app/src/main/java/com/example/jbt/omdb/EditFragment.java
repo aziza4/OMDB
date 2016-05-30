@@ -65,6 +65,8 @@ public class EditFragment extends Fragment {
 
     public EditFragment() {}
 
+    public void setMovie(Movie movie) { mMovie = movie; }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -78,10 +80,25 @@ public class EditFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        mMovie = getMovieFromLayout();
+        outState.putParcelable(WebSearchActivity.INTENT_MOVIE_KEY, mMovie);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         mDbHelper = new MoviesDBHelper(getActivity());
+
+        if (mMovie == null && savedInstanceState != null) {
+            mMovie = savedInstanceState.getParcelable(WebSearchActivity.INTENT_MOVIE_KEY);
+        }
+
+        mDbHelper.updateOrInsertEditMovie(mMovie);
         mHasCamera = getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
 
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
@@ -186,7 +203,7 @@ public class EditFragment extends Fragment {
             public void onClick(View v) {
 
                 if ( ((ImageView)v).getDrawable() != null )
-                    mListener.onPosterClicked();
+                    mListener.onPosterClicked(mMovie);
             }
         });
 
@@ -306,15 +323,11 @@ public class EditFragment extends Fragment {
         return true;
     }
 
-    public void replaceMovie(Movie movie)
-    {
-        mDbHelper.updateOrInsertEditMovie(movie);
-    }
 
     private void saveLayout()
     {
         Movie movie = getMovieFromLayout();
-        replaceMovie(movie);
+        mDbHelper.updateOrInsertEditMovie(movie);
     }
 
 
@@ -355,7 +368,7 @@ public class EditFragment extends Fragment {
             case Activity.RESULT_CANCELED:
                 mUrlET.setText("");
                 saveLayout();
-                return;
+                break;
 
             case Activity.RESULT_OK:
                 String url = mUrlET.getText().toString();
@@ -364,7 +377,7 @@ public class EditFragment extends Fragment {
 
                 if (!path.isEmpty())
                     saveImageToGallery(path);
-                return;
+                break;
         }
     }
 
@@ -407,7 +420,7 @@ public class EditFragment extends Fragment {
     }
 
 
-    public void refreshLayout()
+    private void refreshLayout()
     {
         mMovie = mDbHelper.getEditMovie();
         SetViewsValues(mMovie);
@@ -416,6 +429,6 @@ public class EditFragment extends Fragment {
 
     public interface OnEditFragListener {
         void onMovieSaved();
-        void onPosterClicked();
+        void onPosterClicked(Movie movie);
     }
 }

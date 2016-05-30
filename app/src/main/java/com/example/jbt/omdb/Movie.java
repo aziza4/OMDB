@@ -2,9 +2,11 @@ package com.example.jbt.omdb;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 
-public class Movie {
+public class Movie implements Parcelable {
 
     private final static long NOT_IN_DB = -1L; // -1 signals this movie is "not yet save in db"
 
@@ -15,6 +17,31 @@ public class Movie {
     private final String mImdbId;
     private final float mRating;
     private byte[] mImageBytes; // Internally image is stored as byte[]. However, Bitmap getter/setter are provided as well
+
+    private Movie(Parcel in)
+    {
+        mId = in.readLong();
+        mSubject = in.readString();
+        mBody = in.readString();
+        mUrl = in.readString();
+        mImdbId = in.readString();
+        mRating = in.readFloat();
+
+        mImageBytes = new byte[in.readInt()]; // array size
+        in.readByteArray(mImageBytes);
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
     public byte[] getImageByteArray() {
         return mImageBytes;
@@ -96,5 +123,27 @@ public class Movie {
         return String.format("%s: %s\n\n%s: %s\n\n%s: %s\n\n%s: %s\n\n%s: %s\n",
                 subjectTitle, mSubject, bodyTitle, mBody, imdbTitle,
                 mImdbId, urlTitle, mUrl, ratingTitle, mRating);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeLong(mId);
+        dest.writeString(mSubject);
+        dest.writeString(mBody);
+        dest.writeString(mUrl);
+        dest.writeString(mImdbId);
+        dest.writeFloat(mRating);
+
+        if ( mImageBytes != null) {
+
+            dest.writeInt(mImageBytes.length);
+            dest.writeByteArray(mImageBytes);
+        }
     }
 }

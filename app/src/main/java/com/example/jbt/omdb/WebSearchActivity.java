@@ -1,12 +1,14 @@
 package com.example.jbt.omdb;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class WebSearchActivity extends AppCompatActivity
-        implements EditFragment.OnEditFragListener, FullPosterFragment.OnPosterFragListener  {
+        implements WebSearchFragment.OnWebSearchFragListener, EditFragment.OnEditFragListener,
+        FullPosterFragment.OnPosterFragListener  {
+
+    public static final String INTENT_MOVIE_KEY = "movie";
 
     private FragmentHelper mFragmentHelper;
 
@@ -34,16 +36,11 @@ public class WebSearchActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode != EditFragment.REQUEST_TAKE_PHOTO)
-            return;
-
-        EditFragment editFrag = mFragmentHelper.getEditFragmentIfExists();
-
-        if (editFrag != null)
-            editFrag.onCameraActivityResult(resultCode);
+        mFragmentHelper.OnPhotoTakenActivityResult(requestCode, resultCode);
     }
 
     @Override public void onMovieSaved() { }
-    @Override public void onPosterClicked() { mFragmentHelper.replaceToFullPosterFragment(); }
-    @Override public void onClose() { mFragmentHelper.replaceBackToEditFragment(); }
+    @Override public void onPosterClicked(Movie movie) { mFragmentHelper.onPosterClick(movie); }
+    @Override public void onPosterClose(Movie movie) { mFragmentHelper.onPosterClose(movie); }
+    @Override public void onMovieEdit(Movie movie) {  mFragmentHelper.onMovieEdit(movie); }
 }

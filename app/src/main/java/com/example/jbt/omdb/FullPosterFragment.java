@@ -14,13 +14,14 @@ import android.widget.ImageView;
 public class FullPosterFragment extends Fragment {
 
 
-    private ImageView mPosterImageView;
+    private Movie mMovie;
 
-    private MoviesDBHelper mDbHelper;
     private OnPosterFragListener mListener;
 
 
     public FullPosterFragment() { }
+
+    public void setMovie(Movie movie) { mMovie = movie; }
 
 
     @Override
@@ -29,11 +30,23 @@ public class FullPosterFragment extends Fragment {
         mListener = (OnPosterFragListener) context;
     }
 
+
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        if (mMovie != null)
+            outState.putParcelable(WebSearchActivity.INTENT_MOVIE_KEY, mMovie);
+
+        super.onSaveInstanceState(outState);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,33 +54,26 @@ public class FullPosterFragment extends Fragment {
 
         View viewRoot = inflater.inflate(R.layout.fragment_full_poster, container, false);
 
-        mDbHelper = new MoviesDBHelper(getActivity());
+        if (mMovie == null && savedInstanceState != null) {
+            mMovie = savedInstanceState.getParcelable(WebSearchActivity.INTENT_MOVIE_KEY);
+        }
 
-        new SharedPrefHelper(getActivity());
+        ImageView mPosterImageView = (ImageView) viewRoot.findViewById(R.id.fullPosterImageView);
+        mPosterImageView.setImageBitmap(mMovie.getImage());
 
-        mPosterImageView = (ImageView) viewRoot.findViewById(R.id.fullPosterImageView);
         ImageView mCloseButton = (ImageView) viewRoot.findViewById(R.id.closeFullPosterImageView);
 
         mCloseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onClose();
+                mListener.onPosterClose(mMovie);
             }
         });
 
         return viewRoot;
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Movie movie = mDbHelper.getEditMovie();
-        mPosterImageView.setImageBitmap(movie.getImage());
-    }
-
-
     public interface OnPosterFragListener {
-        void onClose();
+        void onPosterClose(Movie movie);
     }
 }

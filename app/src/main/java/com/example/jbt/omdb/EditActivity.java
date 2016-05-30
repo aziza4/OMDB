@@ -1,15 +1,14 @@
 package com.example.jbt.omdb;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class EditActivity extends AppCompatActivity
-        implements EditFragment.OnEditFragListener, FullPosterFragment.OnPosterFragListener {
+        implements MainFragment.OnMainFragListener, EditFragment.OnEditFragListener,
+        FullPosterFragment.OnPosterFragListener {
 
-    private EditFragment mEditFrag;
     private FragmentHelper mFragmentHelper;
 
     @Override
@@ -22,20 +21,23 @@ public class EditActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
 
+        Intent intent = getIntent();
+        Movie movie = intent.getParcelableExtra(WebSearchActivity.INTENT_MOVIE_KEY);
+
         // replacing fragments works well only from OnStart() and not onCreate() see: http://stackoverflow.com/questions/17229500/oncreateview-in-fragment-is-not-called-immediately-even-after-fragmentmanager
         mFragmentHelper = new FragmentHelper(this, false); // EditActivity only in 'phone' mode
-        mEditFrag = mFragmentHelper.replaceEditActivityFragment();
+        mFragmentHelper.replaceEditActivityFragment(movie);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == EditFragment.REQUEST_TAKE_PHOTO)
-            mEditFrag.onCameraActivityResult(resultCode); // save captured in gallery
+        mFragmentHelper.OnPhotoTakenActivityResult(requestCode, resultCode);
     }
 
     @Override public void onMovieSaved() { }
-    @Override public void onPosterClicked() { mFragmentHelper.replaceToFullPosterFragment(); }
-    @Override public void onClose() { mFragmentHelper.replaceBackToEditFragment(); }
+    @Override public void onPosterClicked(Movie movie) { mFragmentHelper.onPosterClick(movie); }
+    @Override public void onPosterClose(Movie movie) { mFragmentHelper.onPosterClose(movie); }
+    @Override public void onMovieEdit(Movie movie) { mFragmentHelper.onMovieEdit(movie); }
 }

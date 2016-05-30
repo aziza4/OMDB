@@ -20,21 +20,11 @@ class FragmentHelper {
     }
 
 
-    public EditFragment replaceEditActivityFragment() {
-
-        if ( mInTabletMode )
-            return null; // on Tablet - containers are handling elsewher Edit fragment
-
-        Fragment frag = mFragManager.findFragmentById(R.id.editFragContainer);
-
-        EditFragment editFragment = new EditFragment();
-
-        if (frag == null)
-            replaceToFragment(editFragment, R.id.editFragContainer);
-
-        return editFragment;
+    public void replaceEditActivityFragment(Movie movie) // phone mode only
+    {
+        EditFragment editFrag = CreateEditFragment(movie);
+        replaceToFragment(editFrag, R.id.editFragContainer);
     }
-
 
     public void replaceContainerFragments(Fragment frag, int containerId) {
 
@@ -50,66 +40,26 @@ class FragmentHelper {
     }
 
 
-    private Fragment replaceToFragment(Fragment fragment, int containerId)
+    public void onMovieEdit(Movie movie)
     {
-        mFragManager.beginTransaction()
-                .replace(containerId, fragment)
-                .commit();
-
-        mFragManager.executePendingTransactions();
-
-        return fragment;
-    }
-
-
-    public void replaceToFullPosterFragment()
-    {
-        replaceToFragment(new FullPosterFragment(), R.id.editFragContainer);
-    }
-
-
-    public void replaceBackToEditFragment()
-    {
-        replaceToEditFragment();
-    }
-
-    private EditFragment replaceToEditFragment()
-    {
-        return (EditFragment)replaceToFragment(new EditFragment(), R.id.editFragContainer);
-    }
-
-
-    public void replaceToEmptyEditFragment() {
-
-        if (!mInTabletMode)
-            return;
-
-        EditFragment editFrag =  replaceToEditFragment();
-        editFrag.replaceMovie(new Movie(""));
-        editFrag.refreshLayout();
-    }
-
-
-    public void launchEditOperation()
-    {
-        if ( mInTabletMode ) {
-
-            EditFragment editFrag = getEditFragmentIfExists();
-
-            if ( editFrag == null )
-                editFrag =  replaceToEditFragment();
-
-            editFrag.refreshLayout();
+        if ( mInTabletMode )
+        {
+            EditFragment editFrag = CreateEditFragment(movie);
+            replaceToFragment(editFrag, R.id.editFragContainer);
             return;
         }
 
         Intent intent = new Intent(mActivity, EditActivity.class);
+        intent.putExtra(WebSearchActivity.INTENT_MOVIE_KEY, movie);
         mActivity.startActivity(intent);
     }
 
 
-    public void removeEditFragmentIfExists()
+    public void onMovieDelete()
     {
+        if (!mInTabletMode)
+            return;
+
         mFragManager.beginTransaction()
                 .replace(R.id.editFragContainer, new BlankEditFragment())
                 .commit();
@@ -118,10 +68,63 @@ class FragmentHelper {
     }
 
 
-    public EditFragment getEditFragmentIfExists()
+    public void onPosterClose(Movie movie)
+    {
+        EditFragment editFrag = CreateEditFragment(movie);
+        replaceToFragment(editFrag, R.id.editFragContainer);
+    }
+
+
+    public void onPosterClick(Movie movie)
+    {
+        FullPosterFragment posterFrag = CreatePosterFragment(movie);
+        replaceToFragment(posterFrag, R.id.editFragContainer);
+    }
+
+
+    public void OnPhotoTakenActivityResult(int requestCode, int resultCode)
+    {
+        if (requestCode != EditFragment.REQUEST_TAKE_PHOTO)
+            return;
+
+        EditFragment editFrag = getEditFragment();
+
+        if (editFrag != null)
+            editFrag.onCameraActivityResult(resultCode);
+    }
+
+    private EditFragment getEditFragment()
     {
         Fragment frag = mFragManager.findFragmentById(R.id.editFragContainer);
-        return frag instanceof EditFragment ? (EditFragment)frag : null;
 
+        if (frag == null || !(frag instanceof EditFragment))
+            return null;
+
+        return (EditFragment)frag;
+    }
+
+
+    private void replaceToFragment(Fragment fragment, int containerId)
+    {
+        mFragManager.beginTransaction()
+                .replace(containerId, fragment)
+                .commit();
+
+        mFragManager.executePendingTransactions();
+    }
+
+
+    private EditFragment CreateEditFragment(Movie movie)
+    {
+        EditFragment editFrag = new EditFragment();
+        editFrag.setMovie(movie);
+        return editFrag;
+    }
+
+    private FullPosterFragment CreatePosterFragment(Movie movie)
+    {
+        FullPosterFragment posterFrag = new FullPosterFragment();
+        posterFrag.setMovie(movie);
+        return posterFrag;
     }
 }
