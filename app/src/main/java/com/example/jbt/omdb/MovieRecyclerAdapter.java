@@ -40,6 +40,25 @@
                 notifyDataSetChanged();
             }
 
+            public void clearData() {
+
+                int size = mMovies.size();
+
+                if (size == 0)
+                    return;
+
+                for (int i = 0; i < size; i++)
+                    mMovies.remove(0);
+
+                notifyItemRangeRemoved(0, size);
+            }
+
+            public void removeItem(Movie movie)
+            {
+                mMovies.remove(movie);
+                notifyDataSetChanged();
+            }
+
             @Override
             public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -117,9 +136,9 @@
 
                                         case R.id.deleteMenuItem:
                                             if ( mDbHelper.deleteMovie(mMovie.getId())) {
+                                                removeItem(mMovie);
                                                 String movieDeletedMsg = mContext.getString(R.string.movie_deleted_msg);
                                                 Toast.makeText(mContext, movieDeletedMsg, Toast.LENGTH_SHORT).show();
-                                                refreshMainList();
                                                 removeEditFrag();
                                                 mode.finish();
                                             }
@@ -152,13 +171,6 @@
                     bodyTV.setText(movie.getBody());
                     ratingRatingBar.setRating(movie.getRating());
                 }
-
-                private void refreshMainList()
-                {
-                    mMovies = mDbHelper.getDetailsMovieArrayList();
-                    notifyDataSetChanged();
-                }
-
 
                 private void removeEditFrag() {
                     mFragmentHelper.removeEditFragmentIfExists();

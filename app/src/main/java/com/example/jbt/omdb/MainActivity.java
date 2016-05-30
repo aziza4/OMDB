@@ -50,9 +50,7 @@ public class MainActivity extends AppCompatActivity
             editFrag.onCameraActivityResult(resultCode);
     }
 
-    @Override public void onMovieSaved() {
-        mMainFrag.onMovieSaved();
-    } // refresh main list
+    @Override public void onMovieSaved() { mMainFrag.onMovieSaved(); } // refresh main list
     @Override public void onPosterClicked() { mFragmentHelper.replaceToFullPosterFragment(); }
     @Override public void onClose() { mFragmentHelper.replaceEditFragment(true); }
 }

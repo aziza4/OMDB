@@ -161,7 +161,7 @@ public class MainFragment extends Fragment {
                                 {
                                     Toast.makeText(getActivity(), deleteAllConfMsg, Toast.LENGTH_SHORT).show();
                                     removeEditFrag();
-                                    refreshMainFrag();
+                                    mAdapter.clearData();
                                 }
                                 dialog.dismiss();
                             }
