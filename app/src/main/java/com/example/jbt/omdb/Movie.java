@@ -13,7 +13,7 @@ public class Movie implements Parcelable {
     private long mId;
     private final String mSubject;
     private final String mBody;
-    private final String mUrl;
+    private String mUrl;
     private final String mImdbId;
     private final float mRating;
     private byte[] mImageBytes; // Internally image is stored as byte[]. However, Bitmap getter/setter are provided as well
@@ -91,6 +91,9 @@ public class Movie implements Parcelable {
     public String getUrl() {
         return mUrl;
     }
+
+    @SuppressWarnings("SameParameterValue")
+    public void setUrl(String url) { mUrl = url; }
 
     public String getImdbId() {
         return mImdbId;

@@ -20,11 +20,17 @@ class FragmentHelper {
     }
 
 
-    public void replaceEditActivityFragment(Movie movie) // phone mode only
+    public void addEditActivityFragment(Movie movie) // phone mode only
     {
-        EditFragment editFrag = CreateEditFragment(movie);
+        Fragment editFrag = mFragManager.findFragmentById(R.id.editFragContainer);
+
+        if (editFrag != null )
+            return;
+
+        editFrag = CreateEditFragment(movie);
         replaceToFragment(editFrag, R.id.editFragContainer);
     }
+
 
     public void replaceContainerFragments(Fragment frag, int containerId) {
 

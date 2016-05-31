@@ -26,7 +26,7 @@ public class EditActivity extends AppCompatActivity
 
         // replacing fragments works well only from OnStart() and not onCreate() see: http://stackoverflow.com/questions/17229500/oncreateview-in-fragment-is-not-called-immediately-even-after-fragmentmanager
         mFragmentHelper = new FragmentHelper(this, false); // EditActivity only in 'phone' mode
-        mFragmentHelper.replaceEditActivityFragment(movie);
+        mFragmentHelper.addEditActivityFragment(movie);
     }
 
     @Override

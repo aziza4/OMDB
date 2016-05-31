@@ -169,7 +169,7 @@ public class MainFragment extends Fragment {
                 .setPositiveButton(deleteButton,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                if ( deleteAllMovies() )
+                                if ( mDbHelper.deleteAllMovies() )
                                 {
                                     mAdapter.clearData();
                                     Toast.makeText(getActivity(), deleteAllConfMsg, Toast.LENGTH_SHORT).show();
@@ -192,12 +192,6 @@ public class MainFragment extends Fragment {
 
     private void refreshMainFrag() {
         mAdapter.setData(mDbHelper.getDetailsMovieArrayList());
-    }
-
-    private boolean deleteAllMovies()
-    {
-        mDbHelper.deleteAllEditMovies(); // delete 'internal' Edit table
-        return mDbHelper.deleteAllMovies(); // delete 'user' Detail table
     }
 
     public interface OnMainFragListener {

@@ -28,17 +28,6 @@ class MoviesDBHelper extends SQLiteOpenHelper {
     private static final String DETAILS_COL_RATING = "rating";
     private static final String DETAILS_COL_IMAGE = "image";
 
-    private static final String EDIT_TABLE_NAME = "edit";
-    private static final String EDIT_COL_ID = "_id";
-    private static final String EDIT_COL_ORIGINAL_ID = "originalid";
-    private static final String EDIT_COL_SUBJECT = "subject";
-    private static final String EDIT_COL_BODY = "body";
-    private static final String EDIT_COL_URL = "url";
-    private static final String EDIT_COL_IMDBID = "imdbid";
-    private static final String EDIT_COL_RATING = "rating";
-    private static final String EDIT_COL_IMAGE = "image";
-    private static final long EDIT_COL_ID_CONST = -2;
-
     private final Context mContext;
 
     public MoviesDBHelper(Context context) {
@@ -64,15 +53,6 @@ class MoviesDBHelper extends SQLiteOpenHelper {
                 DETAILS_COL_RATING, DETAILS_COL_IMAGE);
 
         db.execSQL(createDetailsTable);
-
-        String createEditTable = String.format( // holds single record only that reflects Edit fragment state at any give time
-                "CREATE TABLE %s (%s INTEGER PRIMARY KEY, %s INTEGER, %s TEXT NOT NULL, " +
-                        "%s TEXT, %s TEXT, %s TEXT, %s REAL, %s BLOB);",
-                EDIT_TABLE_NAME, EDIT_COL_ID, EDIT_COL_ORIGINAL_ID,
-                EDIT_COL_SUBJECT, EDIT_COL_BODY, EDIT_COL_URL,
-                EDIT_COL_IMDBID, EDIT_COL_RATING, EDIT_COL_IMAGE);
-
-        db.execSQL(createEditTable);
     }
 
 
@@ -266,95 +246,6 @@ class MoviesDBHelper extends SQLiteOpenHelper {
         db.close();
 
         return rowsDeleted > 0;
-    }
-
-
-
-// ============================= Edit table operations =============================
-
-
-    public Movie getEditMovie()
-    {
-        Movie movie = new Movie();
-
-        SQLiteDatabase db = getReadableDatabase();
-        String sqlQuery = "SELECT * FROM " + EDIT_TABLE_NAME + ";";
-        Cursor c = db.rawQuery(sqlQuery, null);
-
-        if ( c.moveToNext() ) { // expecting only single row on this table
-
-            long originalId = c.getInt(c.getColumnIndex(EDIT_COL_ORIGINAL_ID));
-            String subject = c.getString(c.getColumnIndex(EDIT_COL_SUBJECT));
-            String body = c.getString(c.getColumnIndex(EDIT_COL_BODY));
-            String url = c.getString(c.getColumnIndex(EDIT_COL_URL));
-            String imdbid = c.getString(c.getColumnIndex(EDIT_COL_IMDBID));
-            float rating = c.getFloat(c.getColumnIndex(EDIT_COL_RATING));
-            byte[] imageBytes = c.getBlob(c.getColumnIndex(EDIT_COL_IMAGE));
-
-            movie = new Movie(originalId, subject, body, url, imdbid, rating, imageBytes);
-
-        } else { // table is empty
-
-            insertEditMovie(movie);
-        }
-
-        c.close();
-        db.close();
-
-        return movie;
-    }
-
-
-    public void updateOrInsertEditMovie(Movie movie) {
-
-        if (! updateEditMovie(movie))
-            insertEditMovie(movie);
-    }
-
-
-    private void insertEditMovie(Movie movie) {
-
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(EDIT_COL_ID, EDIT_COL_ID_CONST);
-        values.put(EDIT_COL_ORIGINAL_ID, movie.getId());
-        values.put(EDIT_COL_SUBJECT, movie.getSubject());
-        values.put(EDIT_COL_BODY, movie.getBody());
-        values.put(EDIT_COL_URL, movie.getUrl());
-        values.put(EDIT_COL_IMDBID, movie.getImdbId());
-        values.put(EDIT_COL_RATING, movie.getRating());
-        values.put(EDIT_COL_IMAGE, movie.getImageByteArray());
-
-        db.insert(EDIT_TABLE_NAME, null, values);
-        db.close();
-    }
-
-
-    private boolean updateEditMovie(Movie movie) {
-
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(EDIT_COL_ORIGINAL_ID, movie.getId());
-        values.put(EDIT_COL_SUBJECT, movie.getSubject());
-        values.put(EDIT_COL_BODY, movie.getBody());
-        values.put(EDIT_COL_URL, movie.getUrl());
-        values.put(EDIT_COL_IMDBID, movie.getImdbId());
-        values.put(EDIT_COL_RATING, movie.getRating());
-        values.put(EDIT_COL_IMAGE, movie.getImageByteArray());
-
-        long rowsAffected = db.update(EDIT_TABLE_NAME, values, EDIT_COL_ID + "=" + EDIT_COL_ID_CONST, null);
-        db.close();
-
-        return rowsAffected > 0; // although return val not used, its a good practice (debug)
-    }
-
-    public void deleteAllEditMovies() {
-
-        SQLiteDatabase db = getWritableDatabase();
-        db.delete(EDIT_TABLE_NAME, null , null);
-        db.close();
     }
 }
 

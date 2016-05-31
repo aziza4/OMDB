@@ -98,7 +98,6 @@ public class EditFragment extends Fragment {
             mMovie = savedInstanceState.getParcelable(WebSearchActivity.INTENT_MOVIE_KEY);
         }
 
-        mDbHelper.updateOrInsertEditMovie(mMovie);
         mHasCamera = getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
 
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
@@ -216,14 +215,14 @@ public class EditFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        refreshLayout(); // via load data from db
+        updateLayout(mMovie);
     }
 
 
     @Override
     public void onStop() {
         super.onStop();
-        saveLayout(); // to mitigate device rotation at any time
+        mMovie = getMovieFromLayout();
     }
 
 
@@ -324,13 +323,6 @@ public class EditFragment extends Fragment {
     }
 
 
-    private void saveLayout()
-    {
-        Movie movie = getMovieFromLayout();
-        mDbHelper.updateOrInsertEditMovie(movie);
-    }
-
-
     private void setShowCaptureButtonText()
     {
         // "Show" toggles to "Capture" if: device has camera, and url string is blank
@@ -354,8 +346,7 @@ public class EditFragment extends Fragment {
 
         Uri uri = Uri.fromFile(photoFile);
 
-        mUrlET.setText(uri.toString()); // save file url to url EditText view
-        saveLayout(); // save movie immediately to db to mitigate device rotation
+        mUrlET.setText(uri.toString()); // mMovie will be update on OnStop()
 
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         getActivity().startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
@@ -365,14 +356,14 @@ public class EditFragment extends Fragment {
     public void onCameraActivityResult(int resultCode)
     {
         switch (resultCode) {
+
             case Activity.RESULT_CANCELED:
-                mUrlET.setText("");
-                saveLayout();
+                mMovie.setUrl(""); // must revert the action
+                updateLayout(mMovie);
                 break;
 
             case Activity.RESULT_OK:
-                String url = mUrlET.getText().toString();
-                Uri uri = Uri.parse(url);
+                Uri uri = Uri.parse(mMovie.getUrl());
                 String path = uri.getPath();
 
                 if (!path.isEmpty())
@@ -393,7 +384,7 @@ public class EditFragment extends Fragment {
 
 
     @SuppressWarnings("deprecation")
-    private void SetViewsValues(Movie movie)
+    private void updateLayout(Movie movie)
     {
         if (mIsTabletMode) {
             mRootLayout.setBackgroundColor(getResources().getColor(R.color.edit_background));
@@ -417,13 +408,6 @@ public class EditFragment extends Fragment {
         setShowCaptureButtonText();
 
         Utility.hideKeyboard(getActivity()); // stop irritating auto keyboard popup
-    }
-
-
-    private void refreshLayout()
-    {
-        mMovie = mDbHelper.getEditMovie();
-        SetViewsValues(mMovie);
     }
 
 
