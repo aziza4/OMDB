@@ -24,12 +24,11 @@ public class MainFragment extends Fragment {
     private MovieRecyclerAdapter mAdapter;
     private MoviesDBHelper mDbHelper;
     private FragmentHelper mFragmentHelper;
-
     private OnMainFragListener mListener;
 
     public MainFragment() {}
-
     public void onMovieSaved() { refreshMainFrag(); }
+
 
     @Override
     public void onAttach(Context context) {
@@ -37,11 +36,13 @@ public class MainFragment extends Fragment {
         mListener = (OnMainFragListener) context;
     }
 
+
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -190,11 +191,11 @@ public class MainFragment extends Fragment {
                 .show();
     }
 
+
     private void refreshMainFrag() {
         mAdapter.setData(mDbHelper.getDetailsMovieArrayList());
     }
 
-    public interface OnMainFragListener {
-        void onMovieEdit(Movie movie);
-    }
+
+    public interface OnMainFragListener { void onMovieEdit(Movie movie); }
 }

@@ -13,11 +13,13 @@ class SharedPrefHelper {
     private final Context mContext;
     private final SharedPreferences mPrefs;
 
+
     public SharedPrefHelper(Context context)
     {
         mContext = context;
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
+
 
     public boolean isSortByTitle() {
 
@@ -27,6 +29,7 @@ class SharedPrefHelper {
 
         return mPrefs.getString(key, def).equals(title);
     }
+
 
     public boolean isSaveImagesToDB() {
 
@@ -51,11 +54,13 @@ class SharedPrefHelper {
         resources.updateConfiguration(configuration, mContext.getResources().getDisplayMetrics());
     }
 
+
     public void saveTabletMode(boolean isTabletMode)
     {
         String key = mContext.getString(R.string.pref_is_tablet_key);
         mPrefs.edit().putBoolean(key, isTabletMode).apply();
     }
+
 
     public boolean getTabletMode()
     {
@@ -63,19 +68,4 @@ class SharedPrefHelper {
         String def = mContext.getString(R.string.pref_is_tablet_default);
         return mPrefs.getBoolean(key, Boolean.parseBoolean(def));
     }
-
-    /*
-    public void savePosterViewMode(boolean isPosterMode)
-    {
-        String key = mContext.getString(R.string.pref_is_poster_view_key);
-        mPrefs.edit().putBoolean(key, isPosterMode).apply();
-    }
-
-    public boolean getPosterViewMode()
-    {
-        String key = mContext.getString(R.string.pref_is_poster_view_key);
-        String def = mContext.getString(R.string.pref_is_poster_view_default);
-        return mPrefs.getBoolean(key, Boolean.parseBoolean(def));
-    }
-    */
 }

@@ -13,12 +13,14 @@ public class MainActivity extends AppCompatActivity
     private MainFragment mMainFrag;
     private FragmentHelper mFragmentHelper;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Utility.setContentViewWithLocaleChange(this, R.layout.activity_main, R.string.app_name);
     }
+
 
     @Override
     protected void onStart() {

@@ -28,6 +28,7 @@
             private ArrayList<Movie> mMovies;
             private final MainFragment.OnMainFragListener mListener;
 
+
             public MovieRecyclerAdapter(Context context, ArrayList<Movie> movies, MainFragment.OnMainFragListener listener, boolean isTabletMode) {
                 mContext = context;
                 mMovies = movies;
@@ -36,11 +37,13 @@
                 mFragmentHelper = new FragmentHelper((AppCompatActivity)mContext, isTabletMode);
             }
 
+
             public void setData(ArrayList<Movie> movies) // called whenever refresh is needed
             {
                 mMovies = movies;
                 notifyDataSetChanged();
             }
+
 
             public void clearData() {
 
@@ -55,11 +58,13 @@
                 notifyItemRangeRemoved(0, size);
             }
 
+
             private void removeItem(Movie movie)
             {
                 mMovies.remove(movie);
                 notifyDataSetChanged();
             }
+
 
             @Override
             public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -71,16 +76,19 @@
                 return new MovieViewHolder(view);
             }
 
+
             @Override
             public void onBindViewHolder(MovieViewHolder holder, int position) {
 
                 holder.bind(mMovies.get(position));
             }
 
+
             @Override
             public int getItemCount() {
                 return mMovies.size();
             }
+
 
 
             class MovieViewHolder extends RecyclerView.ViewHolder {

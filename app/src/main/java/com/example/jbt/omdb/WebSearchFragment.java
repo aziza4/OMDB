@@ -24,19 +24,19 @@ public class WebSearchFragment extends Fragment {
 
     private ArrayAdapter<Movie> mAdapter;
     private OmdbSearchAsyncTask mOmdbSearchAsyncTask;
-
     private SearchView mSearchSV;
     private ProgressDialog mProgDialog;
-
     private OnWebSearchFragListener mListener;
 
     public WebSearchFragment() { }
+
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mListener = (OnWebSearchFragListener) context;
     }
+
 
     @Override
     public void onDetach() {
@@ -257,6 +257,7 @@ public class WebSearchFragment extends Fragment {
             mListener.onMovieEdit(movie);
         }
     }
+
 
     public interface OnWebSearchFragListener {
         void onMovieEdit(Movie movie);

@@ -15,12 +15,9 @@ public class FullPosterFragment extends Fragment {
 
 
     private Movie mMovie;
-
     private OnPosterFragListener mListener;
 
-
     public FullPosterFragment() { }
-
     public void setMovie(Movie movie) { mMovie = movie; }
 
 

@@ -13,7 +13,9 @@ class FragmentHelper {
     private final AppCompatActivity mActivity;
     private final FragmentManager mFragManager;
 
+
     public FragmentHelper(Activity activity, boolean inTabletMode) {
+
         mActivity = (AppCompatActivity) activity;
         mInTabletMode = inTabletMode;
         mFragManager = mActivity.getSupportFragmentManager();
@@ -25,7 +27,7 @@ class FragmentHelper {
         Fragment editFrag = mFragManager.findFragmentById(R.id.editFragContainer);
 
         if (editFrag != null )
-            return;
+            return; // do not replace in case of device rotation
 
         editFrag = CreateEditFragment(movie);
         replaceToFragment(editFrag, R.id.editFragContainer);
@@ -51,7 +53,7 @@ class FragmentHelper {
         if ( mInTabletMode )
         {
             EditFragment editFrag = CreateEditFragment(movie);
-            replaceToFragment(editFrag, R.id.editFragContainer);
+            replaceToFragment(editFrag, R.id.editFragContainer); // movie may be different - always replace fragment
             return;
         }
 
@@ -76,7 +78,7 @@ class FragmentHelper {
 
     public void onPosterClose(Movie movie)
     {
-        EditFragment editFrag = CreateEditFragment(movie);
+        EditFragment editFrag = CreateEditFragment(movie); // change from poster frag back to edit frag
         replaceToFragment(editFrag, R.id.editFragContainer);
     }
 
@@ -87,6 +89,9 @@ class FragmentHelper {
         replaceToFragment(posterFrag, R.id.editFragContainer);
     }
 
+
+
+    // ---------------------------   Private methods   ----------------------------------
 
     private void replaceToFragment(Fragment fragment, int containerId)
     {
@@ -104,6 +109,7 @@ class FragmentHelper {
         editFrag.setMovie(movie);
         return editFrag;
     }
+
 
     private FullPosterFragment CreatePosterFragment(Movie movie)
     {

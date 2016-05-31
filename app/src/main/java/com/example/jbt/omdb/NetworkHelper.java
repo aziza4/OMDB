@@ -15,10 +15,13 @@ class NetworkHelper {
 
     private URL mUrl;
 
+
+
     public NetworkHelper(URL url)
     {
         this.mUrl = url;
     }
+
 
     public NetworkHelper(String urlString)
     {
@@ -31,6 +34,7 @@ class NetworkHelper {
             Log.e(MainActivity.LOG_CAT, "" + e.getMessage());
         }
     }
+
 
     public String GetJsonString()
     {

@@ -3,13 +3,15 @@ package com.example.jbt.omdb;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+
 public class WebSearchActivity extends AppCompatActivity
         implements WebSearchFragment.OnWebSearchFragListener, EditFragment.OnEditFragListener,
         FullPosterFragment.OnPosterFragListener  {
 
-    public static final String INTENT_MOVIE_KEY = "movie";
 
+    public static final String INTENT_MOVIE_KEY = "movie";
     private FragmentHelper mFragmentHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +19,7 @@ public class WebSearchActivity extends AppCompatActivity
         Utility.setContentViewWithLocaleChange(this, R.layout.activity_web_search, R.string.web_search_name);
 
     }
+
 
     @Override
     protected void onStart() {
