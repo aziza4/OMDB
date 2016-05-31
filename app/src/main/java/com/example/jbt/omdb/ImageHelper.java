@@ -19,7 +19,7 @@ class ImageHelper {
 
     public static File createImageFile(Context context)
     {
-        String timestampFormat = context.getString(R.string.filename_timestap_format);
+        String timestampFormat = context.getString(R.string.filename_timestamp_format);
         String timeStamp = new SimpleDateFormat(timestampFormat, Locale.US).format( new Date());
         String imageFileName = "JPEG_" + timeStamp + "_" ;
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);

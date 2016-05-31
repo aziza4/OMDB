@@ -37,7 +37,7 @@ import java.util.Locale;
 
 public class EditFragment extends Fragment {
 
-    public static final int REQUEST_TAKE_PHOTO = 1;
+    private static final int REQUEST_TAKE_PHOTO = 1;
     private static final float SEEK_BAR_FACTOR = 10f;
 
     private Movie mMovie;

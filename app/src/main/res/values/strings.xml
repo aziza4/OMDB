@@ -55,7 +55,7 @@
 
     <string name="file_scheme" translatable="false">file</string>
     <string name="http_scheme" translatable="false">http</string>
-    <string name="filename_timestap_format" translatable="false">yyyyMMdd_HHmmss</string>
+    <string name="filename_timestamp_format" translatable="false">yyyyMMdd_HHmmss</string>
     <string name="authority" translatable="false">www.omdbapi.com</string>
     <string name="omdb_search_key" translatable="false">s</string>
     <string name="omdb_page_key" translatable="false">page</string>

@@ -88,17 +88,6 @@ class FragmentHelper {
     }
 
 
-    private EditFragment getEditFragment()
-    {
-        Fragment frag = mFragManager.findFragmentById(R.id.editFragContainer);
-
-        if (frag == null || !(frag instanceof EditFragment))
-            return null;
-
-        return (EditFragment)frag;
-    }
-
-
     private void replaceToFragment(Fragment fragment, int containerId)
     {
         mFragManager.beginTransaction()
