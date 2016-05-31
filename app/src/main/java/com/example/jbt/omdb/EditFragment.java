@@ -213,6 +213,31 @@ public class EditFragment extends Fragment {
 
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode != EditFragment.REQUEST_TAKE_PHOTO)
+            return;
+
+        switch (resultCode) {
+
+            case Activity.RESULT_CANCELED:
+                mMovie.setUrl(""); // must revert the action
+                updateLayout(mMovie);
+                break;
+
+            case Activity.RESULT_OK:
+                Uri uri = Uri.parse(mMovie.getUrl());
+                String path = uri.getPath();
+
+                if (!path.isEmpty())
+                    saveImageToGallery(path);
+                break;
+        }
+    }
+
+
+    @Override
     public void onStart() {
         super.onStart();
         updateLayout(mMovie);
@@ -349,29 +374,8 @@ public class EditFragment extends Fragment {
         mUrlET.setText(uri.toString()); // mMovie will be update on OnStop()
 
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        getActivity().startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+        startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
     }
-
-
-    public void onCameraActivityResult(int resultCode)
-    {
-        switch (resultCode) {
-
-            case Activity.RESULT_CANCELED:
-                mMovie.setUrl(""); // must revert the action
-                updateLayout(mMovie);
-                break;
-
-            case Activity.RESULT_OK:
-                Uri uri = Uri.parse(mMovie.getUrl());
-                String path = uri.getPath();
-
-                if (!path.isEmpty())
-                    saveImageToGallery(path);
-                break;
-        }
-    }
-
 
     private void saveImageToGallery(String path)
     {

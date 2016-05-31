@@ -35,14 +35,6 @@ public class MainActivity extends AppCompatActivity
         mFragmentHelper.replaceContainerFragments(mMainFrag, R.id.mainFragContainer);
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        mFragmentHelper.OnPhotoTakenActivityResult(requestCode, resultCode);
-    }
-
     @Override public void onMovieSaved() { mMainFrag.onMovieSaved(); } // refresh main list
     @Override public void onPosterClicked(Movie movie) { mFragmentHelper.onPosterClick(movie); }
     @Override public void onPosterClose(Movie movie) { mFragmentHelper.onPosterClose(movie); }

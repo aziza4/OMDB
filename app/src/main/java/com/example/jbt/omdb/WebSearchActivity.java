@@ -32,13 +32,6 @@ public class WebSearchActivity extends AppCompatActivity
         mFragmentHelper.replaceContainerFragments(new WebSearchFragment(), R.id.webSearchFragContainer);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        mFragmentHelper.OnPhotoTakenActivityResult(requestCode, resultCode);
-    }
-
     @Override public void onMovieSaved() { }
     @Override public void onPosterClicked(Movie movie) { mFragmentHelper.onPosterClick(movie); }
     @Override public void onPosterClose(Movie movie) { mFragmentHelper.onPosterClose(movie); }

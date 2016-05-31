@@ -88,17 +88,6 @@ class FragmentHelper {
     }
 
 
-    public void OnPhotoTakenActivityResult(int requestCode, int resultCode)
-    {
-        if (requestCode != EditFragment.REQUEST_TAKE_PHOTO)
-            return;
-
-        EditFragment editFrag = getEditFragment();
-
-        if (editFrag != null)
-            editFrag.onCameraActivityResult(resultCode);
-    }
-
     private EditFragment getEditFragment()
     {
         Fragment frag = mFragManager.findFragmentById(R.id.editFragContainer);
