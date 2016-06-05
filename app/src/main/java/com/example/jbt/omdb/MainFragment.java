@@ -75,7 +75,6 @@ public class MainFragment extends Fragment {
 
         mAdapter = new MovieRecyclerAdapter(
                 getActivity(),
-                null,
                 mListener,
                 mIsTabletMode);
 

@@ -29,9 +29,9 @@
             private final MainFragment.OnMainFragListener mListener;
 
 
-            public MovieRecyclerAdapter(Context context, ArrayList<Movie> movies, MainFragment.OnMainFragListener listener, boolean isTabletMode) {
+            public MovieRecyclerAdapter(Context context, MainFragment.OnMainFragListener listener, boolean isTabletMode) {
                 mContext = context;
-                mMovies = movies;
+                mMovies = null;
                 mListener = listener;
                 mDbHelper = new MoviesDBHelper(mContext);
                 mFragmentHelper = new FragmentHelper((AppCompatActivity)mContext, isTabletMode);

@@ -2,10 +2,13 @@ package com.example.jbt.omdb;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.WindowManager;
 
 
@@ -52,6 +55,19 @@ class Utility {
         sharedPrefHelper.changeLocale();
         activity.setContentView(layoutId);
         resetTitle(activity, titleId); // workaround android bug, see above
+    }
+
+
+    public static void setEditFragBackgroundColor(Context context, View rootView)
+    {
+        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(context);
+        boolean isTabletMode = sharedPrefHelper.getTabletMode();
+
+        if (!isTabletMode)
+            return;
+
+        int color = ContextCompat.getColor(context, R.color.edit_background);
+        rootView.setBackgroundColor(color);
     }
 }
 

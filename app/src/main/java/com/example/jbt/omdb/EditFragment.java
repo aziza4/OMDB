@@ -49,7 +49,7 @@ public class EditFragment extends Fragment {
     private EditText mUrlET;
     private Button mShowCaptureBtn;
     private ImageView mPosterImageView;
-    private ProgressBar mProgBar;
+    private ProgressBar mProgressBar;
     private SeekBar mSeekBar;
     private TextView mSeekBarTV;
     private Button mCancelBtn;
@@ -116,7 +116,7 @@ public class EditFragment extends Fragment {
         mUrlET = (EditText) viewRoot.findViewById(R.id.urlEditText);
         mShowCaptureBtn = (Button) viewRoot.findViewById(R.id.urlShowCaptureButton);
         mPosterImageView = (ImageView) viewRoot.findViewById(R.id.posterImageView);
-        mProgBar = (ProgressBar) viewRoot.findViewById(R.id.downloadProgressBar);
+        mProgressBar = (ProgressBar) viewRoot.findViewById(R.id.downloadProgressBar);
         mSeekBar = (SeekBar) viewRoot.findViewById(R.id.ratingSeekBar);
         mSeekBarTV = (TextView) viewRoot.findViewById(R.id.ratingValueTextView);
         Button mOkBtn = (Button) viewRoot.findViewById(R.id.okButton);
@@ -295,13 +295,13 @@ public class EditFragment extends Fragment {
         @Override
         protected void onPreExecute() {
 
-            mProgBar.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
         protected void onPostExecute(Bitmap image) {
 
-            mProgBar.setVisibility(View.INVISIBLE);
+            mProgressBar.setVisibility(View.INVISIBLE);
 
             if (image != null) {
                 mPosterImageView.setImageBitmap(image);
@@ -387,11 +387,10 @@ public class EditFragment extends Fragment {
     }
 
 
-    @SuppressWarnings("deprecation")
     private void updateLayout(Movie movie)
     {
         if (mIsTabletMode) {
-            mRootLayout.setBackgroundColor(getResources().getColor(R.color.edit_background));
+            Utility.setEditFragBackgroundColor(getActivity(), mRootLayout);
             mCancelBtn.setVisibility(View.GONE);
         }
 
@@ -401,7 +400,7 @@ public class EditFragment extends Fragment {
         mSubjectET.setText(movie.getSubject());
         mBodyET.setText(movie.getBody());
         mUrlET.setText(movie.getUrl());
-        mProgBar.setVisibility(View.INVISIBLE);
+        mProgressBar.setVisibility(View.INVISIBLE);
         mSeekBar.setProgress(ratingValue);
 
         if (movie.getImage() != null)

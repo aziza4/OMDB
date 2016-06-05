@@ -7,6 +7,6 @@
     <dimen name="very_small_text">14sp</dimen>
     <dimen name="small_text">20sp</dimen>
     <dimen name="large_text">24sp</dimen>
-    <dimen name="close_button_horiz_margin">48dp</dimen>
-    <dimen name="close_button_vert_margin">36dp</dimen>
+    <dimen name="close_button_horiz_margin">36dp</dimen>
+    <dimen name="close_button_vert_margin">12dp</dimen>
 </resources>

@@ -49,16 +49,17 @@ public class FullPosterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View viewRoot = inflater.inflate(R.layout.fragment_full_poster, container, false);
+        View view = inflater.inflate(R.layout.fragment_full_poster, container, false);
 
-        if (mMovie == null && savedInstanceState != null) {
+        if (mMovie == null && savedInstanceState != null)
             mMovie = savedInstanceState.getParcelable(WebSearchActivity.INTENT_MOVIE_KEY);
-        }
 
-        ImageView mPosterImageView = (ImageView) viewRoot.findViewById(R.id.fullPosterImageView);
+        Utility.setEditFragBackgroundColor(getActivity(), view);
+
+        ImageView mPosterImageView = (ImageView) view.findViewById(R.id.fullPosterImageView);
         mPosterImageView.setImageBitmap(mMovie.getImage());
 
-        ImageView mCloseButton = (ImageView) viewRoot.findViewById(R.id.closeFullPosterImageView);
+        ImageView mCloseButton = (ImageView) view.findViewById(R.id.closeFullPosterImageView);
 
         mCloseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,8 +68,9 @@ public class FullPosterFragment extends Fragment {
             }
         });
 
-        return viewRoot;
+        return view;
     }
+
 
     public interface OnPosterFragListener {
         void onPosterClose(Movie movie);

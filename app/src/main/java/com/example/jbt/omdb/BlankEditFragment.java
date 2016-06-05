@@ -15,21 +15,12 @@ public class BlankEditFragment extends Fragment {
 
 
     @Override
-    @SuppressWarnings("deprecation")
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View viewRoot = inflater.inflate(R.layout.fragment_blank_edit, container, false);
-
-        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(getActivity());
-        boolean isTabletMode = sharedPrefHelper.getTabletMode();
-
-        if (isTabletMode) {
-            View rootLayout = viewRoot.findViewById(R.id.editFragLayout);
-            rootLayout.setBackgroundColor(getResources().getColor(R.color.edit_background));
-        }
-
-        return viewRoot;
+        View view = inflater.inflate(R.layout.fragment_blank_edit, container, false);
+        Utility.setEditFragBackgroundColor(getActivity(), view);
+        return view;
     }
 
 }
