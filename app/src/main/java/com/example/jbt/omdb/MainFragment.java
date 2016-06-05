@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,8 +21,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 
 public class MainFragment extends Fragment {
+
+    private static final int LOADER_ID = 1;
 
     private MovieRecyclerAdapter mAdapter;
     private MoviesDBHelper mDbHelper;
@@ -68,12 +75,34 @@ public class MainFragment extends Fragment {
 
         mAdapter = new MovieRecyclerAdapter(
                 getActivity(),
-                mDbHelper.getDetailsMovieArrayList(),
+                null,
                 mListener,
                 mIsTabletMode);
 
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        getActivity().getSupportLoaderManager().initLoader(LOADER_ID, null, new LoaderManager.LoaderCallbacks<ArrayList<Movie>>() {
+            @Override
+            public Loader<ArrayList<Movie>> onCreateLoader(int id, Bundle args) {
+                return new AsyncTaskLoader<ArrayList<Movie>>(getActivity()) {
+                    @Override
+                    public ArrayList<Movie> loadInBackground() {
+                        return mDbHelper.getDetailsMovieArrayList();
+                    }
+                };
+            }
+
+            @Override
+            public void onLoadFinished(Loader<ArrayList<Movie>> loader, ArrayList<Movie> data) {
+                mAdapter.setData(data);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<ArrayList<Movie>> loader) {
+                mAdapter.clearData();
+            }
+        });
 
         FloatingActionButton addFab = (FloatingActionButton) rootView.findViewById(R.id.addFAB);
 
