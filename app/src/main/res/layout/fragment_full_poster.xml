@@ -9,7 +9,6 @@
         android:id="@+id/fullPosterImageView"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:contentDescription="@string/content_desc_poster"
-        android:scaleType="fitCenter"
         android:cropToPadding="false" />
 
     <ImageView

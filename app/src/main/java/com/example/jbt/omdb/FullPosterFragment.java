@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 
@@ -16,6 +18,10 @@ public class FullPosterFragment extends Fragment {
 
     private Movie mMovie;
     private OnPosterFragListener mListener;
+    private ImageView mPosterImageView;
+    private ImageView mCloseButton;
+    private Animation mScaleGrowAnimation;
+    private Animation mScaleShrinkAnimation;
 
     public FullPosterFragment() { }
     public void setMovie(Movie movie) { mMovie = movie; }
@@ -56,21 +62,55 @@ public class FullPosterFragment extends Fragment {
 
         Utility.setEditFragBackgroundColor(getActivity(), view);
 
-        ImageView mPosterImageView = (ImageView) view.findViewById(R.id.fullPosterImageView);
+        mPosterImageView = (ImageView) view.findViewById(R.id.fullPosterImageView);
         mPosterImageView.setImageBitmap(mMovie.getImage());
 
-        ImageView mCloseButton = (ImageView) view.findViewById(R.id.closeFullPosterImageView);
+        mCloseButton = (ImageView) view.findViewById(R.id.closeFullPosterImageView);
 
         mCloseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mCloseButton.setVisibility(View.INVISIBLE);
+                mPosterImageView.startAnimation(mScaleShrinkAnimation);
+            }
+        });
+
+        mScaleGrowAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.poster_grow);
+        mScaleGrowAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                mCloseButton.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mCloseButton.setVisibility(View.VISIBLE);
+            }
+
+            @Override public void onAnimationRepeat(Animation animation) {}
+        });
+
+
+        mScaleShrinkAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.poster_shrink);
+        mScaleShrinkAnimation.setAnimationListener(new Animation.AnimationListener() {
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
                 mListener.onPosterClose(mMovie);
             }
+
+            @Override public void onAnimationStart(Animation animation) {}
+            @Override public void onAnimationRepeat(Animation animation) {}
         });
 
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mPosterImageView.startAnimation(mScaleGrowAnimation);
+    }
 
     public interface OnPosterFragListener {
         void onPosterClose(Movie movie);
