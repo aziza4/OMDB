@@ -15,13 +15,11 @@ import android.widget.ImageView;
 
 public class FullPosterFragment extends Fragment {
 
-
     private Movie mMovie;
     private OnPosterFragListener mListener;
     private ImageView mPosterImageView;
     private ImageView mCloseButton;
     private Animation mScaleGrowAnimation;
-    private Animation mScaleShrinkAnimation;
 
     public FullPosterFragment() { }
     public void setMovie(Movie movie) { mMovie = movie; }
@@ -70,8 +68,7 @@ public class FullPosterFragment extends Fragment {
         mCloseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCloseButton.setVisibility(View.INVISIBLE);
-                mPosterImageView.startAnimation(mScaleShrinkAnimation);
+                mListener.onPosterClose(mMovie);
             }
         });
 
@@ -87,19 +84,6 @@ public class FullPosterFragment extends Fragment {
                 mCloseButton.setVisibility(View.VISIBLE);
             }
 
-            @Override public void onAnimationRepeat(Animation animation) {}
-        });
-
-
-        mScaleShrinkAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.poster_shrink);
-        mScaleShrinkAnimation.setAnimationListener(new Animation.AnimationListener() {
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                mListener.onPosterClose(mMovie);
-            }
-
-            @Override public void onAnimationStart(Animation animation) {}
             @Override public void onAnimationRepeat(Animation animation) {}
         });
 
