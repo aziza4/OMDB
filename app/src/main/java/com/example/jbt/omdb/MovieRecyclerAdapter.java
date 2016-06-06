@@ -40,12 +40,17 @@
 
             public void setData(ArrayList<Movie> movies) // called whenever refresh is needed
             {
-                mMovies = movies;
-                notifyDataSetChanged();
+                if (movies != null) {
+                    mMovies = movies;
+                    notifyDataSetChanged();
+                }
             }
 
 
-            public void clearData() {
+            public void clearData()
+            {
+                if (mMovies == null)
+                    return;
 
                 int size = mMovies.size();
 
@@ -61,8 +66,10 @@
 
             private void removeItem(Movie movie)
             {
-                mMovies.remove(movie);
-                notifyDataSetChanged();
+                if (mMovies != null ) {
+                    mMovies.remove(movie);
+                    notifyDataSetChanged();
+                }
             }
 
 
@@ -80,13 +87,17 @@
             @Override
             public void onBindViewHolder(MovieViewHolder holder, int position) {
 
-                holder.bind(mMovies.get(position));
+                if (mMovies != null)
+                    holder.bind(mMovies.get(position));
             }
 
 
             @Override
             public int getItemCount() {
-                return mMovies.size();
+
+                return mMovies != null ?
+                        mMovies.size() :
+                        0;
             }
 
 
