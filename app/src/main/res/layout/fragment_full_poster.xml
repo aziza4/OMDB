@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/editFragLayout">
+    android:id="@+id/editFragLayout"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
         android:layout_width="match_parent"
@@ -9,6 +10,8 @@
         android:id="@+id/fullPosterImageView"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:contentDescription="@string/content_desc_poster"
+        android:transitionName="@string/poster_shared_element_name"
+        tools:ignore="UnusedAttribute"
         android:cropToPadding="false" />
 
     <ImageView

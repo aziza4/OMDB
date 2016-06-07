@@ -2,9 +2,16 @@ package com.example.jbt.omdb;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Explode;
+import android.transition.Transition;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 
 class FragmentHelper {
@@ -86,7 +93,56 @@ class FragmentHelper {
     public void onPosterClick(Movie movie)
     {
         FullPosterFragment posterFrag = CreatePosterFragment(movie);
-        replaceToFragment(posterFrag, R.id.editFragContainer);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { // lollipop and up --> fancy transition
+
+            Fragment editFrag = mFragManager.findFragmentById(R.id.editFragContainer);
+            ImageView posterImageView = (ImageView) mActivity.findViewById(R.id.posterImageView);
+            String transitionName = mActivity.getString(R.string.poster_shared_element_name);
+
+            PosterTransition enterPosterTransition = new PosterTransition();
+            enterPosterTransition.addListener(new Transition.TransitionListener() {
+                @Override
+                public void onTransitionEnd(Transition transition) {
+                    ImageView closeButton = (ImageView) mActivity.findViewById(R.id.closeFullPosterImageView);
+                    if (closeButton != null ) closeButton.setVisibility(View.VISIBLE);
+                }
+
+                @Override public void onTransitionStart(Transition transition) {}
+                @Override public void onTransitionCancel(Transition transition) {}
+                @Override public void onTransitionPause(Transition transition) {}
+                @Override public void onTransitionResume(Transition transition) {}
+            });
+
+            posterFrag.setSharedElementEnterTransition(enterPosterTransition);
+            editFrag.setExitTransition(new Explode());
+            posterFrag.setSharedElementReturnTransition(new PosterTransition());
+
+            mFragManager
+                    .beginTransaction()
+                    .addSharedElement(posterImageView, transitionName)
+                    .replace(R.id.editFragContainer, posterFrag)
+                    .commit();
+        }
+        else { // lollipop and down --> basic scale animation
+
+            replaceToFragment(posterFrag, R.id.editFragContainer);
+
+            Animation scaleGrowAnimation = AnimationUtils.loadAnimation(mActivity, R.anim.poster_grow);
+            scaleGrowAnimation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    ImageView closeButton = (ImageView) mActivity.findViewById(R.id.closeFullPosterImageView);
+                    if (closeButton != null ) closeButton.setVisibility(View.VISIBLE);
+                }
+
+                @Override public void onAnimationStart(Animation animation) {}
+                @Override public void onAnimationRepeat(Animation animation) {}
+            });
+
+            ImageView posterImageView = (ImageView) mActivity.findViewById(R.id.fullPosterImageView);
+            if (posterImageView != null ) posterImageView.startAnimation(scaleGrowAnimation);
+        }
     }
 
 

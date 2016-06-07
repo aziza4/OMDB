@@ -128,7 +128,9 @@
         android:scaleType="fitCenter"
         android:cropToPadding="false"
         android:paddingBottom="@dimen/elements_vertical_margin"
-        android:paddingTop="@dimen/elements_vertical_margin" />
+        android:paddingTop="@dimen/elements_vertical_margin"
+        android:transitionName="@string/poster_shared_element_name"
+        tools:ignore="UnusedAttribute"/>
 
     <ProgressBar
         android:layout_width="wrap_content"
