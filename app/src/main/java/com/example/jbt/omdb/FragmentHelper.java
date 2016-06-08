@@ -45,7 +45,7 @@ class FragmentHelper {
         Fragment editFrag = mFragManager.findFragmentById(R.id.editFragContainer);
 
         if (editFrag == null)
-            replaceToFragment(new BlankEditFragment(), R.id.editFragContainer);
+            replaceToFragment(BlankEditFragment.newInstance(), R.id.editFragContainer);
     }
 
 
@@ -70,10 +70,8 @@ class FragmentHelper {
             return;
 
         mFragManager.beginTransaction()
-                .replace(R.id.editFragContainer, new BlankEditFragment())
+                .replace(R.id.editFragContainer, BlankEditFragment.newInstance())
                 .commit();
-
-        mFragManager.executePendingTransactions();
     }
 
 
@@ -112,7 +110,5 @@ class FragmentHelper {
         mFragManager.beginTransaction()
                 .replace(containerId, fragment)
                 .commit();
-
-        mFragManager.executePendingTransactions();
     }
 }

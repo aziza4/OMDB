@@ -11,7 +11,10 @@ import android.view.ViewGroup;
 public class BlankEditFragment extends Fragment {
 
 
-    public BlankEditFragment() { }
+    public static BlankEditFragment newInstance()
+    {
+        return new BlankEditFragment();
+    }
 
 
     @Override

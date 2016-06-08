@@ -37,7 +37,7 @@ public class FullPosterFragment extends Fragment {
         super.onAttach(context);
 
         mListener = (OnPosterFragListener) context;
-        SetTransition(context);
+        SetTransition();
     }
 
 
@@ -81,7 +81,6 @@ public class FullPosterFragment extends Fragment {
         posterImageView.setImageBitmap(mMovie.getImage());
 
         mCloseButton = (ImageView) view.findViewById(R.id.closeFullPosterImageView);
-        mCloseButton.setVisibility(View.INVISIBLE); // later, on trantion/animation finish it will be visible
 
         mCloseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,12 +93,16 @@ mListener.onPosterClose(mMovie);
 
             Animation scaleGrowAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.poster_grow);
             scaleGrowAnimation.setAnimationListener(new Animation.AnimationListener() {
+
+                @Override public void onAnimationStart(Animation animation) {
+                    mCloseButton.setVisibility(View.INVISIBLE);
+                }
+
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     mCloseButton.setVisibility(View.VISIBLE);
                 }
 
-                @Override public void onAnimationStart(Animation animation) {}
                 @Override public void onAnimationRepeat(Animation animation) {}
             });
 
@@ -113,22 +116,25 @@ mListener.onPosterClose(mMovie);
     }
 
 
-    private void SetTransition(Context context)
+    private void SetTransition()
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
             Transition transition = TransitionInflater
-                    .from(context)
+                    .from(getActivity())
                     .inflateTransition(R.transition.poster_transition);
 
             transition.addListener(new Transition.TransitionListener() {
+
+                @Override public void onTransitionStart(Transition transition) {
+                    mCloseButton.setVisibility(View.INVISIBLE);
+                }
 
                 @Override
                 public void onTransitionEnd(Transition transition) {
                     mCloseButton.setVisibility(View.VISIBLE);
                 }
 
-                @Override public void onTransitionStart(Transition transition) {}
                 @Override public void onTransitionCancel(Transition transition) {}
                 @Override public void onTransitionPause(Transition transition) {}
                 @Override public void onTransitionResume(Transition transition) {}
