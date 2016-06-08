@@ -63,9 +63,12 @@ public class EditFragment extends Fragment {
     private boolean mIsTabletMode;
     private OnEditFragListener mListener;
 
-    public EditFragment() {}
 
-    public void setMovie(Movie movie) { mMovie = movie; }
+    public static EditFragment newInstance(Movie movie) {
+        EditFragment fragment = new EditFragment();
+        fragment.mMovie = movie;
+        return fragment;
+    }
 
     @Override
     public void onAttach(Context context) {
